@@ -855,7 +855,13 @@ export default function ChatRoom({
             minHeight: 0,
           }}
         >
-          {status === 'pre_permission' && <PrePermissionView onAllow={requestCamera} onExit={() => { trackEvent('pre_permission_exited'); onExit() }} />}
+          {(status === 'pre_permission' || status === 'connecting') && (
+            <PrePermissionView
+              onAllow={requestCamera}
+              onExit={() => { trackEvent('pre_permission_exited'); onExit() }}
+              disabled={status === 'connecting'}
+            />
+          )}
           {status === 'cam_error' && <ErrorView title="Camera access denied" onRetry={requestCamera} onExit={() => { trackEvent('cam_error_exited'); onExit() }} />}
           {(status === 'waiting' || status === 'text_connecting') && (
             <MatchingView
@@ -934,7 +940,7 @@ function statusDotColor(status, iceState) {
 // ── Subcomponents ──
 // ═══════════════════════════════════════════════════════════════════════════
 
-function PrePermissionView({ onAllow, onExit }) {
+function PrePermissionView({ onAllow, onExit, disabled }) {
   return (
     <Center>
       <div
@@ -960,8 +966,10 @@ function PrePermissionView({ onAllow, onExit }) {
         We need access to match you with a real person. Your stream is peer-to-peer and never recorded.
       </p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: 'min(100%, 320px)' }}>
-        <PrimaryButton onClick={onAllow}>Allow Camera & Find Match</PrimaryButton>
-        <GhostButton onClick={onExit}>Go back</GhostButton>
+        <PrimaryButton onClick={onAllow} disabled={disabled}>
+          {disabled ? 'Requesting access…' : 'Allow Camera & Find Match'}
+        </PrimaryButton>
+        <GhostButton onClick={onExit} disabled={disabled}>Go back</GhostButton>
       </div>
     </Center>
   )
@@ -1266,10 +1274,11 @@ function PrimaryButton({ children, onClick, disabled }) {
   )
 }
 
-function GhostButton({ children, onClick }) {
+function GhostButton({ children, onClick, disabled }) {
   return (
     <button
       onClick={onClick}
+      disabled={disabled}
       className="compact"
       style={{
         width: '100%',
@@ -1280,7 +1289,8 @@ function GhostButton({ children, onClick }) {
         background: 'transparent',
         border: '1px solid var(--border-1)',
         borderRadius: 'var(--radius-pill)',
-        cursor: 'pointer',
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.6 : 1,
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.color = 'var(--text-1)'
