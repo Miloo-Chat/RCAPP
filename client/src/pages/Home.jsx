@@ -106,6 +106,7 @@ export default function Home({
           <h1
             className="fade-in-up"
             style={{
+              fontFamily: 'var(--font-display)',
               fontSize: 'clamp(36px, 7vw, 64px)',
               fontWeight: 800,
               letterSpacing: '-0.04em',
