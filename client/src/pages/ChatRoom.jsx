@@ -349,12 +349,34 @@ export default function ChatRoom({
       }
     })
 
+    const checkAndSetConnected = (pcInst) => {
+      setStatus((prevStatus) => {
+        if (prevStatus !== 'waiting' && prevStatus !== 'connecting') return prevStatus
+        const ice = pcInst.iceConnectionState
+        const conn = pcInst.connectionState
+        const isIceActive = ice === 'connected' || ice === 'completed'
+        const isConnActive = conn === 'connected'
+        const hasRemoteTrack = Boolean(
+          remoteStreamRef.current && remoteStreamRef.current.getTracks().length > 0
+        )
+        if (hasRemoteTrack && (isIceActive || isConnActive)) {
+          return 'connected'
+        }
+        return prevStatus
+      })
+    }
+
     pc.addEventListener('iceconnectionstatechange', () => {
       const s = pc.iceConnectionState
       setIceState(s)
       if (s === 'failed' || s === 'disconnected' || s === 'closed') {
         trackEvent('webrtc_ice_state', { state: s })
       }
+      checkAndSetConnected(pc)
+    })
+
+    pc.addEventListener('connectionstatechange', () => {
+      checkAndSetConnected(pc)
     })
 
     pc.addEventListener('icecandidate', (e) => {
@@ -374,18 +396,25 @@ export default function ChatRoom({
 
     pc.addEventListener('track', (e) => {
       console.log('[WebRTC] ontrack fired', e.track?.kind, 'streams:', e.streams?.length)
-      remoteStreamRef.current = new MediaStream()
+      if (!remoteStreamRef.current) {
+        remoteStreamRef.current = new MediaStream()
+      }
       if (e.streams && e.streams[0]) {
         e.streams[0].getTracks().forEach((t) => {
           console.log('[WebRTC] adding track:', t.kind, 'enabled:', t.enabled, 'readyState:', t.readyState)
-          remoteStreamRef.current.addTrack(t)
+          if (!remoteStreamRef.current.getTracks().some((existing) => existing.id === t.id)) {
+            remoteStreamRef.current.addTrack(t)
+          }
         })
       } else if (e.track) {
         console.log('[WebRTC] adding single track:', e.track.kind)
-        remoteStreamRef.current.addTrack(e.track)
+        if (!remoteStreamRef.current.getTracks().some((existing) => existing.id === e.track.id)) {
+          remoteStreamRef.current.addTrack(e.track)
+        }
       }
       console.log('[WebRTC] remoteStream tracks:', remoteStreamRef.current.getTracks().length)
       setRemoteStreamVersion((v) => v + 1)
+      checkAndSetConnected(pc)
     })
 
     // Restart any ended tracks before adding to new peer connection
@@ -525,12 +554,12 @@ export default function ChatRoom({
           miloActiveRef.current = false
           setPartnerId(pid)
           partnerIdRef.current = pid
-          setStatus(chatModeRef.current === 'text' ? 'text_chat' : 'connected')
+          if (chatModeRef.current === 'text') setStatus('text_chat')
         }, HANDOFF_GRACE_MS)
       } else {
         setPartnerId(pid)
         partnerIdRef.current = pid
-        setStatus(chatModeRef.current === 'text' ? 'text_chat' : 'connected')
+        if (chatModeRef.current === 'text') setStatus('text_chat')
       }
 
       if (chatModeRef.current === 'video' && pid && typeof pid === 'string') {

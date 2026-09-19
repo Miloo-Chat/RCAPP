@@ -39,10 +39,7 @@ Socket connects → status = 'waiting' → emit 'find_match'
          with no UI feedback.
     │
     ▼
-[BUG C] `match_found` arrives → setStatus('connected') BEFORE
-         `startPC` resolves. UI shows “Connected” but
-         partner video is blank. User clicks Next → server
-         increments skip counter → `slow_down` → 15s lockout.
+[BUG C - FIXED] `match_found` now sets status to 'connected' only after ontrack fires and ICE connection state is active.
     │
     ▼
 [BUG D] Camera/permission denied → fallback to audio, then
