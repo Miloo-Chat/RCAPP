@@ -73,36 +73,6 @@ export default function Home({
         />
 
         <div style={{ position: 'relative', zIndex: 1, maxWidth: 720 }}>
-          {/* Badge */}
-          <div
-            className="fade-in-up"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
-              padding: '6px 14px',
-              borderRadius: 'var(--radius-pill)',
-              background: 'var(--surface-2)',
-              border: '1px solid var(--border-1)',
-              fontSize: '13px',
-              fontWeight: 600,
-              color: 'var(--text-2)',
-              marginBottom: 24,
-            }}
-          >
-            <span
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                background: 'var(--success)',
-                boxShadow: '0 0 8px var(--success)',
-                animation: 'pulse 2s ease-in-out infinite',
-              }}
-            />
-            Free · Anonymous · No signup
-          </div>
-
           <h1
             className="fade-in-up"
             style={{
@@ -129,8 +99,7 @@ export default function Home({
               margin: '0 auto 36px',
             }}
           >
-            Miloo matches you with real people who share your vibe. Pick a mood,
-            start a conversation, and let serendipity do the rest.
+            It's free, anonymous, and there's no sign-up. Miloo matches you with real people who share your vibe — pick a mood, start talking, and let serendipity do the rest.
           </p>
 
           {/* ── Mode selector ── */}
