@@ -39,17 +39,10 @@ Socket connects → status = 'waiting' → emit 'find_match'
          with no UI feedback.
     │
     ▼
-[BUG C] `match_found` arrives → setStatus('connected') BEFORE
-         `startPC` resolves. UI shows “Connected” but
-         partner video is blank. User clicks Next → server
-         increments skip counter → `slow_down` → 15s lockout.
+[BUG C - FIXED] `match_found` now sets status to 'connected' only after ontrack fires and ICE connection state is active.
     │
     ▼
-[BUG D] Camera/permission denied → fallback to audio, then
-         to text. But the UI overlay built for `pre_permission`
-         state never tears down properly. Status flips to
-         'connecting' but no PC is created, so it sits on
-         “Finding your match…” forever.
+[BUG D - FIXED] Camera permission errors route cleanly to 'cam_error' with retry/exit options, and 'connecting' state maintains stable UI.
     │
     ▼
 [BUG E] Network blip or partner tab closes → `partner_left`
