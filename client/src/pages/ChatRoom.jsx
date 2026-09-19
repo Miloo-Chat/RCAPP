@@ -240,7 +240,7 @@ export default function ChatRoom({
         const next = prev + 1
         const trigger =
           chatModeRef.current === 'text' ? MILO_TRIGGER_TEXT : MILO_TRIGGER_VIDEO
-        if (next >= trigger && !miloActiveRef.current) {
+        if (next >= trigger && !miloActiveRef.current && !partnerIdRef.current) {
           activateMilo()
         }
         return next
