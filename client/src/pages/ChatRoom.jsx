@@ -1618,13 +1618,13 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
                 }}
               >
                 {messages.length === 0 ? (
-                  <p style={{ 
-                    color: 'var(--text-3)', 
-                    fontSize: 13, 
-                    textAlign: 'center', 
+                  <p style={{
+                    color: 'var(--text-3)',
+                    fontSize: 13,
+                    textAlign: 'center',
                     margin: 'auto',
                   }}>
-                    Say hi 👋
+                    Say hi — they're waiting too.
                   </p>
                 ) : (
                   messages.map((m, i) => (
@@ -1661,7 +1661,7 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
           >
             {messages.length === 0 && (
               <div style={{ margin: 'auto', textAlign: 'center', color: 'var(--text-3)', fontSize: 14 }}>
-                Say hi! 👋
+                Say hi — they're waiting too.
               </div>
             )}
             {messages.map((m, i) =>
