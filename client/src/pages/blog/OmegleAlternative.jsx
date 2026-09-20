@@ -451,7 +451,7 @@ export default function OmegleAlternative() {
             padding: 'clamp(24px, 4vw, 40px)',
             borderRadius: 'var(--radius-xl)',
             background:
-              'linear-gradient(135deg, rgba(124,58,237,0.14), rgba(79,70,229,0.14))',
+              'linear-gradient(135deg, rgba(255,107,74,0.14), rgba(255,61,129,0.14))',
             border: '1px solid var(--accent-border)',
             textAlign: 'center',
             maxWidth: 720,
