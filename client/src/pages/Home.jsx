@@ -140,29 +140,79 @@ export default function Home({
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
             gap: 16,
             maxWidth: 980,
             margin: '0 auto',
           }}
         >
+          <div style={{ gridColumn: '1 / -1' }}>
+            <FeatureCard
+              featured
+              icon={
+                <svg
+                  width="34"
+                  height="34"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <path d="M12 2 L20 6 V12 C20 17 16.5 20.5 12 22 C7.5 20.5 4 17 4 12 V6 Z" />
+                </svg>
+              }
+              title="Safe by default"
+              desc="18+ only, fingerprint bans, no logs"
+            />
+          </div>
           <FeatureCard
-            icon="🎯"
+            icon={
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <circle cx="12" cy="12" r="3.5" />
+              </svg>
+            }
             title="Mood matching"
             desc="Find someone who actually gets it"
           />
           <FeatureCard
-            icon="🛡️"
-            title="Safe by default"
-            desc="18+ only, fingerprint bans, no logs"
-          />
-          <FeatureCard
-            icon="🤖"
+            icon={
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <rect x="3" y="5" width="18" height="14" rx="3" />
+                <circle cx="9" cy="12" r="1.2" fill="currentColor" stroke="none" />
+                <circle cx="15" cy="12" r="1.2" fill="currentColor" stroke="none" />
+              </svg>
+            }
             title="Milo keeps you company"
             desc="AI companion while you wait"
           />
           <FeatureCard
-            icon="⚡"
+            icon={
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <path d="M13 2 L4 14 H11 L10 22 L20 9 H13 Z" />
+              </svg>
+            }
             title="Instant, no signup"
             desc="Open the page and you're in"
           />
@@ -261,37 +311,35 @@ function ModeCard({ icon, title, desc, onClick }) {
   )
 }
 
-function FeatureCard({ icon, title, desc }) {
+function FeatureCard({ icon, title, desc, featured = false }) {
   return (
     <div
       className="card-hover"
       style={{
-        padding: 'clamp(16px, 2.5vw, 22px)',
-        borderRadius: 'var(--radius-md)',
+        padding: featured ? 'clamp(20px, 3.5vw, 28px)' : 'clamp(16px, 2.5vw, 22px)',
+        borderRadius: featured ? 'var(--radius-lg)' : 'var(--radius-md)',
         background: 'var(--surface-1)',
         border: '1px solid var(--border-1)',
         display: 'flex',
         flexDirection: 'column',
-        gap: 8,
+        gap: featured ? 12 : 8,
+        height: '100%',
+        boxShadow: 'none',
       }}
     >
-      <span
+      <div
         style={{
-          fontSize: 22,
-          width: 40,
-          height: 40,
+          color: 'var(--accent)',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: 'var(--radius-sm)',
-          background: 'var(--accent-dim)',
+          marginBottom: featured ? 2 : 0,
         }}
         aria-hidden="true"
       >
         {icon}
-      </span>
-      <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-1)' }}>{title}</div>
-      <div style={{ fontSize: 13, color: 'var(--text-3)', lineHeight: 1.5 }}>{desc}</div>
+      </div>
+      <div style={{ fontSize: featured ? 18 : 15, fontWeight: 700, color: 'var(--text-1)' }}>{title}</div>
+      <div style={{ fontSize: featured ? 14 : 13, color: 'var(--text-3)', lineHeight: 1.5 }}>{desc}</div>
     </div>
   )
 }
