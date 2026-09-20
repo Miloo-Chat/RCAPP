@@ -114,13 +114,36 @@ export default function Home({
             }}
           >
             <ModeCard
-              icon="💬"
+              icon={
+                <svg
+                  width="34"
+                  height="34"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <path d="M4 4h16v12H8l-4 4V4Z" />
+                </svg>
+              }
               title="Text Chat"
               desc="Type, no camera, instant"
               onClick={onStartText}
             />
             <ModeCard
-              icon="🎥"
+              icon={
+                <svg
+                  width="34"
+                  height="34"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <rect x="3" y="6" width="13" height="12" rx="2" />
+                  <path d="M16 10l5-3v10l-5-3" />
+                </svg>
+              }
               title="Video Chat"
               desc="Face to face, real time"
               onClick={onStartVideo}
@@ -288,9 +311,17 @@ function ModeCard({ icon, title, desc, onClick }) {
         e.currentTarget.style.background = 'var(--surface-1)'
       }}
     >
-      <span style={{ fontSize: 28, lineHeight: 1 }} aria-hidden="true">
+      <div
+        style={{
+          color: 'var(--accent)',
+          display: 'flex',
+          alignItems: 'center',
+          lineHeight: 1,
+        }}
+        aria-hidden="true"
+      >
         {icon}
-      </span>
+      </div>
       <div>
         <div
           style={{
