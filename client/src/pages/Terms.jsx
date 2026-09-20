@@ -206,7 +206,7 @@ export default function Terms({ onBack, theme, onToggleTheme }) {
               padding: 'clamp(18px, 3vw, 24px)',
               borderRadius: 'var(--radius-lg)',
               background:
-                'linear-gradient(135deg, rgba(124,58,237,0.10), rgba(79,70,229,0.10))',
+                'linear-gradient(135deg, rgba(255,107,74,0.10), rgba(255,61,129,0.10))',
               border: '1px solid var(--accent-border)',
               marginBottom: 20,
             }}
