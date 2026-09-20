@@ -897,6 +897,7 @@ export default function ChatRoom({
               remoteStream={remoteStreamVersion > 0 ? remoteStreamRef.current : null}
               remoteStreamVersion={remoteStreamVersion}
               scrollRef={msgScrollRef}
+              onFindNext={findNext}
             />
           )}
           {isStrangerTyping && (status === 'text_chat' || status === 'connected') && (
@@ -1506,7 +1507,7 @@ function MiloPanel({
   )
 }
 
-function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteStream, remoteStreamVersion, scrollRef }) {
+function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteStream, remoteStreamVersion, scrollRef, onFindNext }) {
   const [showChat, setShowChat] = React.useState(false)
   return (
     <section
@@ -1537,7 +1538,7 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
             minHeight: 0,
             background: '#000',
           }}>
-            <VideoStage key={remoteStreamVersion} iceState={iceState} localStream={localStream} remoteStream={remoteStream} />
+            <VideoStage key={remoteStreamVersion} iceState={iceState} localStream={localStream} remoteStream={remoteStream} onFindNext={onFindNext} />
             {/* Chat toggle */}
             <button
               onClick={() => setShowChat(v => !v)}
@@ -1719,9 +1720,74 @@ function MessageBubble({ role, time, children }) {
   )
 }
 
-function VideoStage({ iceState, localStream, remoteStream }) {
+function DroppedOverlay({ onFindNext }) {
+  const [dropSeconds, setDropSeconds] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setDropSeconds((s) => s + 1)
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [])
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        inset: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'rgba(0, 0, 0, 0.75)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+        zIndex: 10,
+        padding: 24,
+        textAlign: 'center',
+      }}
+    >
+      <div style={{ position: 'relative', width: 64, height: 64, marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            borderRadius: '50%',
+            border: '1.5px solid rgba(255, 61, 129, 0.6)',
+            background: 'radial-gradient(circle, rgba(255, 61, 129, 0.15) 0%, rgba(255, 61, 129, 0) 70%)',
+            animation: 'milooRadar 2s cubic-bezier(0,0,0.2,1) infinite',
+          }}
+        />
+        <span
+          style={{
+            position: 'relative',
+            width: 12,
+            height: 12,
+            borderRadius: '50%',
+            background: 'var(--accent-2)',
+            boxShadow: '0 0 16px rgba(255, 61, 129, 0.8), 0 0 4px rgba(255,255,255,0.5)',
+            zIndex: 2,
+          }}
+        />
+      </div>
+      <h3 style={{ margin: 0, color: 'var(--text-1)', fontSize: 18, fontWeight: 700, marginBottom: 8 }}>
+        {dropSeconds >= 8 ? 'Having trouble reconnecting…' : 'Reconnecting…'}
+      </h3>
+      <p style={{ margin: 0, color: 'var(--text-3)', fontSize: 14, marginBottom: dropSeconds >= 8 ? 24 : 0 }}>
+        {dropSeconds >= 8 ? 'Their network might have dropped.' : 'Waiting for connection to resume.'}
+      </p>
+      {dropSeconds >= 8 && (
+        <PrimaryButton onClick={onFindNext}>Find new match</PrimaryButton>
+      )}
+    </div>
+  )
+}
+
+function VideoStage({ iceState, localStream, remoteStream, onFindNext }) {
   const localRef = useRef(null)
   const remoteRef = useRef(null)
+
   useEffect(() => {
     if (localRef.current) {
       localRef.current.srcObject = localStream || null
@@ -1741,6 +1807,7 @@ function VideoStage({ iceState, localStream, remoteStream }) {
 
   const connState = (iceState || '').toLowerCase()
   const isLive = connState === 'connected' || connState === 'completed'
+  const isDropped = connState === 'disconnected' || connState === 'failed'
 
   return (
     <div
@@ -1777,6 +1844,7 @@ function VideoStage({ iceState, localStream, remoteStream }) {
             Waiting for partner's video…
           </div>
         )}
+        {isDropped && <DroppedOverlay onFindNext={onFindNext} />}
         <div
           style={{
             position: 'absolute',
