@@ -1,7 +1,7 @@
 // client/src/components/Logo.jsx
 //
-// A small, brandable SVG logo for Miloo. Uses currentColor for
-// the inner mark so it adapts to any text color.
+// A small, brandable SVG logo for Miloo. Features the spark/bolt mark
+// with the brand accent gradient.
 
 export default function Logo({ size = 32 }) {
   return (
@@ -15,22 +15,12 @@ export default function Logo({ size = 32 }) {
       style={{ display: 'block', flexShrink: 0 }}
     >
       <defs>
-        <linearGradient id="milooLogoGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#f0abfc" />
-          <stop offset="50%" stopColor="#a78bfa" />
-          <stop offset="100%" stopColor="#6366f1" />
+        <linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="var(--accent, #FF6B4A)" />
+          <stop offset="100%" stopColor="var(--accent-2, #FF3D81)" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="28" height="28" rx="9" fill="url(#milooLogoGrad)" />
-      <path
-        d="M10.5 21.5c0-3 2-5 5.5-5s5.5 2 5.5 5"
-        stroke="white"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-        fill="none"
-      />
-      <circle cx="12.5" cy="13.5" r="1.6" fill="white" />
-      <circle cx="19.5" cy="13.5" r="1.6" fill="white" />
+      <path d="M17 2 L8 18 H15 L13 30 L26 12 H18 L17 2Z" fill="url(#logoGrad)" />
     </svg>
   )
 }

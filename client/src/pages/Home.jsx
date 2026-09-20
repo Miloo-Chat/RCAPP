@@ -73,39 +73,10 @@ export default function Home({
         />
 
         <div style={{ position: 'relative', zIndex: 1, maxWidth: 720 }}>
-          {/* Badge */}
-          <div
-            className="fade-in-up"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
-              padding: '6px 14px',
-              borderRadius: 'var(--radius-pill)',
-              background: 'var(--surface-2)',
-              border: '1px solid var(--border-1)',
-              fontSize: '13px',
-              fontWeight: 600,
-              color: 'var(--text-2)',
-              marginBottom: 24,
-            }}
-          >
-            <span
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                background: 'var(--success)',
-                boxShadow: '0 0 8px var(--success)',
-                animation: 'pulse 2s ease-in-out infinite',
-              }}
-            />
-            Free · Anonymous · No signup
-          </div>
-
           <h1
             className="fade-in-up"
             style={{
+              fontFamily: 'var(--font-display)',
               fontSize: 'clamp(36px, 7vw, 64px)',
               fontWeight: 800,
               letterSpacing: '-0.04em',
@@ -128,8 +99,7 @@ export default function Home({
               margin: '0 auto 36px',
             }}
           >
-            Miloo matches you with real people who share your vibe. Pick a mood,
-            start a conversation, and let serendipity do the rest.
+            It's free, anonymous, and there's no sign-up. Miloo matches you with real people who share your vibe — pick a mood, start talking, and let serendipity do the rest.
           </p>
 
           {/* ── Mode selector ── */}
@@ -144,13 +114,36 @@ export default function Home({
             }}
           >
             <ModeCard
-              icon="💬"
+              icon={
+                <svg
+                  width="34"
+                  height="34"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <path d="M4 4h16v12H8l-4 4V4Z" />
+                </svg>
+              }
               title="Text Chat"
               desc="Type, no camera, instant"
               onClick={onStartText}
             />
             <ModeCard
-              icon="🎥"
+              icon={
+                <svg
+                  width="34"
+                  height="34"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <rect x="3" y="6" width="13" height="12" rx="2" />
+                  <path d="M16 10l5-3v10l-5-3" />
+                </svg>
+              }
               title="Video Chat"
               desc="Face to face, real time"
               onClick={onStartVideo}
@@ -170,29 +163,79 @@ export default function Home({
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
             gap: 16,
             maxWidth: 980,
             margin: '0 auto',
           }}
         >
+          <div style={{ gridColumn: '1 / -1' }}>
+            <FeatureCard
+              featured
+              icon={
+                <svg
+                  width="34"
+                  height="34"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <path d="M12 2 L20 6 V12 C20 17 16.5 20.5 12 22 C7.5 20.5 4 17 4 12 V6 Z" />
+                </svg>
+              }
+              title="Safe by default"
+              desc="18+ only, fingerprint bans, no logs"
+            />
+          </div>
           <FeatureCard
-            icon="🎯"
+            icon={
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <circle cx="12" cy="12" r="3.5" />
+              </svg>
+            }
             title="Mood matching"
             desc="Find someone who actually gets it"
           />
           <FeatureCard
-            icon="🛡️"
-            title="Safe by default"
-            desc="18+ only, fingerprint bans, no logs"
-          />
-          <FeatureCard
-            icon="🤖"
+            icon={
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <rect x="3" y="5" width="18" height="14" rx="3" />
+                <circle cx="9" cy="12" r="1.2" fill="currentColor" stroke="none" />
+                <circle cx="15" cy="12" r="1.2" fill="currentColor" stroke="none" />
+              </svg>
+            }
             title="Milo keeps you company"
             desc="AI companion while you wait"
           />
           <FeatureCard
-            icon="⚡"
+            icon={
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <path d="M13 2 L4 14 H11 L10 22 L20 9 H13 Z" />
+              </svg>
+            }
             title="Instant, no signup"
             desc="Open the page and you're in"
           />
@@ -268,9 +311,17 @@ function ModeCard({ icon, title, desc, onClick }) {
         e.currentTarget.style.background = 'var(--surface-1)'
       }}
     >
-      <span style={{ fontSize: 28, lineHeight: 1 }} aria-hidden="true">
+      <div
+        style={{
+          color: 'var(--accent)',
+          display: 'flex',
+          alignItems: 'center',
+          lineHeight: 1,
+        }}
+        aria-hidden="true"
+      >
         {icon}
-      </span>
+      </div>
       <div>
         <div
           style={{
@@ -291,37 +342,35 @@ function ModeCard({ icon, title, desc, onClick }) {
   )
 }
 
-function FeatureCard({ icon, title, desc }) {
+function FeatureCard({ icon, title, desc, featured = false }) {
   return (
     <div
       className="card-hover"
       style={{
-        padding: 'clamp(16px, 2.5vw, 22px)',
-        borderRadius: 'var(--radius-md)',
+        padding: featured ? 'clamp(20px, 3.5vw, 28px)' : 'clamp(16px, 2.5vw, 22px)',
+        borderRadius: featured ? 'var(--radius-lg)' : 'var(--radius-md)',
         background: 'var(--surface-1)',
         border: '1px solid var(--border-1)',
         display: 'flex',
         flexDirection: 'column',
-        gap: 8,
+        gap: featured ? 12 : 8,
+        height: '100%',
+        boxShadow: 'none',
       }}
     >
-      <span
+      <div
         style={{
-          fontSize: 22,
-          width: 40,
-          height: 40,
+          color: 'var(--accent)',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: 'var(--radius-sm)',
-          background: 'var(--accent-dim)',
+          marginBottom: featured ? 2 : 0,
         }}
         aria-hidden="true"
       >
         {icon}
-      </span>
-      <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-1)' }}>{title}</div>
-      <div style={{ fontSize: 13, color: 'var(--text-3)', lineHeight: 1.5 }}>{desc}</div>
+      </div>
+      <div style={{ fontSize: featured ? 18 : 15, fontWeight: 700, color: 'var(--text-1)' }}>{title}</div>
+      <div style={{ fontSize: featured ? 14 : 13, color: 'var(--text-3)', lineHeight: 1.5 }}>{desc}</div>
     </div>
   )
 }
