@@ -1062,8 +1062,8 @@ function MatchingView({ mood, matchSeconds, hint, miloActive }) {
                 width: 140,
                 height: 140,
                 borderRadius: '50%',
-                border: '1.5px solid rgba(192, 132, 252, 0.6)',
-                background: 'radial-gradient(circle, rgba(192,132,252,0.08) 0%, rgba(192,132,252,0) 70%)',
+                border: '1.5px solid rgba(255, 61, 129, 0.6)',
+                background: 'radial-gradient(circle, rgba(255, 61, 129, 0.08) 0%, rgba(255, 61, 129, 0) 70%)',
                 animation: `milooRadar 3.3s cubic-bezier(0,0,0.2,1) infinite`,
                 animationDelay: `${i * 1.1}s`,
                 pointerEvents: 'none',
@@ -1076,8 +1076,8 @@ function MatchingView({ mood, matchSeconds, hint, miloActive }) {
               width: 16,
               height: 16,
               borderRadius: '50%',
-              background: 'radial-gradient(circle, #f0abfc 0%, #c084fc 60%, #7c3aed 100%)',
-              boxShadow: '0 0 24px rgba(192,132,252,0.8), 0 0 8px rgba(255,255,255,0.5)',
+              background: 'radial-gradient(circle, var(--accent-3) 0%, var(--accent-2) 60%, var(--accent) 100%)',
+              boxShadow: '0 0 24px rgba(255, 61, 129, 0.8), 0 0 8px rgba(255,255,255,0.5)',
               zIndex: 2,
             }}
           />
@@ -1100,7 +1100,7 @@ function MatchingView({ mood, matchSeconds, hint, miloActive }) {
                 height: 6,
                 borderRadius: '50%',
                 background: 'var(--accent-2)',
-                boxShadow: '0 0 8px rgba(192,132,252,0.7)',
+                boxShadow: '0 0 8px rgba(255, 61, 129, 0.7)',
                 animation: 'milooDotPulse 1.2s ease-in-out infinite',
                 animationDelay: `${i * 0.18}s`,
               }}
