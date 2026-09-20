@@ -59,7 +59,10 @@
       #seo-content { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
     </style>
     <style>
-      #root > .miloo-splash {
+      #miloo-splash-screen {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -68,6 +71,7 @@
         height: 100dvh;
         background-color: #120E17;
         animation: milooSplashFadeIn 0.25s ease-out forwards;
+        transition: opacity 0.2s ease-out;
       }
       .miloo-splash-inner {
         position: relative;
@@ -189,7 +193,7 @@
         100% { transform: translate(-36px, -42px) scale(0.2); opacity: 0; }
       }
       @media (prefers-reduced-motion: reduce) {
-        #root > .miloo-splash,
+        #miloo-splash-screen,
         .miloo-splash-bolt {
           animation: none !important;
           opacity: 1 !important;
@@ -218,37 +222,58 @@
       <h2>How it works</h2>
       <p>Click Start, allow camera access, and get instantly matched with a random stranger for a live video chat. Skip anytime to meet someone new.</p>
     </div>
-    <div id="root">
-      <div class="miloo-splash">
-        <div class="miloo-splash-inner">
-          <div class="miloo-splash-flash"></div>
-          <div class="miloo-splash-sparks">
-            <span class="miloo-spark"></span>
-            <span class="miloo-spark"></span>
-            <span class="miloo-spark"></span>
-            <span class="miloo-spark"></span>
-            <span class="miloo-spark"></span>
-          </div>
-          <svg
-            width="56"
-            height="56"
-            viewBox="0 0 32 32"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-            class="miloo-splash-bolt"
-          >
-            <defs>
-              <linearGradient id="splashGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#FF6B4A" />
-                <stop offset="100%" stop-color="#FF3D81" />
-              </linearGradient>
-            </defs>
-            <path d="M17 2 L8 18 H15 L13 30 L26 12 H18 L17 2Z" fill="url(#splashGrad)" />
-          </svg>
+    <div id="root"></div>
+    <div id="miloo-splash-screen">
+      <div class="miloo-splash-inner">
+        <div class="miloo-splash-flash"></div>
+        <div class="miloo-splash-sparks">
+          <span class="miloo-spark"></span>
+          <span class="miloo-spark"></span>
+          <span class="miloo-spark"></span>
+          <span class="miloo-spark"></span>
+          <span class="miloo-spark"></span>
         </div>
+        <svg
+          width="56"
+          height="56"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          class="miloo-splash-bolt"
+        >
+          <defs>
+            <linearGradient id="splashGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#FF6B4A" />
+              <stop offset="100%" stop-color="#FF3D81" />
+            </linearGradient>
+          </defs>
+          <path d="M17 2 L8 18 H15 L13 30 L26 12 H18 L17 2Z" fill="url(#splashGrad)" />
+        </svg>
       </div>
     </div>
+    <script>
+      window.__milooSplashStart = performance.now();
+      window.__milooHideSplash = function() {
+        var splash = document.getElementById('miloo-splash-screen');
+        if (!splash || splash.__hiding) return;
+        splash.__hiding = true;
+        var elapsed = performance.now() - window.__milooSplashStart;
+        var remaining = Math.max(0, 700 - elapsed);
+        setTimeout(function() {
+          splash.style.opacity = '0';
+          var removed = false;
+          function removeSplash() {
+            if (!removed && splash.parentNode) {
+              removed = true;
+              splash.parentNode.removeChild(splash);
+            }
+          }
+          splash.addEventListener('transitionend', removeSplash, { once: true });
+          setTimeout(removeSplash, 300);
+        }, remaining);
+      };
+    </script>
     <script type="module" src="/src/main.jsx"></script>
     <script>
       if ('serviceWorker' in navigator) {
