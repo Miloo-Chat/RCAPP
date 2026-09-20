@@ -7,6 +7,7 @@ import OmegleAlternative from './pages/blog/OmegleAlternative'
 import RandomVideoChatIndia from './pages/blog/RandomVideoChatIndia'
 import StrangerChatIndia from './pages/blog/StrangerChatIndia'
 import VideoChatNoSignup from './pages/blog/VideoChatNoSignup'
+import NotFound from './pages/NotFound'
 import { trackEvent } from './utils/analytics'
 
 function AppRoutes() {
@@ -119,16 +120,10 @@ function AppRoutes() {
       />
       <Route path="/blog/video-chat-no-signup" element={<VideoChatNoSignup />}
       />
-      {/* Catch-all: redirect unknown paths to home */}
-      <Route path="*" element={<RedirectHome />} />
+      {/* Catch-all: 404 Not Found page */}
+      <Route path="*" element={<NotFound theme={theme} onToggleTheme={toggleTheme} />} />
     </Routes>
   )
-}
-
-function RedirectHome() {
-  const navigate = useNavigate()
-  useEffect(() => { navigate('/', { replace: true }) }, [navigate])
-  return null
 }
 
 export default function App() {
