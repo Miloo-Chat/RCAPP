@@ -960,7 +960,7 @@ function PrePermissionView({ onAllow, onExit, disabled }) {
       >
         🎥
       </div>
-      <h2 style={{ fontSize: 'clamp(20px, 3vw, 24px)', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: 8 }}>
+      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(20px, 3vw, 24px)', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: 8 }}>
         Camera & microphone access
       </h2>
       <p style={{ color: 'var(--text-3)', fontSize: 14, marginBottom: 24, maxWidth: 320, lineHeight: 1.5 }}>
@@ -994,7 +994,7 @@ function ErrorView({ title, onRetry, onExit }) {
       >
         ⚠️
       </div>
-      <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 12 }}>{title}</h2>
+      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 800, marginBottom: 12 }}>{title}</h2>
       <p style={{ color: 'var(--text-3)', fontSize: 14, marginBottom: 20, maxWidth: 320, lineHeight: 1.5, textAlign: 'center' }}>
         Check your browser's site settings (click the lock icon in the address bar) and allow camera & microphone, then try again.
       </p>
@@ -1035,8 +1035,7 @@ function MatchingView({ mood, matchSeconds, hint, miloActive }) {
           style={{
             fontSize: 11,
             fontWeight: 700,
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
+            letterSpacing: '0.02em',
             color: 'var(--text-3)',
             alignSelf: 'flex-start',
           }}
@@ -1084,7 +1083,7 @@ function MatchingView({ mood, matchSeconds, hint, miloActive }) {
           />
         </div>
 
-        <h2 style={{ fontSize: 'clamp(20px, 3vw, 26px)', fontWeight: 800, letterSpacing: '-0.02em', margin: 0 }}>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(20px, 3vw, 26px)', fontWeight: 800, letterSpacing: '-0.02em', margin: 0 }}>
           {miloActive ? 'Milo is here with you' : 'Finding your match…'}
         </h2>
         <p style={{ color: 'var(--text-3)', fontSize: 14, margin: 0, maxWidth: 320, lineHeight: 1.5 }}>{hint}</p>
@@ -1182,7 +1181,7 @@ function PartnerLeftView({ onNext, onExit }) {
       >
         👋
       </div>
-      <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 8 }}>Your partner left</h2>
+      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>Your partner left</h2>
       <p style={{ color: 'var(--text-3)', fontSize: 14, marginBottom: 24 }}>Find the next person?</p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: 'min(100%, 320px)' }}>
         <PrimaryButton onClick={onNext}>Find next</PrimaryButton>
@@ -1214,7 +1213,7 @@ function PartnerLeftView({ onNext, onExit }) {
 function SimpleStatusView({ title, desc }) {
   return (
     <Center>
-      <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 8 }}>{title}</h2>
+      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>{title}</h2>
       <p style={{ color: 'var(--text-3)', fontSize: 14 }}>{desc}</p>
     </Center>
   )
@@ -1771,7 +1770,7 @@ function DroppedOverlay({ onFindNext }) {
           }}
         />
       </div>
-      <h3 style={{ margin: 0, color: 'var(--text-1)', fontSize: 18, fontWeight: 700, marginBottom: 8 }}>
+      <h3 style={{ fontFamily: 'var(--font-display)', margin: 0, color: 'var(--text-1)', fontSize: 18, fontWeight: 700, marginBottom: 8 }}>
         {dropSeconds >= 8 ? 'Having trouble reconnecting…' : 'Reconnecting…'}
       </h3>
       <p style={{ margin: 0, color: 'var(--text-3)', fontSize: 14, marginBottom: dropSeconds >= 8 ? 24 : 0 }}>
