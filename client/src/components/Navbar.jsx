@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle'
 import Logo from './Logo'
 
-export default function Navbar({ theme, onToggleTheme, rightSlot, transparent = false }) {
+export default function Navbar({ theme, onToggleTheme, rightSlot }) {
   const navigate = useNavigate()
   return (
     <nav
@@ -19,10 +19,8 @@ export default function Navbar({ theme, onToggleTheme, rightSlot, transparent = 
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '14px clamp(16px, 4vw, 32px)',
-        background: transparent ? 'transparent' : 'var(--bg-0)',
-        borderBottom: transparent ? '1px solid transparent' : '1px solid var(--border-1)',
-        backdropFilter: transparent ? 'none' : 'saturate(180%) blur(12px)',
-        WebkitBackdropFilter: transparent ? 'none' : 'saturate(180%) blur(12px)',
+        background: 'var(--bg-0)',
+        borderBottom: '1px solid var(--border-1)',
         transition: 'background 0.25s ease, border-color 0.25s ease',
       }}
     >
@@ -44,8 +42,9 @@ export default function Navbar({ theme, onToggleTheme, rightSlot, transparent = 
         <span
           style={{
             fontSize: '20px',
+            fontFamily: 'var(--font-display)',
             fontWeight: 800,
-            letterSpacing: '-0.05em',
+            letterSpacing: '-0.02em',
             color: 'var(--text-1)',
           }}
         >

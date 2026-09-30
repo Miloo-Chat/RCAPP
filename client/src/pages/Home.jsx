@@ -1,11 +1,7 @@
-// client/src/pages/Home.jsx
-//
-// Hero landing page. Attractive, simple, and fully responsive.
-// Layout: hero → mode selector → features → footer.
-
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Logo from '../components/Logo'
+import useCanonical from '../hooks/useCanonical'
 
 export default function Home({
   onStartText,
@@ -16,8 +12,10 @@ export default function Home({
 }) {
   const navigate = useNavigate()
 
+  useCanonical('https://www.miloo.chat/')
+
   return (
-    <div className="page page-enter" style={{ background: 'var(--bg-0)' }}>
+    <div className="page page-enter" style={{ background: 'var(--bg-0)', display: 'flex', flexDirection: 'column' }}>
       <Navbar
         theme={theme}
         onToggleTheme={onToggleTheme}
@@ -29,9 +27,22 @@ export default function Home({
               background: 'transparent',
               color: 'var(--text-2)',
               fontSize: '14px',
-              fontWeight: 600,
-              padding: '8px 12px',
+              fontFamily: 'var(--font-body)',
+              fontWeight: 500,
+              padding: '8px 14px',
               borderRadius: 'var(--radius-pill)',
+              border: '1px solid transparent',
+              transition: 'all 220ms ease-out',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = 'var(--text-1)'
+              e.currentTarget.style.background = 'var(--surface-1)'
+              e.currentTarget.style.borderColor = 'var(--border-1)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = 'var(--text-2)'
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.borderColor = 'transparent'
             }}
           >
             Safety
@@ -39,7 +50,7 @@ export default function Home({
         }
       />
 
-      {/* ── HERO ── */}
+      {/* ── HERO & TWO DOORS ── */}
       <section
         className="container"
         style={{
@@ -49,230 +60,131 @@ export default function Home({
           alignItems: 'center',
           justifyContent: 'center',
           textAlign: 'center',
-          paddingTop: 'clamp(40px, 8vh, 80px)',
-          paddingBottom: 'clamp(40px, 6vh, 60px)',
-          position: 'relative',
+          paddingTop: 'clamp(48px, 10vh, 96px)',
+          paddingBottom: 'clamp(48px, 8vh, 80px)',
         }}
       >
-        {/* Decorative gradient orbs */}
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            top: '10%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: 'clamp(280px, 60vw, 600px)',
-            height: 'clamp(280px, 60vw, 600px)',
-            background:
-              'radial-gradient(circle, rgba(167,139,250,0.25) 0%, rgba(124,58,237,0.08) 40%, transparent 70%)',
-            filter: 'blur(40px)',
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
-        />
-
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: 720 }}>
+        <div style={{ maxWidth: 760, width: '100%' }}>
           <h1
             className="fade-in-up"
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(36px, 7vw, 64px)',
-              fontWeight: 800,
-              letterSpacing: '-0.04em',
-              lineHeight: 1.05,
+              fontSize: 'clamp(40px, 7.5vw, 72px)',
+              fontWeight: 400,
+              letterSpacing: '-0.025em',
+              lineHeight: 1.08,
               margin: '0 0 20px',
               color: 'var(--text-1)',
             }}
           >
-            Meet someone new.{' '}
-            <span className="gradient-text">Instantly.</span>
+            Talk to someone unexpected.
           </h1>
 
           <p
             className="fade-in-up"
             style={{
-              fontSize: 'clamp(15px, 1.8vw, 18px)',
+              fontSize: 'clamp(16px, 1.8vw, 19px)',
               color: 'var(--text-2)',
               lineHeight: 1.6,
-              maxWidth: 540,
-              margin: '0 auto 36px',
+              maxWidth: 520,
+              margin: '0 auto 44px',
             }}
           >
-            It's free, anonymous, and there's no sign-up. Miloo matches you with real people who share your vibe — pick a mood, start talking, and let serendipity do the rest.
+            A late-night conversation, a quick story, or just passing the time. Pick a door and see who's there.
           </p>
 
-          {/* ── Mode selector ── */}
+          {/* ── TWO DOORS ── */}
           <div
             className="fade-in-up"
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
-              gap: 12,
-              maxWidth: 480,
-              margin: '0 auto 24px',
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              gap: 16,
+              justifyContent: 'center',
             }}
           >
-            <ModeCard
+            <ModeDoor
               icon={
-                <svg
-                  width="34"
-                  height="34"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                >
-                  <path d="M4 4h16v12H8l-4 4V4Z" />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                 </svg>
               }
               title="Text Chat"
-              desc="Type, no camera, instant"
+              desc="Instant messages. No camera, no pressure."
               onClick={onStartText}
             />
-            <ModeCard
+            <ModeDoor
               icon={
-                <svg
-                  width="34"
-                  height="34"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                >
-                  <rect x="3" y="6" width="13" height="12" rx="2" />
-                  <path d="M16 10l5-3v10l-5-3" />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="23 7 16 12 23 17 23 7" />
+                  <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
                 </svg>
               }
               title="Video Chat"
-              desc="Face to face, real time"
+              desc="Face-to-face. Direct live connection."
               onClick={onStartVideo}
             />
           </div>
-        </div>
-      </section>
 
-      {/* ── FEATURES ── */}
-      <section
-        className="container"
-        style={{
-          paddingTop: 'clamp(40px, 6vh, 60px)',
-          paddingBottom: 'clamp(40px, 6vh, 60px)',
-        }}
-      >
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
-            gap: 16,
-            maxWidth: 980,
-            margin: '0 auto',
-          }}
-        >
-          <div style={{ gridColumn: '1 / -1' }}>
-            <FeatureCard
-              featured
-              icon={
-                <svg
-                  width="34"
-                  height="34"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                >
-                  <path d="M12 2 L20 6 V12 C20 17 16.5 20.5 12 22 C7.5 20.5 4 17 4 12 V6 Z" />
-                </svg>
-              }
-              title="Safe by default"
-              desc="18+ only, fingerprint bans, no logs"
-            />
+          {/* ── HONEST SAFETY NOTE ── */}
+          <div
+            className="fade-in-up"
+            style={{
+              marginTop: 48,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 12,
+              color: 'var(--text-3)',
+              fontSize: 14,
+              lineHeight: 1.5,
+              padding: '8px 16px',
+              borderRadius: 'var(--radius-pill)',
+              background: 'var(--surface-1)',
+              border: '1px solid var(--border-1)',
+            }}
+          >
+            <span>Anonymous & unrecorded</span>
+            <span style={{ opacity: 0.4 }}>•</span>
+            <span>18+ only</span>
+            <span style={{ opacity: 0.4 }}>•</span>
+            <span>Skip anytime</span>
           </div>
-          <FeatureCard
-            icon={
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              >
-                <circle cx="12" cy="12" r="9" />
-                <circle cx="12" cy="12" r="3.5" />
-              </svg>
-            }
-            title="Mood matching"
-            desc="Find someone who actually gets it"
-          />
-          <FeatureCard
-            icon={
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              >
-                <rect x="3" y="5" width="18" height="14" rx="3" />
-                <circle cx="9" cy="12" r="1.2" fill="currentColor" stroke="none" />
-                <circle cx="15" cy="12" r="1.2" fill="currentColor" stroke="none" />
-              </svg>
-            }
-            title="Milo keeps you company"
-            desc="AI companion while you wait"
-          />
-          <FeatureCard
-            icon={
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              >
-                <path d="M13 2 L4 14 H11 L10 22 L20 9 H13 Z" />
-              </svg>
-            }
-            title="Instant, no signup"
-            desc="Open the page and you're in"
-          />
         </div>
       </section>
 
       {/* ── FOOTER ── */}
       <footer
-        className="container"
         style={{
-          paddingTop: 24,
-          paddingBottom: 32,
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 16,
-          color: 'var(--text-3)',
-          fontSize: 13,
+          borderTop: '1px solid var(--border-1)',
+          background: 'var(--bg-0)',
+          paddingTop: 28,
+          paddingBottom: 36,
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Logo size={20} />
-          <span>© {new Date().getFullYear()} Miloo</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
-          <FooterLink onClick={onTerms}>Safety</FooterLink>
-          <FooterLink onClick={() => navigate('/blog/omegle-alternative')}>
-            Omegle Alternative
-          </FooterLink>
-          <FooterLink onClick={() => navigate('/blog/random-video-chat-india')}>
-            Random Video Chat
-          </FooterLink>
-          <FooterLink onClick={() => navigate('/blog/stranger-chat-india')}>
-            Stranger Chat
-          </FooterLink>
+        <div
+          className="container"
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 20,
+            color: 'var(--text-3)',
+            fontSize: 13,
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <Logo size={22} />
+            <span style={{ fontWeight: 500 }}>© {new Date().getFullYear()} Miloo</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
+            <FooterLink onClick={onTerms}>Safety & Rules</FooterLink>
+            <FooterLink onClick={() => navigate('/blog/omegle-alternative')}>Omegle Alternative</FooterLink>
+            <FooterLink onClick={() => navigate('/blog/random-video-chat-india')}>Random Video Chat</FooterLink>
+            <FooterLink onClick={() => navigate('/blog/stranger-chat-india')}>Stranger Chat</FooterLink>
+          </div>
         </div>
       </footer>
     </div>
@@ -281,34 +193,45 @@ export default function Home({
 
 /* ── Subcomponents ── */
 
-function ModeCard({ icon, title, desc, onClick }) {
+function ModeDoor({ icon, title, desc, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="card-hover"
       style={{
+        flex: '1 1 280px',
+        maxWidth: 360,
         position: 'relative',
         textAlign: 'left',
-        padding: 'clamp(18px, 3vw, 24px)',
-        borderRadius: 'var(--radius-lg)',
+        padding: '28px 24px',
         background: 'var(--surface-1)',
         border: '1px solid var(--border-1)',
+        borderRadius: 'var(--radius-lg)',
         cursor: 'pointer',
         display: 'flex',
         flexDirection: 'column',
-        gap: 10,
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        transition: 'all 0.2s ease',
-        minHeight: 110,
+        gap: 16,
+        transition: 'all 240ms ease-out',
+        minHeight: 130,
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = 'var(--accent-border)'
+        e.currentTarget.style.borderColor = 'var(--border-2)'
         e.currentTarget.style.background = 'var(--surface-2)'
+        e.currentTarget.style.transform = 'translateY(-2px)'
+        const arrow = e.currentTarget.querySelector('.door-arrow')
+        if (arrow) arrow.style.transform = 'translateX(4px)'
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.borderColor = 'var(--border-1)'
         e.currentTarget.style.background = 'var(--surface-1)'
+        e.currentTarget.style.transform = 'translateY(0)'
+        const arrow = e.currentTarget.querySelector('.door-arrow')
+        if (arrow) arrow.style.transform = 'translateX(0)'
+      }}
+      onMouseDown={(e) => {
+        e.currentTarget.style.transform = 'translateY(0) scale(0.99)'
+      }}
+      onMouseUp={(e) => {
+        e.currentTarget.style.transform = 'translateY(-2px) scale(1)'
       }}
     >
       <div
@@ -316,62 +239,39 @@ function ModeCard({ icon, title, desc, onClick }) {
           color: 'var(--accent)',
           display: 'flex',
           alignItems: 'center',
-          lineHeight: 1,
+          justifyContent: 'space-between',
         }}
         aria-hidden="true"
       >
         {icon}
+        <svg
+          className="door-arrow"
+          width="18" height="18"
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+          style={{ transition: 'transform 220ms ease-out', color: 'var(--text-3)' }}
+        >
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
       </div>
       <div>
         <div
           style={{
-            fontSize: 16,
-            fontWeight: 700,
+            fontFamily: 'var(--font-display)',
+            fontSize: 22,
+            fontWeight: 400,
             color: 'var(--text-1)',
-            marginBottom: 2,
+            marginBottom: 6,
             letterSpacing: '-0.01em',
           }}
         >
           {title}
         </div>
-        <div style={{ fontSize: 13, color: 'var(--text-3)', lineHeight: 1.4 }}>
+        <div style={{ fontSize: 14, color: 'var(--text-2)', lineHeight: 1.45 }}>
           {desc}
         </div>
       </div>
     </button>
-  )
-}
-
-function FeatureCard({ icon, title, desc, featured = false }) {
-  return (
-    <div
-      className="card-hover"
-      style={{
-        padding: featured ? 'clamp(20px, 3.5vw, 28px)' : 'clamp(16px, 2.5vw, 22px)',
-        borderRadius: featured ? 'var(--radius-lg)' : 'var(--radius-md)',
-        background: 'var(--surface-1)',
-        border: '1px solid var(--border-1)',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: featured ? 12 : 8,
-        height: '100%',
-        boxShadow: 'none',
-      }}
-    >
-      <div
-        style={{
-          color: 'var(--accent)',
-          display: 'flex',
-          alignItems: 'center',
-          marginBottom: featured ? 2 : 0,
-        }}
-        aria-hidden="true"
-      >
-        {icon}
-      </div>
-      <div style={{ fontSize: featured ? 18 : 15, fontWeight: 700, color: 'var(--text-1)' }}>{title}</div>
-      <div style={{ fontSize: featured ? 14 : 13, color: 'var(--text-3)', lineHeight: 1.5 }}>{desc}</div>
-    </div>
   )
 }
 
@@ -384,9 +284,10 @@ function FooterLink({ onClick, children }) {
         background: 'transparent',
         color: 'var(--text-3)',
         fontSize: 13,
-        fontWeight: 500,
-        padding: 4,
+        fontWeight: 400,
+        padding: '4px 6px',
         cursor: 'pointer',
+        transition: 'color 180ms ease-out'
       }}
       onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-1)')}
       onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-3)')}
