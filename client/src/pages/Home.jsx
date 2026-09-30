@@ -177,46 +177,23 @@ export default function Home({
               aria-label="Enter Text Chat"
             >
               <div style={{ width: '100%' }}>
-                <div
-                  style={{
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                    color: 'var(--accent)',
-                    marginBottom: 28,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <span>01 / TEXT</span>
-                  <span
-                    style={{
-                      width: 6,
-                      height: 6,
-                      borderRadius: '50%',
-                      background: 'var(--border-2)',
-                    }}
-                  />
-                </div>
                 <h2
                   style={{
                     fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(24px, 2.5vw, 30px)',
+                    fontSize: 'clamp(28px, 2.8vw, 36px)',
                     fontWeight: 400,
                     letterSpacing: '-0.02em',
-                    color: 'var(--text-1)',
-                    margin: '0 0 8px',
-                    lineHeight: 1.15,
+                    color: '#121110',
+                    margin: '0 0 12px',
+                    lineHeight: 1.12,
                   }}
                 >
                   Text Chat
                 </h2>
                 <p
                   style={{
-                    fontSize: '14px',
-                    color: 'var(--text-2)',
+                    fontSize: '15px',
+                    color: 'rgba(18, 17, 16, 0.88)',
                     lineHeight: 1.5,
                     margin: 0,
                   }}
@@ -225,21 +202,19 @@ export default function Home({
                 </p>
               </div>
 
-              <div
-                className="door-cta"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  color: 'var(--text-3)',
-                  transition: 'color 200ms ease',
-                  marginTop: 32,
-                }}
-              >
-                <span>Enter Door</span>
-                <span className="door-arrow" style={{ transition: 'transform 200ms ease' }}>→</span>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 32 }}>
+                <span
+                  className="door-arrow"
+                  style={{
+                    fontSize: '28px',
+                    lineHeight: 1,
+                    color: '#121110',
+                    display: 'inline-block',
+                    transition: 'transform 220ms ease-out',
+                  }}
+                >
+                  →
+                </span>
               </div>
             </button>
 
@@ -250,45 +225,22 @@ export default function Home({
               aria-label="Enter Video Chat"
             >
               <div style={{ width: '100%' }}>
-                <div
-                  style={{
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                    color: 'var(--accent)',
-                    marginBottom: 28,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <span>02 / VIDEO</span>
-                  <span
-                    style={{
-                      width: 6,
-                      height: 6,
-                      borderRadius: '50%',
-                      background: 'var(--border-2)',
-                    }}
-                  />
-                </div>
                 <h2
                   style={{
                     fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(24px, 2.5vw, 30px)',
+                    fontSize: 'clamp(28px, 2.8vw, 36px)',
                     fontWeight: 400,
                     letterSpacing: '-0.02em',
                     color: 'var(--text-1)',
-                    margin: '0 0 8px',
-                    lineHeight: 1.15,
+                    margin: '0 0 12px',
+                    lineHeight: 1.12,
                   }}
                 >
                   Video Chat
                 </h2>
                 <p
                   style={{
-                    fontSize: '14px',
+                    fontSize: '15px',
                     color: 'var(--text-2)',
                     lineHeight: 1.5,
                     margin: 0,
@@ -298,21 +250,19 @@ export default function Home({
                 </p>
               </div>
 
-              <div
-                className="door-cta"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  color: 'var(--text-3)',
-                  transition: 'color 200ms ease',
-                  marginTop: 32,
-                }}
-              >
-                <span>Enter Door</span>
-                <span className="door-arrow" style={{ transition: 'transform 200ms ease' }}>→</span>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 32 }}>
+                <span
+                  className="door-arrow"
+                  style={{
+                    fontSize: '28px',
+                    lineHeight: 1,
+                    color: 'var(--text-1)',
+                    display: 'inline-block',
+                    transition: 'transform 220ms ease-out',
+                  }}
+                >
+                  →
+                </span>
               </div>
             </button>
           </div>
