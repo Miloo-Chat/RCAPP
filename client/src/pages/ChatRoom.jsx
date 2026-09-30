@@ -91,6 +91,198 @@ const MATCH_KF = `
 @keyframes milooRadar{0%{transform:scale(.3);opacity:.85}100%{transform:scale(2.2);opacity:0}}
 @keyframes milooDotPulse{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
 @keyframes milooMsgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.video-split-stage {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-1);
+}
+.video-feed-pane {
+  flex: 1 1 50%;
+  position: relative;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+.video-feed-pane + .video-feed-pane {
+  border-left: 1px solid var(--border-1);
+}
+
+.video-chat-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+  gap: 12px;
+}
+.video-stage-wrapper {
+  flex: 1 1 100%;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.video-chat-panel {
+  flex: 0 0 35%;
+  min-height: 160px;
+  max-height: 280px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(18, 14, 23, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-lg);
+  position: relative;
+  z-index: 5;
+  overflow: hidden;
+}
+.mobile-chat-toggle {
+  display: none;
+}
+.mobile-chat-close-btn {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .video-split-stage {
+    flex-direction: column;
+  }
+  .video-feed-pane + .video-feed-pane {
+    border-left: none;
+    border-top: 1px solid var(--border-1);
+  }
+
+  .video-chat-container {
+    gap: 0;
+  }
+  .video-chat-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    max-height: 70%;
+    flex: none;
+    z-index: 30;
+    background: rgba(18, 14, 23, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-1);
+    border-bottom: none;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5);
+    transform: translateY(105%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease;
+  }
+  .video-chat-panel.mobile-open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .mobile-chat-toggle {
+    display: flex;
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    z-index: 20;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-pill);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    cursor: pointer;
+    align-items: center;
+    gap: 6px;
+  }
+  .mobile-chat-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--text-2);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: var(--radius-pill);
+  }
+}
+
+.ome-control-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 8px 12px;
+  flex-shrink: 0;
+}
+.ome-control-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-1);
+  background: var(--surface-2);
+  color: var(--text-1);
+  gap: 4px;
+  cursor: pointer;
+  transition: transform var(--ease), background var(--ease), border-color var(--ease), box-shadow var(--ease);
+  user-select: none;
+}
+.ome-control-btn:hover {
+  background: var(--surface-3);
+  transform: translateY(-2px);
+  border-color: var(--border-2);
+}
+.ome-control-btn:active {
+  transform: scale(0.95);
+}
+.ome-control-btn.ome-next-btn {
+  background: var(--gradient-cta);
+  border: none;
+  color: var(--accent-text);
+  box-shadow: var(--accent-glow);
+}
+.ome-control-btn.ome-next-btn:hover {
+  background: var(--gradient-cta-hover);
+  box-shadow: var(--accent-glow-soft);
+}
+.ome-control-btn.ome-stop-btn {
+  background: var(--surface-2);
+  color: var(--text-2);
+}
+.ome-control-btn.ome-stop-btn:hover {
+  color: var(--text-1);
+  border-color: var(--border-2);
+}
+.ome-control-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
 `
 
 const MOOD_OPENERS = {
@@ -817,31 +1009,6 @@ export default function ChatRoom({
             <span style={{ textTransform: 'capitalize', overflow: 'hidden', textOverflow: 'ellipsis' }}>{statusLabel(status, iceState, isVideo, mood)}</span>
           </div>
 
-          {(status === 'text_chat' || status === 'connected') && (
-            <button
-              onClick={findNext}
-              aria-label="Skip to next stranger"
-              className="compact"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 4,
-                padding: '8px 12px',
-                borderRadius: 'var(--radius-pill)',
-                background: 'var(--gradient-cta)',
-                border: 'none',
-                color: 'var(--accent-text)',
-                fontSize: 13,
-                fontWeight: 700,
-                cursor: 'pointer',
-                flexShrink: 0,
-                whiteSpace: 'nowrap',
-              }}
-            >
-              Skip ⏭
-            </button>
-          )}
-
           <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         </header>
 
@@ -898,6 +1065,7 @@ export default function ChatRoom({
               remoteStreamVersion={remoteStreamVersion}
               scrollRef={msgScrollRef}
               onFindNext={findNext}
+              onStop={findNext}
             />
           )}
           {isStrangerTyping && (status === 'text_chat' || status === 'connected') && (
@@ -1507,7 +1675,7 @@ function MiloPanel({
   )
 }
 
-function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteStream, remoteStreamVersion, scrollRef, onFindNext }) {
+function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteStream, remoteStreamVersion, scrollRef, onFindNext, onStop }) {
   const [showChat, setShowChat] = React.useState(false)
   return (
     <section
@@ -1524,43 +1692,19 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
       }}
     >
       {isVideo ? (
-        <div style={{ 
-          flex: 1,
-          display: 'flex', 
-          flexDirection: 'column', 
-          minHeight: 0,
-          overflow: 'hidden',
-        }}>
-          {/* VIDEO — fixed height, never cut */}
-          <div style={{ 
-            flex: showChat ? '0 0 55%' : '1 1 100%',
-            position: 'relative',
-            minHeight: 0,
-            background: '#000',
-          }}>
-            <VideoStage key={remoteStreamVersion} iceState={iceState} localStream={localStream} remoteStream={remoteStream} onFindNext={onFindNext} />
-            {/* Chat toggle */}
+        <div className="video-chat-container">
+          <div className="video-stage-wrapper">
+            <VideoStage
+              key={remoteStreamVersion}
+              iceState={iceState}
+              localStream={localStream}
+              remoteStream={remoteStream}
+              onFindNext={onFindNext}
+            />
             <button
               onClick={() => setShowChat(v => !v)}
-              style={{
-                position: 'absolute',
-                bottom: 12,
-                right: 12,
-                zIndex: 20,
-                background: showChat ? 'var(--accent)' : 'rgba(0,0,0,0.7)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: 'var(--radius-pill)',
-                color: '#fff',
-                fontSize: 13,
-                fontWeight: 600,
-                padding: '8px 16px',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-              }}
+              className="mobile-chat-toggle compact"
+              aria-label={showChat ? 'Hide Chat' : 'Chat'}
             >
               💬 {showChat ? 'Hide Chat' : 'Chat'}
               {messages.length > 0 && !showChat && (
@@ -1575,6 +1719,7 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
                   alignItems: 'center',
                   justifyContent: 'center',
                   padding: '0 4px',
+                  color: '#fff',
                 }}>
                   {messages.length > 9 ? '9+' : messages.length}
                 </span>
@@ -1582,64 +1727,64 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
             </button>
           </div>
 
-          {/* CHAT PANEL — completely below video, proper section */}
-          {showChat && (
+          <div className={`video-chat-panel ${showChat ? 'mobile-open' : ''}`}>
             <div style={{
-              flex: '0 0 45%',
+              padding: '8px 14px',
+              borderBottom: '1px solid var(--border-1)',
+              fontSize: 12,
+              fontWeight: 600,
+              color: 'var(--text-3)',
+              flexShrink: 0,
               display: 'flex',
-              flexDirection: 'column',
-              background: 'var(--bg-1)',
-              borderTop: '2px solid var(--accent)',
-              minHeight: 0,
+              alignItems: 'center',
+              justifyContent: 'space-between',
             }}>
-              {/* Header */}
-              <div style={{
-                padding: '8px 14px',
-                borderBottom: '1px solid var(--border-1)',
-                fontSize: 12,
-                fontWeight: 600,
-                color: 'var(--text-3)',
-                flexShrink: 0,
-              }}>
-                💬 Chat with stranger
-              </div>
-              {/* Messages */}
-              <div
-                ref={scrollRef}
-                className="no-scrollbar"
-                style={{
-                  flex: 1,
-                  overflowY: 'auto',
-                  padding: '10px 14px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 8,
-                  minHeight: 0,
-                }}
+              <span>💬 Chat with stranger</span>
+              <button
+                className="mobile-chat-close-btn compact"
+                onClick={() => setShowChat(false)}
+                aria-label="Close chat"
               >
-                {messages.length === 0 ? (
-                  <p style={{
-                    color: 'var(--text-3)',
-                    fontSize: 13,
-                    textAlign: 'center',
-                    margin: 'auto',
-                  }}>
-                    Say hi — they're waiting too.
-                  </p>
-                ) : (
-                  messages.map((m, i) => (
-                    <MessageBubble key={i} role={m.from === 'me' ? 'user' : 'assistant'} time={m.time}>
-                      {m.text}
-                    </MessageBubble>
-                  ))
-                )}
-              </div>
-              {/* Input — always visible at bottom */}
-              <div style={{ flexShrink: 0 }}>
-                <ChatInput onSend={sendText} placeholder="Type a message…" />
-              </div>
+                ✕
+              </button>
             </div>
-          )}
+
+            <div
+              ref={scrollRef}
+              className="no-scrollbar"
+              style={{
+                flex: 1,
+                overflowY: 'auto',
+                padding: '10px 14px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
+                minHeight: 0,
+              }}
+            >
+              {messages.length === 0 ? (
+                <p style={{
+                  color: 'var(--text-3)',
+                  fontSize: 13,
+                  textAlign: 'center',
+                  margin: 'auto',
+                }}>
+                  Say hi — they're waiting too.
+                </p>
+              ) : (
+                messages.map((m, i) => (
+                  <MessageBubble key={i} role={m.from === 'me' ? 'user' : 'assistant'} time={m.time}>
+                    {m.text}
+                  </MessageBubble>
+                ))
+              )}
+            </div>
+
+            <div style={{ flexShrink: 0 }}>
+              <ChatInput onSend={sendText} placeholder="Type a message…" />
+            </div>
+          </div>
+          <OmeControlBar onNext={onFindNext} onStop={onStop} />
         </div>
       ) : (
         <>
@@ -1677,9 +1822,55 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
             )}
           </div>
           <ChatInput onSend={sendText} placeholder="Say something kind…" />
+          <OmeControlBar onNext={onFindNext} onStop={onStop} />
         </>
       )}
     </section>
+  )
+}
+
+function OmeControlBar({ onNext, onStop }) {
+  return (
+    <div className="ome-control-bar">
+      <button
+        onClick={onStop}
+        aria-label="Stop chat"
+        className="ome-control-btn ome-stop-btn"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <rect x="5" y="5" width="14" height="14" rx="2" />
+        </svg>
+        <span className="ome-control-label">Stop</span>
+      </button>
+
+      <button
+        onClick={onNext}
+        aria-label="Next match"
+        className="ome-control-btn ome-next-btn"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <polygon points="5 4 15 12 5 20 5 4" fill="currentColor" />
+          <line x1="19" y1="5" x2="19" y2="19" />
+        </svg>
+        <span className="ome-control-label">Next</span>
+      </button>
+    </div>
   )
 }
 
@@ -1819,73 +2010,53 @@ function VideoStage({ iceState, localStream, remoteStream, onFindNext }) {
         height: '100%',
       }}
     >
-      <div
-        style={{
-          position: 'relative',
-          flex: 1,
-          minHeight: 0,
-          borderRadius: 'var(--radius-lg)',
-          overflow: 'hidden',
-          background: '#000',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          border: '1px solid var(--border-1)',
-        }}
-      >
-        <video
-          ref={remoteRef}
-          autoPlay
-          playsInline
-          style={{ width: '100%', height: '100%', objectFit: 'cover', background: '#000' }}
-        />
-        {!remoteStream && (
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-3)', fontSize: 14 }}>
-            Waiting for partner's video…
+      <div className="video-split-stage">
+        {/* Remote video feed */}
+        <div className="video-feed-pane">
+          <video
+            ref={remoteRef}
+            autoPlay
+            playsInline
+            style={{ width: '100%', height: '100%', objectFit: 'cover', background: '#000' }}
+          />
+          {!remoteStream && (
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-3)', fontSize: 14 }}>
+              Waiting for partner's video…
+            </div>
+          )}
+          {isDropped && <DroppedOverlay onFindNext={onFindNext} />}
+          <div
+            style={{
+              position: 'absolute',
+              top: 10,
+              left: 10,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '4px 10px',
+              borderRadius: 'var(--radius-pill)',
+              background: 'rgba(0,0,0,0.55)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              fontSize: 11,
+              fontWeight: 600,
+              color: '#fff',
+              zIndex: 5,
+            }}
+          >
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: isLive ? 'var(--success)' : 'var(--warning)' }} />
+            {isLive ? 'Live' : (iceState || 'connecting')}
           </div>
-        )}
-        {isDropped && <DroppedOverlay onFindNext={onFindNext} />}
-        <div
-          style={{
-            position: 'absolute',
-            top: 10,
-            left: 10,
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
-            padding: '4px 10px',
-            borderRadius: 'var(--radius-pill)',
-            background: 'rgba(0,0,0,0.55)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-            fontSize: 11,
-            fontWeight: 600,
-            color: '#fff',
-          }}
-        >
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: isLive ? 'var(--success)' : 'var(--warning)' }} />
-          {isLive ? 'Live' : (iceState || 'connecting')}
         </div>
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 10,
-            right: 10,
-            width: 'clamp(80px, 22vw, 140px)',
-            aspectRatio: '4 / 3',
-            borderRadius: 'var(--radius-md)',
-            overflow: 'hidden',
-            background: '#000',
-            border: '2px solid rgba(255,255,255,0.2)',
-            boxShadow: 'var(--shadow)',
-          }}
-        >
+
+        {/* Local video feed */}
+        <div className="video-feed-pane">
           <video
             ref={localRef}
             autoPlay
             playsInline
             muted
-            style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scaleX(-1)' }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scaleX(-1)', background: '#000' }}
           />
         </div>
       </div>
