@@ -376,3 +376,121 @@ button.compact, button.icon-btn {
 @media (min-width: 1024px) {
   html { font-size: 16px; }
 }
+
+/* ── Home v2 & Atmosphere ── */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.7'/%3E%3C/svg%3E");
+}
+[data-theme='light'] .grain-overlay { opacity: 0.03; }
+
+@keyframes ambientBreathe {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.1); opacity: 1; }
+}
+
+.ambient-light {
+  position: absolute;
+  top: -15%;
+  right: -5%;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(circle, rgba(217, 82, 54, 0.06) 0%, transparent 65%);
+  filter: blur(60px);
+  animation: ambientBreathe 12s ease-in-out infinite alternate;
+}
+[data-theme='light'] .ambient-light {
+  background: radial-gradient(circle, rgba(217, 82, 54, 0.04) 0%, transparent 65%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-light { animation: none !important; }
+}
+
+/* ── Hero Asymmetric Layout ── */
+.home-hero-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  margin-top: 2vh;
+}
+@media (min-width: 900px) {
+  .home-hero-layout {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 64px;
+    margin-top: 8vh;
+    align-items: center;
+  }
+}
+
+/* ── Doors Layout ── */
+.home-doors {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+@media (min-width: 900px) {
+  .home-doors {
+    flex-direction: row;
+    gap: 16px;
+    align-items: flex-start;
+  }
+}
+
+.home-door {
+  position: relative;
+  text-align: left;
+  background: var(--surface-1);
+  border: 1px solid var(--border-1);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px 24px 28px;
+  color: var(--text-1);
+  transition: transform 220ms ease-out, background 220ms ease-out, border-color 220ms ease-out, box-shadow 220ms ease-out;
+  min-height: 240px;
+  width: 100%;
+}
+@media (min-width: 900px) {
+  .home-door {
+    flex: 1;
+    min-height: 380px;
+  }
+}
+
+.door-text {
+  border-radius: 60px 60px 16px 16px;
+}
+.door-video {
+  border-radius: 60px 60px 16px 16px;
+}
+@media (min-width: 900px) {
+  .door-text { border-radius: 120px 120px 16px 16px; }
+  .door-video { border-radius: 120px 120px 16px 16px; margin-top: 40px; }
+}
+
+.home-door:hover {
+  transform: translateY(-4px);
+  background: var(--surface-2);
+  border-color: var(--border-2);
+}
+.home-door:active {
+  transform: translateY(-1px) scale(0.99);
+}
+.home-door:hover .door-cta {
+  color: var(--accent);
+}
+.home-door:hover .door-arrow {
+  transform: translateX(4px);
+}
+

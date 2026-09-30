@@ -1,8 +1,3 @@
-// client/src/components/Navbar.jsx
-//
-// Shared top navigation used across non-chat pages.
-// Clean, minimal, fully responsive. Renders nothing if no nav items.
-
 import { useNavigate } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle'
 import Logo from './Logo'
@@ -15,46 +10,42 @@ export default function Navbar({ theme, onToggleTheme, rightSlot }) {
         position: 'sticky',
         top: 0,
         zIndex: 50,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '14px clamp(16px, 4vw, 32px)',
         background: 'var(--bg-0)',
         borderBottom: '1px solid var(--border-1)',
         transition: 'background 0.25s ease, border-color 0.25s ease',
       }}
     >
-      <button
-        onClick={() => navigate('/')}
-        aria-label="Go to home"
-        className="compact"
+      <div
+        className="container"
         style={{
-          background: 'transparent',
-          border: 'none',
-          padding: 0,
-          cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
-          gap: 8,
+          justifyContent: 'space-between',
+          paddingTop: 14,
+          paddingBottom: 14,
         }}
       >
-        <Logo size={28} />
-        <span
+        <button
+          onClick={() => navigate('/')}
+          aria-label="Go to home"
+          className="compact"
           style={{
-            fontSize: '20px',
-            fontFamily: 'var(--font-display)',
-            fontWeight: 800,
-            letterSpacing: '-0.02em',
-            color: 'var(--text-1)',
+            background: 'transparent',
+            border: 'none',
+            padding: 0,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
           }}
         >
-          miloo
-        </span>
-      </button>
+          <Logo size={28} />
+        </button>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        {rightSlot}
-        {onToggleTheme ? <ThemeToggle theme={theme} onToggle={onToggleTheme} /> : null}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {rightSlot}
+          {onToggleTheme ? <ThemeToggle theme={theme} onToggle={onToggleTheme} /> : null}
+        </div>
       </div>
     </nav>
   )
