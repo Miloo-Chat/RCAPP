@@ -88,9 +88,20 @@ const PERSONAS = [
 ]
 
 const MATCH_KF = `
-@keyframes milooRadar{0%{transform:scale(.3);opacity:.85}100%{transform:scale(2.2);opacity:0}}
-@keyframes milooDotPulse{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+@keyframes milooPulseRing {
+  0% { transform: scale(0.2); opacity: 0.8; }
+  50% { opacity: 0.4; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
 @keyframes milooMsgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-ring {
+    animation: none !important;
+    transform: scale(1) !important;
+    opacity: 0.15 !important;
+  }
+}
 
 .video-split-stage {
   display: flex;
@@ -1032,10 +1043,7 @@ export default function ChatRoom({
           {status === 'cam_error' && <ErrorView title="Camera access denied" onRetry={requestCamera} onExit={() => { trackEvent('cam_error_exited'); onExit() }} />}
           {(status === 'waiting' || status === 'text_connecting') && (
             <MatchingView
-              mood={mood}
-              matchSeconds={matchSeconds}
-              hint={waitingHint}
-              miloActive={miloActive}
+              onExit={onExit}
             />
           )}
           {miloActive && (
@@ -1174,145 +1182,168 @@ function ErrorView({ title, onRetry, onExit }) {
   )
 }
 
-function MatchingView({ mood, matchSeconds, hint, miloActive }) {
+function MatchingView({ onExit }) {
+  const [copyIdx, setCopyIdx] = useState(0)
+
+  const MICROCOPY = [
+    "Looking for someone...",
+    "Still looking. No rush.",
+    "Someone might walk in any second.",
+    "Taking a little longer than usual.",
+  ]
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCopyIdx((prev) => (prev + 1) % MICROCOPY.length)
+    }, 3500)
+    return () => clearInterval(timer)
+  }, [MICROCOPY.length])
+
   return (
     <div
       style={{
         flex: 1,
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 'clamp(16px, 4vw, 32px)',
+        padding: 'clamp(20px, 4vw, 32px)',
+        position: 'relative',
+        width: '100%',
+        minHeight: 0,
       }}
     >
+      {/* Visual calm expanding ring */}
       <div
-        className="scale-in glass"
+        aria-hidden="true"
         style={{
-          width: '100%',
-          maxWidth: 420,
-          borderRadius: 'var(--radius-xl)',
-          padding: 'clamp(24px, 4vw, 36px)',
+          position: 'relative',
+          width: 200,
+          height: 200,
           display: 'flex',
-          flexDirection: 'column',
           alignItems: 'center',
-          gap: 16,
-          textAlign: 'center',
+          justifyContent: 'center',
+          marginBottom: 36,
         }}
       >
-        <div
+        <span
+          className="pulse-ring"
           style={{
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            color: 'var(--text-3)',
-            alignSelf: 'flex-start',
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            borderRadius: '50%',
+            border: '1.5px solid var(--rd-accent)',
+            animation: 'milooPulseRing 3.6s cubic-bezier(0.2, 0.8, 0.2, 1) infinite',
+            pointerEvents: 'none',
           }}
-        >
-          Mood: <span style={{ color: 'var(--accent)', textTransform: 'capitalize' }}>{mood}</span>
-        </div>
-
-        <div
-          aria-hidden="true"
+        />
+        <span
+          className="pulse-ring"
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            borderRadius: '50%',
+            border: '1.5px solid var(--rd-accent)',
+            animation: 'milooPulseRing 3.6s cubic-bezier(0.2, 0.8, 0.2, 1) infinite',
+            animationDelay: '1.8s',
+            pointerEvents: 'none',
+          }}
+        />
+        <span
           style={{
             position: 'relative',
-            width: 160,
-            height: 160,
+            width: 14,
+            height: 14,
+            borderRadius: '50%',
+            background: 'var(--rd-accent)',
+            zIndex: 2,
+            boxShadow: '0 0 16px rgba(230, 99, 69, 0.5)',
+          }}
+        />
+      </div>
+
+      {/* Rotating Human Microcopy */}
+      <div
+        style={{
+          position: 'relative',
+          height: 48,
+          width: '100%',
+          maxWidth: 460,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {MICROCOPY.map((text, idx) => (
+          <h2
+            key={idx}
+            style={{
+              position: 'absolute',
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(22px, 3.2vw, 30px)',
+              fontWeight: 400,
+              color: 'var(--rd-text-1)',
+              letterSpacing: '-0.02em',
+              textAlign: 'center',
+              margin: 0,
+              opacity: copyIdx === idx ? 1 : 0,
+              transform: copyIdx === idx ? 'translateY(0)' : 'translateY(6px)',
+              transition: 'opacity 400ms ease, transform 400ms ease',
+              width: '100%',
+              pointerEvents: 'none',
+            }}
+          >
+            {text}
+          </h2>
+        ))}
+      </div>
+
+      {/* Thumb-friendly Cancel Button */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 'clamp(28px, 6vh, 48px)',
+          left: 0,
+          right: 0,
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <button
+          onClick={onExit}
+          aria-label="Cancel searching"
+          style={{
+            background: 'transparent',
+            color: 'var(--rd-text-2)',
+            fontFamily: 'var(--font-body)',
+            fontSize: 15,
+            fontWeight: 500,
+            padding: '12px 24px',
+            border: '1px solid var(--border-1)',
+            borderRadius: 'var(--radius-pill)',
+            cursor: 'pointer',
+            minHeight: 44,
+            minWidth: 120,
+            transition: 'all 200ms ease',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
           }}
-        >
-          {[0, 1, 2].map((i) => (
-            <span
-              key={i}
-              style={{
-                position: 'absolute',
-                width: 140,
-                height: 140,
-                borderRadius: '50%',
-                border: '1.5px solid rgba(255, 61, 129, 0.6)',
-                background: 'radial-gradient(circle, rgba(255, 61, 129, 0.08) 0%, rgba(255, 61, 129, 0) 70%)',
-                animation: `milooRadar 3.3s cubic-bezier(0,0,0.2,1) infinite`,
-                animationDelay: `${i * 1.1}s`,
-                pointerEvents: 'none',
-              }}
-            />
-          ))}
-          <span
-            style={{
-              position: 'relative',
-              width: 16,
-              height: 16,
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, var(--accent-3) 0%, var(--accent-2) 60%, var(--accent) 100%)',
-              boxShadow: '0 0 24px rgba(255, 61, 129, 0.8), 0 0 8px rgba(255,255,255,0.5)',
-              zIndex: 2,
-            }}
-          />
-        </div>
-
-        <h2 style={{ fontSize: 'clamp(20px, 3vw, 26px)', fontWeight: 800, letterSpacing: '-0.02em', margin: 0 }}>
-          {miloActive ? 'Milo is here with you' : 'Finding your match…'}
-        </h2>
-        <p style={{ color: 'var(--text-3)', fontSize: 14, margin: 0, maxWidth: 320, lineHeight: 1.5 }}>{hint}</p>
-
-        <div
-          aria-hidden="true"
-          style={{ display: 'inline-flex', alignItems: 'center', gap: 6, height: 14 }}
-        >
-          {[0, 1, 2].map((i) => (
-            <span
-              key={i}
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                background: 'var(--accent-2)',
-                boxShadow: '0 0 8px rgba(255, 61, 129, 0.7)',
-                animation: 'milooDotPulse 1.2s ease-in-out infinite',
-                animationDelay: `${i * 0.18}s`,
-              }}
-            />
-          ))}
-        </div>
-
-        <div
-          style={{
-            marginTop: 4,
-            padding: '8px 18px',
-            display: 'inline-flex',
-            alignItems: 'baseline',
-            gap: 10,
-            background: 'var(--surface-1)',
-            border: '1px solid var(--border-1)',
-            borderRadius: 'var(--radius-md)',
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = 'var(--rd-text-1)'
+            e.currentTarget.style.background = 'var(--surface-1)'
+            e.currentTarget.style.borderColor = 'var(--border-2)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = 'var(--rd-text-2)'
+            e.currentTarget.style.background = 'transparent'
+            e.currentTarget.style.borderColor = 'var(--border-1)'
           }}
         >
-          <span
-            style={{
-              fontSize: 10,
-              fontWeight: 700,
-              letterSpacing: '0.18em',
-              color: 'var(--accent-2)',
-              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-            }}
-          >
-            ELAPSED
-          </span>
-          <span
-            style={{
-              fontSize: 22,
-              fontWeight: 700,
-              color: 'var(--accent-3)',
-              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-              fontVariantNumeric: 'tabular-nums',
-              letterSpacing: '0.04em',
-            }}
-          >
-            {String(matchSeconds).padStart(2, '0')}s
-          </span>
-        </div>
+          Cancel
+        </button>
       </div>
     </div>
   )
