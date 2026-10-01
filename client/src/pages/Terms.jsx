@@ -245,8 +245,6 @@ export default function Terms({ onBack, theme, onToggleTheme }) {
               {[
                 'Do not share phone numbers, Instagram, Snapchat, Telegram, or payment details too quickly.',
                 'If a chat feels pushy, sexual, manipulative, or suspicious, leave immediately.',
-                'Use Safe Mode if you want a softer start with more control.',
-                'Reporting helps improve trust and removes harmful users faster.',
               ].map((tip) => (
                 <li
                   key={tip}
