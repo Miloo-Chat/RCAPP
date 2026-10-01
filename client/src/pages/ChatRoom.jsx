@@ -2178,7 +2178,7 @@ function DroppedOverlay({ onFindNext }) {
         {dropSeconds >= 8 ? 'Their network might have dropped.' : 'Waiting for connection to resume.'}
       </p>
       {dropSeconds >= 8 && (
-        <PrimaryButton onClick={onFindNext}>Find new match</PrimaryButton>
+        <PrimaryButton onClick={onFindNext}>Find someone new</PrimaryButton>
       )}
     </div>
   )

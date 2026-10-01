@@ -9,7 +9,7 @@ export default function StrangerChatIndia() {
       <p style={{ color: 'var(--text-2)', lineHeight: 1.7, marginBottom: 20 }}>Miloo is India's best free stranger chat platform. Meet random people online instantly — no signup, no login needed. Safe, anonymous, and completely free.</p>
       <h2 style={{ color: 'var(--accent-2)', fontSize: 24, marginBottom: 12 }}>Talk to Strangers Online India</h2>
       <ul style={{ color: 'var(--text-2)', lineHeight: 2 }}>
-        <li>🎯 Mood-based matching — find someone who shares your vibe</li>
+        <li>🎯 Pick a mood — set the tone of the chat</li>
         <li>💬 Text chat — no camera needed</li>
         <li>🎥 Video chat — face to face with strangers</li>
         <li>🔒 100% anonymous — no account required</li>

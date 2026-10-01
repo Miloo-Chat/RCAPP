@@ -15,16 +15,15 @@ export default function RandomVideoChatIndia() {
         <li>✅ Works on slow mobile data (2G/3G/4G)</li>
         <li>✅ No registration required</li>
         <li>✅ Anonymous — your identity is never revealed</li>
-        <li>✅ Match by mood — find someone who gets you</li>
+        <li>✅ Pick a mood — set the tone of the chat</li>
         <li>✅ Text and video chat both available</li>
-        <li>✅ 18+ safe platform</li>
       </ul>
       <h2 style={{ color: 'var(--accent-2)', fontSize: 24, margin: '24px 0 12px' }}>How to Start</h2>
       <ol style={{ color: 'var(--text-2)', lineHeight: 2 }}>
         <li>Visit miloo.chat</li>
         <li>Select Video Chat or Text Chat</li>
         <li>Allow camera access</li>
-        <li>Get instantly matched with a stranger</li>
+        <li>Get instantly connected with a stranger</li>
       </ol>
       <button onClick={() => navigate('/')} style={{ background: 'var(--accent)', color: 'var(--text-1)', border: 'none', padding: '14px 32px', borderRadius: 50, fontSize: 18, cursor: 'pointer', marginTop: 32 }}>
         Start Free Chat →

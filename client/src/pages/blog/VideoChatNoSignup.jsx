@@ -20,7 +20,7 @@ export default function VideoChatNoSignup() {
         <li>Open miloo.chat on any device</li>
         <li>Click Video Chat</li>
         <li>Allow camera — takes 2 seconds</li>
-        <li>Instantly matched with a real person</li>
+        <li>Instantly connected with a stranger</li>
       </ol>
       <button onClick={() => navigate('/')} style={{ background: 'var(--accent)', color: 'var(--text-1)', border: 'none', padding: '14px 32px', borderRadius: 50, fontSize: 18, cursor: 'pointer', marginTop: 32 }}>Start Video Chat Free →</button>
     </div>
