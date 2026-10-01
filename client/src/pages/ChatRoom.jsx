@@ -1067,7 +1067,6 @@ export default function ChatRoom({
               scrollRef={msgScrollRef}
               onFindNext={findNext}
               onStop={findNext}
-              partnerId={partnerId}
               isStrangerTyping={isStrangerTyping}
             />
           )}
@@ -1639,11 +1638,9 @@ function ChatView({
   scrollRef,
   onFindNext,
   onStop,
-  partnerId,
   isStrangerTyping,
 }) {
   const [showChat, setShowChat] = React.useState(false)
-  const isBot = partnerId && partnerId.startsWith('bot_')
 
   return (
     <section
@@ -1715,7 +1712,7 @@ function ChatView({
                 fontFamily: 'var(--font-body)',
               }}
             >
-              <span>{isBot ? 'Chat with Milo' : 'Chat with stranger'}</span>
+              <span>Chat with stranger</span>
               <button
                 className="mobile-chat-close-btn compact"
                 onClick={() => setShowChat(false)}
@@ -1778,7 +1775,7 @@ function ChatView({
                       key={i}
                       role={isMe ? 'user' : 'stranger'}
                       time={m.time}
-                      name={isMe ? 'You' : (isBot ? 'Milo' : 'Stranger')}
+                      name={isMe ? 'You' : 'Stranger'}
                       showHeader={showHeader}
                     >
                       {m.text}
@@ -1799,7 +1796,7 @@ function ChatView({
                 >
                   <span className="terracotta-dot-pulse" aria-hidden="true" />
                   <span style={{ fontSize: 12, color: 'var(--rd-text-3)', fontFamily: 'var(--font-body)' }}>
-                    {isBot ? 'Milo is typing…' : 'Stranger is typing…'}
+                    Stranger is typing…
                   </span>
                 </div>
               )}
@@ -1878,7 +1875,7 @@ function ChatView({
                   key={i}
                   role={isMe ? 'user' : 'stranger'}
                   time={m.time}
-                  name={isMe ? 'You' : (isBot ? 'Milo' : 'Stranger')}
+                  name={isMe ? 'You' : 'Stranger'}
                   showHeader={showHeader}
                 >
                   {m.text}
@@ -1899,7 +1896,7 @@ function ChatView({
               >
                 <span className="terracotta-dot-pulse" aria-hidden="true" />
                 <span style={{ fontSize: 13, color: 'var(--rd-text-3)', fontFamily: 'var(--font-body)' }}>
-                  {isBot ? 'Milo is typing…' : 'Stranger is typing…'}
+                  Stranger is typing…
                 </span>
               </div>
             )}
