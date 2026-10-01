@@ -183,7 +183,8 @@ io.on('connection', (socket) => {
             ...session.history
           ],
           temperature: 0.92,
-          max_tokens: 40,
+          max_tokens: 200,
+          reasoning_effort: 'low',
         });
 
         const reply = response.choices[0]?.message?.content?.trim() || "aacha";
