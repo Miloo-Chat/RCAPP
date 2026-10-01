@@ -44,6 +44,11 @@ const sections = [
     desc: 'The experience may use temporary technical identifiers to support matching, abuse prevention, and safety systems. Do not assume other users are verified.',
   },
   {
+    icon: '🤖',
+    title: 'AI Companions',
+    desc: 'Some conversations may be with Milo, an AI companion.',
+  },
+  {
     icon: '🔄',
     title: 'Rules Can Change',
     desc: 'Miloo may update these terms, safety rules, and moderation systems as the product evolves.',
@@ -205,8 +210,7 @@ export default function Terms({ onBack, theme, onToggleTheme }) {
             style={{
               padding: 'clamp(18px, 3vw, 24px)',
               borderRadius: 'var(--radius-lg)',
-              background:
-                'linear-gradient(135deg, rgba(255,107,74,0.10), rgba(255,61,129,0.10))',
+              background: 'var(--surface-1)',
               border: '1px solid var(--accent-border)',
               marginBottom: 20,
             }}
