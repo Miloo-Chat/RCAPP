@@ -104,8 +104,7 @@ const MATCH_KF = `
 }
 
 .video-split-stage {
-  display: flex;
-  flex-direction: row;
+  position: relative;
   flex: 1;
   width: 100%;
   height: 100%;
@@ -114,19 +113,46 @@ const MATCH_KF = `
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-1);
 }
-.video-feed-pane {
-  flex: 1 1 50%;
-  position: relative;
+@media (max-width: 480px) {
+  .video-split-stage {
+    border-radius: 0;
+    border: none;
+  }
+}
+
+/* Remote video dominates */
+.video-feed-remote {
+  position: absolute;
+  inset: 0;
   background: #000;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 0;
-  min-width: 0;
   overflow: hidden;
 }
-.video-feed-pane + .video-feed-pane {
-  border-left: 1px solid var(--border-1);
+
+/* Local view corner PiP */
+.video-feed-local {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 100px;
+  aspect-ratio: 3/4;
+  background: #000;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  z-index: 10;
+}
+@media (min-width: 900px) {
+  .video-feed-local {
+    top: 24px;
+    right: 24px;
+    width: 220px;
+    aspect-ratio: 16/9;
+    border-radius: var(--radius-lg);
+  }
 }
 
 .video-chat-container {
@@ -136,29 +162,33 @@ const MATCH_KF = `
   min-height: 0;
   overflow: hidden;
   position: relative;
-  gap: 12px;
 }
 .video-stage-wrapper {
   flex: 1 1 100%;
   min-height: 0;
-  position: relative;
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 .video-chat-panel {
-  flex: 0 0 35%;
-  min-height: 160px;
-  max-height: 280px;
+  position: absolute;
+  bottom: 80px;
+  left: 16px;
+  width: 320px;
+  max-height: 50%;
+  background: rgba(30, 28, 26, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
-  background: var(--rd-surface);
-  border: 1px solid var(--border-1);
-  border-radius: var(--radius-lg);
-  position: relative;
-  z-index: 5;
+  z-index: 20;
   overflow: hidden;
 }
+
 .mobile-chat-toggle {
   display: none;
 }
@@ -167,27 +197,17 @@ const MATCH_KF = `
 }
 
 @media (max-width: 480px) {
-  .video-split-stage {
-    flex-direction: column;
-  }
-  .video-feed-pane + .video-feed-pane {
-    border-left: none;
-    border-top: 1px solid var(--border-1);
-  }
-
-  .video-chat-container {
-    gap: 0;
-  }
   .video-chat-panel {
-    position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
+    width: 100%;
     height: 60%;
     max-height: 70%;
-    flex: none;
     z-index: 30;
     background: var(--rd-surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     border: 1px solid var(--border-1);
     border-bottom: none;
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
@@ -205,18 +225,18 @@ const MATCH_KF = `
   .mobile-chat-toggle {
     display: flex;
     position: absolute;
-    bottom: 12px;
-    right: 12px;
-    z-index: 20;
-    background: rgba(0, 0, 0, 0.75);
+    bottom: max(24px, env(safe-area-inset-bottom));
+    right: 16px;
+    z-index: 30;
+    background: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: var(--radius-pill);
     color: #fff;
     font-size: 13px;
     font-weight: 600;
-    padding: 8px 16px;
+    padding: 10px 20px;
     cursor: pointer;
     align-items: center;
     gap: 6px;
@@ -235,14 +255,61 @@ const MATCH_KF = `
   }
 }
 
-.ome-control-bar {
+.ome-control-bar-overlay {
+  position: absolute;
+  bottom: 28px;
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 16px;
+  z-index: 25;
   padding: 8px 12px;
-  flex-shrink: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease 3s, visibility 0s linear 3.5s;
+  pointer-events: none;
 }
+.video-chat-container:hover .ome-control-bar-overlay,
+.video-chat-container:active .ome-control-bar-overlay,
+.ome-control-bar-overlay:hover,
+.ome-control-bar-overlay:focus-within {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.2s ease 0s, visibility 0s linear 0s;
+  pointer-events: auto;
+}
+.ome-control-bar-overlay > div {
+  width: auto !important;
+  gap: 12px !important;
+  padding: 0 !important;
+  pointer-events: auto;
+}
+.ome-control-bar-overlay button {
+  flex: none !important;
+  width: 96px !important;
+  border-radius: var(--radius-pill) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.ome-control-bar-overlay button:first-of-type {
+  background: rgba(0, 0, 0, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #fff !important;
+}
+.ome-control-bar-overlay button:first-of-type:hover {
+  background: rgba(0, 0, 0, 0.8) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+@media (max-width: 480px) {
+  .ome-control-bar-overlay {
+    bottom: max(24px, env(safe-area-inset-bottom));
+  }
+}
+
 .ome-control-btn {
   display: flex;
   flex-direction: column;
@@ -1111,25 +1178,28 @@ function PrePermissionView({ onAllow, onExit, disabled }) {
           width: 64,
           height: 64,
           borderRadius: '50%',
-          background: 'var(--accent-dim)',
+          background: 'var(--rd-surface-hover)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           fontSize: 28,
-          marginBottom: 16,
+          marginBottom: 20,
         }}
       >
-        🎥
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 10L19.5528 7.72361C20.2177 7.39116 21 7.87465 21 8.61803V15.382C21 16.1253 20.2177 16.6088 19.5528 16.2764L15 14V10Z" stroke="var(--rd-text-1)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <rect x="3" y="6" width="12" height="12" rx="3" stroke="var(--rd-text-1)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
       </div>
-      <h2 style={{ fontSize: 'clamp(20px, 3vw, 24px)', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: 8 }}>
+      <h2 style={{ fontSize: 'clamp(20px, 3vw, 24px)', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: 8, color: 'var(--rd-text-1)' }}>
         Camera & microphone access
       </h2>
-      <p style={{ color: 'var(--text-3)', fontSize: 14, marginBottom: 24, maxWidth: 320, lineHeight: 1.5 }}>
-        We need access to match you with a real person. Your stream is peer-to-peer and never recorded.
+      <p style={{ color: 'var(--rd-text-3)', fontSize: 14, marginBottom: 24, maxWidth: 320, lineHeight: 1.5, textAlign: 'center' }}>
+        We need camera access to start the video chat. Your stream is peer-to-peer and never recorded.
       </p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: 'min(100%, 320px)' }}>
         <PrimaryButton onClick={onAllow} disabled={disabled}>
-          {disabled ? 'Requesting access…' : 'Allow Camera & Find Match'}
+          {disabled ? 'Requesting access…' : 'Allow Camera & Start'}
         </PrimaryButton>
         <GhostButton onClick={onExit} disabled={disabled}>Go back</GhostButton>
       </div>
@@ -1695,118 +1765,123 @@ function ChatView({
                 </span>
               )}
             </button>
-          </div>
 
-          <div className={`video-chat-panel ${showChat ? 'mobile-open' : ''}`}>
-            <div
-              style={{
-                padding: '10px 14px',
-                borderBottom: '1px solid var(--border-1)',
-                fontSize: 12,
-                fontWeight: 600,
-                color: 'var(--rd-text-3)',
-                flexShrink: 0,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                fontFamily: 'var(--font-body)',
-              }}
-            >
-              <span>Chat with stranger</span>
-              <button
-                className="mobile-chat-close-btn compact"
-                onClick={() => setShowChat(false)}
-                aria-label="Close chat"
+            <div className={`video-chat-panel ${showChat ? 'mobile-open' : ''}`}>
+              <div
+                style={{
+                  padding: '10px 14px',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                  fontSize: 12,
+                  fontWeight: 600,
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  flexShrink: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  fontFamily: 'var(--font-body)',
+                }}
               >
-                ✕
-              </button>
-            </div>
-
-            <div
-              ref={scrollRef}
-              className="no-scrollbar"
-              style={{
-                flex: 1,
-                overflowY: 'auto',
-                padding: '14px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-                minHeight: 0,
-              }}
-            >
-              {messages.length === 0 ? (
-                <p
-                  style={{
-                    color: 'var(--rd-text-3)',
-                    fontSize: 13,
-                    fontFamily: 'var(--font-body)',
-                    textAlign: 'center',
-                    margin: 'auto',
-                  }}
+                <span>Chat with stranger</span>
+                <button
+                  className="mobile-chat-close-btn compact"
+                  onClick={() => setShowChat(false)}
+                  aria-label="Close chat"
+                  style={{ color: 'rgba(255, 255, 255, 0.7)' }}
                 >
-                  Say hello.
-                </p>
-              ) : (
-                messages.map((m, i) => {
-                  if (m.from === 'system') {
+                  ✕
+                </button>
+              </div>
+
+              <div
+                ref={scrollRef}
+                className="no-scrollbar"
+                style={{
+                  flex: 1,
+                  overflowY: 'auto',
+                  padding: '14px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 8,
+                  minHeight: 0,
+                }}
+              >
+                {messages.length === 0 ? (
+                  <p
+                    style={{
+                      color: 'rgba(255, 255, 255, 0.5)',
+                      fontSize: 13,
+                      fontFamily: 'var(--font-body)',
+                      textAlign: 'center',
+                      margin: 'auto',
+                    }}
+                  >
+                    Say hello.
+                  </p>
+                ) : (
+                  messages.map((m, i) => {
+                    if (m.from === 'system') {
+                      return (
+                        <div
+                          key={i}
+                          style={{
+                            alignSelf: 'center',
+                            fontSize: 11,
+                            color: 'rgba(255, 255, 255, 0.6)',
+                            padding: '3px 10px',
+                            borderRadius: 'var(--radius-pill)',
+                            background: 'rgba(255, 255, 255, 0.05)',
+                            fontFamily: 'var(--font-body)',
+                          }}
+                        >
+                          {m.text}
+                        </div>
+                      )
+                    }
+                    const isMe = m.from === 'me'
+                    const prev = i > 0 ? messages[i - 1] : null
+                    const showHeader = !prev || prev.from !== m.from || prev.time !== m.time
                     return (
-                      <div
+                      <MessageBubble
                         key={i}
-                        style={{
-                          alignSelf: 'center',
-                          fontSize: 11,
-                          color: 'var(--rd-text-3)',
-                          padding: '3px 10px',
-                          borderRadius: 'var(--radius-pill)',
-                          background: 'var(--rd-surface-hover)',
-                          fontFamily: 'var(--font-body)',
-                        }}
+                        role={isMe ? 'user' : 'stranger'}
+                        time={m.time}
+                        name={isMe ? 'You' : 'Stranger'}
+                        showHeader={showHeader}
+                        videoMode={true}
                       >
                         {m.text}
-                      </div>
+                      </MessageBubble>
                     )
-                  }
-                  const isMe = m.from === 'me'
-                  const prev = i > 0 ? messages[i - 1] : null
-                  const showHeader = !prev || prev.from !== m.from || prev.time !== m.time
-                  return (
-                    <MessageBubble
-                      key={i}
-                      role={isMe ? 'user' : 'stranger'}
-                      time={m.time}
-                      name={isMe ? 'You' : 'Stranger'}
-                      showHeader={showHeader}
-                    >
-                      {m.text}
-                    </MessageBubble>
-                  )
-                })
-              )}
-              {isStrangerTyping && (
-                <div
-                  aria-live="polite"
-                  style={{
-                    alignSelf: 'flex-start',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    padding: '4px 0',
-                  }}
-                >
-                  <span className="terracotta-dot-pulse" aria-hidden="true" />
-                  <span style={{ fontSize: 12, color: 'var(--rd-text-3)', fontFamily: 'var(--font-body)' }}>
-                    Stranger is typing…
-                  </span>
-                </div>
-              )}
+                  })
+                )}
+                {isStrangerTyping && (
+                  <div
+                    aria-live="polite"
+                    style={{
+                      alignSelf: 'flex-start',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      padding: '4px 0',
+                    }}
+                  >
+                    <span className="terracotta-dot-pulse" aria-hidden="true" />
+                    <span style={{ fontSize: 12, color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'var(--font-body)' }}>
+                      Stranger is typing…
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <div style={{ flexShrink: 0, padding: '8px 12px 12px' }}>
+                <ChatInput onSend={sendText} placeholder="Say something…" />
+              </div>
             </div>
 
-            <div style={{ flexShrink: 0, padding: '8px 12px 12px' }}>
-              <ChatInput onSend={sendText} placeholder="Say something…" />
+            <div className="ome-control-bar-overlay">
+              <OmeControlBar onNext={onFindNext} onStop={onStop} />
             </div>
           </div>
-          <OmeControlBar onNext={onFindNext} onStop={onStop} />
         </div>
       ) : (
         <div
@@ -2065,42 +2140,41 @@ function DroppedOverlay({ onFindNext }) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'rgba(0, 0, 0, 0.75)',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
+        background: 'rgba(21, 20, 19, 0.85)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
         zIndex: 10,
         padding: 24,
         textAlign: 'center',
       }}
     >
-      <div style={{ position: 'relative', width: 64, height: 64, marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ position: 'relative', width: 48, height: 48, marginBottom: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div
           style={{
             position: 'absolute',
             width: '100%',
             height: '100%',
             borderRadius: '50%',
-            border: '1.5px solid rgba(255, 61, 129, 0.6)',
-            background: 'radial-gradient(circle, rgba(255, 61, 129, 0.15) 0%, rgba(255, 61, 129, 0) 70%)',
-            animation: 'milooRadar 2s cubic-bezier(0,0,0.2,1) infinite',
+            border: '1.5px solid var(--rd-accent)',
+            opacity: 0.4,
+            animation: 'milooPulseDot 2s ease-in-out infinite',
           }}
         />
         <span
           style={{
             position: 'relative',
-            width: 12,
-            height: 12,
+            width: 8,
+            height: 8,
             borderRadius: '50%',
-            background: 'var(--accent-2)',
-            boxShadow: '0 0 16px rgba(255, 61, 129, 0.8), 0 0 4px rgba(255,255,255,0.5)',
+            background: 'var(--rd-accent)',
             zIndex: 2,
           }}
         />
       </div>
-      <h3 style={{ margin: 0, color: 'var(--text-1)', fontSize: 18, fontWeight: 700, marginBottom: 8 }}>
+      <h3 style={{ margin: 0, color: 'var(--rd-text-1)', fontSize: 16, fontWeight: 600, marginBottom: 6 }}>
         {dropSeconds >= 8 ? 'Having trouble reconnecting…' : 'Reconnecting…'}
       </h3>
-      <p style={{ margin: 0, color: 'var(--text-3)', fontSize: 14, marginBottom: dropSeconds >= 8 ? 24 : 0 }}>
+      <p style={{ margin: 0, color: 'var(--rd-text-3)', fontSize: 13, marginBottom: dropSeconds >= 8 ? 20 : 0, maxWidth: 260 }}>
         {dropSeconds >= 8 ? 'Their network might have dropped.' : 'Waiting for connection to resume.'}
       </p>
       {dropSeconds >= 8 && (
@@ -2146,16 +2220,16 @@ function VideoStage({ iceState, localStream, remoteStream, onFindNext }) {
       }}
     >
       <div className="video-split-stage">
-        {/* Remote video feed */}
-        <div className="video-feed-pane">
+        {/* Remote video feed (Full bleed) */}
+        <div className="video-feed-remote">
           <video
             ref={remoteRef}
             autoPlay
             playsInline
-            style={{ width: '100%', height: '100%', objectFit: 'cover', background: '#000' }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
           {!remoteStream && (
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-3)', fontSize: 14 }}>
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255, 255, 255, 0.4)', fontSize: 14 }}>
               Waiting for partner's video…
             </div>
           )}
@@ -2163,19 +2237,19 @@ function VideoStage({ iceState, localStream, remoteStream, onFindNext }) {
           <div
             style={{
               position: 'absolute',
-              top: 10,
-              left: 10,
+              top: 16,
+              left: 16,
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
-              padding: '4px 10px',
+              padding: '6px 12px',
               borderRadius: 'var(--radius-pill)',
-              background: 'rgba(0,0,0,0.55)',
+              background: 'rgba(0,0,0,0.4)',
               backdropFilter: 'blur(8px)',
               WebkitBackdropFilter: 'blur(8px)',
-              fontSize: 11,
-              fontWeight: 600,
-              color: '#fff',
+              fontSize: 12,
+              fontWeight: 500,
+              color: 'rgba(255,255,255,0.9)',
               zIndex: 5,
             }}
           >
@@ -2184,14 +2258,14 @@ function VideoStage({ iceState, localStream, remoteStream, onFindNext }) {
           </div>
         </div>
 
-        {/* Local video feed */}
-        <div className="video-feed-pane">
+        {/* Local video feed (PiP Corner) */}
+        <div className="video-feed-local">
           <video
             ref={localRef}
             autoPlay
             playsInline
             muted
-            style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scaleX(-1)', background: '#000' }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scaleX(-1)' }}
           />
         </div>
       </div>
