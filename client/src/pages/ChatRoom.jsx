@@ -1738,21 +1738,6 @@ function ChatView({
                 minHeight: 0,
               }}
             >
-              {isBot && (
-                <div
-                  style={{
-                    textAlign: 'center',
-                    fontSize: 12,
-                    color: 'var(--rd-text-3)',
-                    fontFamily: 'var(--font-body)',
-                    padding: '4px 0 8px',
-                    borderBottom: '1px solid var(--border-1)',
-                    marginBottom: 4,
-                  }}
-                >
-                  You're chatting with Milo, an AI companion.
-                </div>
-              )}
               {messages.length === 0 ? (
                 <p
                   style={{
@@ -1851,20 +1836,6 @@ function ChatView({
               gap: 8,
             }}
           >
-            {isBot && (
-              <div
-                style={{
-                  textAlign: 'center',
-                  fontSize: 12,
-                  color: 'var(--rd-text-3)',
-                  fontFamily: 'var(--font-body)',
-                  padding: '4px 0 12px',
-                  marginBottom: 8,
-                }}
-              >
-                You're chatting with Milo, an AI companion.
-              </div>
-            )}
             {messages.length === 0 && (
               <div
                 style={{
