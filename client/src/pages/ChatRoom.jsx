@@ -152,9 +152,7 @@ const MATCH_KF = `
   max-height: 280px;
   display: flex;
   flex-direction: column;
-  background: rgba(18, 14, 23, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--rd-surface);
   border: 1px solid var(--border-1);
   border-radius: var(--radius-lg);
   position: relative;
@@ -189,9 +187,7 @@ const MATCH_KF = `
     max-height: 70%;
     flex: none;
     z-index: 30;
-    background: rgba(18, 14, 23, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: var(--rd-surface);
     border: 1px solid var(--border-1);
     border-bottom: none;
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
@@ -1071,15 +1067,9 @@ export default function ChatRoom({
               scrollRef={msgScrollRef}
               onFindNext={findNext}
               onStop={findNext}
+              partnerId={partnerId}
+              isStrangerTyping={isStrangerTyping}
             />
-          )}
-          {isStrangerTyping && (status === 'text_chat' || status === 'connected') && (
-            <div style={{ padding: '0 16px 8px', display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ fontSize: 12, color: 'var(--text-3)' }}>Stranger is typing</span>
-              <span className="typing-dot" />
-              <span className="typing-dot" />
-              <span className="typing-dot" />
-            </div>
           )}
           {status === 'partner_left' && <PartnerLeftView onNext={findNext} onExit={onExit} />}
           {status === 'busy' && <SimpleStatusView title="Server is busy" desc="Too many open sockets from your network." />}
@@ -1638,8 +1628,23 @@ function MiloPanel({
   )
 }
 
-function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteStream, remoteStreamVersion, scrollRef, onFindNext, onStop }) {
+function ChatView({
+  isVideo,
+  iceState,
+  messages,
+  sendText,
+  localStream,
+  remoteStream,
+  remoteStreamVersion,
+  scrollRef,
+  onFindNext,
+  onStop,
+  partnerId,
+  isStrangerTyping,
+}) {
   const [showChat, setShowChat] = React.useState(false)
+  const isBot = partnerId && partnerId.startsWith('bot_')
+
   return (
     <section
       aria-live="polite"
@@ -1649,9 +1654,12 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
         display: 'flex',
         flexDirection: 'column',
         minHeight: 0,
-        padding: isVideo ? '0' : 'clamp(12px, 3vw, 20px)',
-        gap: isVideo ? 0 : 12,
+        padding: isVideo ? '0' : '0 clamp(12px, 3vw, 20px)',
+        gap: 0,
         position: 'relative',
+        width: '100%',
+        maxWidth: isVideo ? '100%' : 680,
+        margin: '0 auto',
       }}
     >
       {isVideo ? (
@@ -1665,25 +1673,27 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
               onFindNext={onFindNext}
             />
             <button
-              onClick={() => setShowChat(v => !v)}
+              onClick={() => setShowChat((v) => !v)}
               className="mobile-chat-toggle compact"
               aria-label={showChat ? 'Hide Chat' : 'Chat'}
             >
               💬 {showChat ? 'Hide Chat' : 'Chat'}
               {messages.length > 0 && !showChat && (
-                <span style={{
-                  background: 'var(--rd-accent)',
-                  borderRadius: '50%',
-                  minWidth: 18,
-                  height: 18,
-                  fontSize: 10,
-                  fontWeight: 700,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '0 4px',
-                  color: '#fff',
-                }}>
+                <span
+                  style={{
+                    background: 'var(--rd-accent)',
+                    borderRadius: '50%',
+                    minWidth: 18,
+                    height: 18,
+                    fontSize: 10,
+                    fontWeight: 700,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '0 4px',
+                    color: '#fff',
+                  }}
+                >
                   {messages.length > 9 ? '9+' : messages.length}
                 </span>
               )}
@@ -1691,19 +1701,21 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
           </div>
 
           <div className={`video-chat-panel ${showChat ? 'mobile-open' : ''}`}>
-            <div style={{
-              padding: '10px 14px',
-              borderBottom: '1px solid var(--border-1)',
-              fontSize: 12,
-              fontWeight: 600,
-              color: 'var(--rd-text-3)',
-              flexShrink: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              fontFamily: 'var(--font-body)',
-            }}>
-              <span>Chat with stranger</span>
+            <div
+              style={{
+                padding: '10px 14px',
+                borderBottom: '1px solid var(--border-1)',
+                fontSize: 12,
+                fontWeight: 600,
+                color: 'var(--rd-text-3)',
+                flexShrink: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                fontFamily: 'var(--font-body)',
+              }}
+            >
+              <span>{isBot ? 'Chat with Milo' : 'Chat with stranger'}</span>
               <button
                 className="mobile-chat-close-btn compact"
                 onClick={() => setShowChat(false)}
@@ -1722,37 +1734,110 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
                 padding: '14px',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 10,
+                gap: 8,
                 minHeight: 0,
               }}
             >
+              {isBot && (
+                <div
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 12,
+                    color: 'var(--rd-text-3)',
+                    fontFamily: 'var(--font-body)',
+                    padding: '4px 0 8px',
+                    borderBottom: '1px solid var(--border-1)',
+                    marginBottom: 4,
+                  }}
+                >
+                  You're chatting with Milo, an AI companion.
+                </div>
+              )}
               {messages.length === 0 ? (
-                <p style={{
-                  color: 'var(--rd-text-3)',
-                  fontSize: 13,
-                  fontFamily: 'var(--font-body)',
-                  textAlign: 'center',
-                  margin: 'auto',
-                }}>
-                  Say hi — they're waiting too.
+                <p
+                  style={{
+                    color: 'var(--rd-text-3)',
+                    fontSize: 13,
+                    fontFamily: 'var(--font-body)',
+                    textAlign: 'center',
+                    margin: 'auto',
+                  }}
+                >
+                  Say hello.
                 </p>
               ) : (
-                messages.map((m, i) => (
-                  <MessageBubble key={i} role={m.from === 'me' ? 'user' : 'stranger'} time={m.time}>
-                    {m.text}
-                  </MessageBubble>
-                ))
+                messages.map((m, i) => {
+                  if (m.from === 'system') {
+                    return (
+                      <div
+                        key={i}
+                        style={{
+                          alignSelf: 'center',
+                          fontSize: 11,
+                          color: 'var(--rd-text-3)',
+                          padding: '3px 10px',
+                          borderRadius: 'var(--radius-pill)',
+                          background: 'var(--rd-surface-hover)',
+                          fontFamily: 'var(--font-body)',
+                        }}
+                      >
+                        {m.text}
+                      </div>
+                    )
+                  }
+                  const isMe = m.from === 'me'
+                  const prev = i > 0 ? messages[i - 1] : null
+                  const showHeader = !prev || prev.from !== m.from || prev.time !== m.time
+                  return (
+                    <MessageBubble
+                      key={i}
+                      role={isMe ? 'user' : 'stranger'}
+                      time={m.time}
+                      name={isMe ? 'You' : (isBot ? 'Milo' : 'Stranger')}
+                      showHeader={showHeader}
+                    >
+                      {m.text}
+                    </MessageBubble>
+                  )
+                })
+              )}
+              {isStrangerTyping && (
+                <div
+                  aria-live="polite"
+                  style={{
+                    alignSelf: 'flex-start',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    padding: '4px 0',
+                  }}
+                >
+                  <span className="terracotta-dot-pulse" aria-hidden="true" />
+                  <span style={{ fontSize: 12, color: 'var(--rd-text-3)', fontFamily: 'var(--font-body)' }}>
+                    {isBot ? 'Milo is typing…' : 'Stranger is typing…'}
+                  </span>
+                </div>
               )}
             </div>
 
             <div style={{ flexShrink: 0, padding: '8px 12px 12px' }}>
-              <ChatInput onSend={sendText} placeholder="Type a message…" />
+              <ChatInput onSend={sendText} placeholder="Say something…" />
             </div>
           </div>
           <OmeControlBar onNext={onFindNext} onStop={onStop} />
         </div>
       ) : (
-        <>
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: 0,
+            width: '100%',
+            height: '100%',
+          }}
+        >
+          {/* Borderless Chat Stream sitting directly on page background */}
           <div
             ref={scrollRef}
             className="no-scrollbar"
@@ -1760,35 +1845,100 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
               flex: 1,
               minHeight: 0,
               overflowY: 'auto',
-              padding: '16px',
-              borderRadius: 'var(--radius-lg)',
-              background: 'var(--rd-surface)',
-              border: '1px solid var(--border-1)',
+              padding: '16px 0',
               display: 'flex',
               flexDirection: 'column',
-              gap: 12,
+              gap: 8,
             }}
           >
-            {messages.length === 0 && (
-              <div style={{ margin: 'auto', textAlign: 'center', color: 'var(--rd-text-3)', fontSize: 14, fontFamily: 'var(--font-body)' }}>
-                Say hi — they're waiting too.
+            {isBot && (
+              <div
+                style={{
+                  textAlign: 'center',
+                  fontSize: 12,
+                  color: 'var(--rd-text-3)',
+                  fontFamily: 'var(--font-body)',
+                  padding: '4px 0 12px',
+                  marginBottom: 8,
+                }}
+              >
+                You're chatting with Milo, an AI companion.
               </div>
             )}
-            {messages.map((m, i) =>
-              m.from === 'system' ? (
-                <div key={i} style={{ alignSelf: 'center', fontSize: 12, color: 'var(--rd-text-3)', padding: '4px 10px', borderRadius: 'var(--radius-pill)', background: 'var(--rd-surface-hover)', fontFamily: 'var(--font-body)' }}>
-                  {m.text}
-                </div>
-              ) : (
-                <MessageBubble key={i} role={m.from === 'me' ? 'user' : 'stranger'} time={m.time}>
+            {messages.length === 0 && (
+              <div
+                style={{
+                  margin: 'auto',
+                  textAlign: 'center',
+                  color: 'var(--rd-text-3)',
+                  fontSize: 14,
+                  fontFamily: 'var(--font-body)',
+                }}
+              >
+                Say hello.
+              </div>
+            )}
+            {messages.map((m, i) => {
+              if (m.from === 'system') {
+                return (
+                  <div
+                    key={i}
+                    style={{
+                      alignSelf: 'center',
+                      fontSize: 12,
+                      color: 'var(--rd-text-3)',
+                      padding: '4px 12px',
+                      borderRadius: 'var(--radius-pill)',
+                      background: 'var(--rd-surface)',
+                      border: '1px solid var(--border-1)',
+                      fontFamily: 'var(--font-body)',
+                      margin: '6px 0',
+                    }}
+                  >
+                    {m.text}
+                  </div>
+                )
+              }
+              const isMe = m.from === 'me'
+              const prev = i > 0 ? messages[i - 1] : null
+              const showHeader = !prev || prev.from !== m.from || prev.time !== m.time
+              return (
+                <MessageBubble
+                  key={i}
+                  role={isMe ? 'user' : 'stranger'}
+                  time={m.time}
+                  name={isMe ? 'You' : (isBot ? 'Milo' : 'Stranger')}
+                  showHeader={showHeader}
+                >
                   {m.text}
                 </MessageBubble>
               )
+            })}
+            {isStrangerTyping && (
+              <div
+                aria-live="polite"
+                style={{
+                  alignSelf: 'flex-start',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  padding: '6px 2px',
+                  animation: 'milooMsgIn 180ms ease-out both',
+                }}
+              >
+                <span className="terracotta-dot-pulse" aria-hidden="true" />
+                <span style={{ fontSize: 13, color: 'var(--rd-text-3)', fontFamily: 'var(--font-body)' }}>
+                  {isBot ? 'Milo is typing…' : 'Stranger is typing…'}
+                </span>
+              </div>
             )}
           </div>
-          <ChatInput onSend={sendText} placeholder="Say something kind…" />
-          <OmeControlBar onNext={onFindNext} onStop={onStop} />
-        </>
+
+          <div style={{ flexShrink: 0, paddingTop: 8 }}>
+            <ChatInput onSend={sendText} placeholder="Say something…" />
+            <OmeControlBar onNext={onFindNext} onStop={onStop} />
+          </div>
+        </div>
       )}
     </section>
   )
@@ -1800,29 +1950,41 @@ function OmeControlBar({ onNext, onStop }) {
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: 12,
-        padding: '12px 0',
-        paddingBottom: 'max(12px, env(safe-area-inset-bottom))',
+        gap: 10,
+        paddingTop: 10,
+        paddingBottom: 'max(10px, env(safe-area-inset-bottom))',
       }}
     >
       <button
         onClick={onStop}
         aria-label="Leave chat"
+        className="compact tactile-btn"
         style={{
           flex: 1,
-          padding: '12px 0',
+          padding: '10px 16px',
           borderRadius: 'var(--radius-md)',
           background: 'transparent',
           border: '1px solid var(--border-1)',
-          color: 'var(--danger)',
+          color: 'var(--rd-text-3)',
           fontFamily: 'var(--font-body)',
-          fontSize: 15,
-          fontWeight: 600,
+          fontSize: 14,
+          fontWeight: 500,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           cursor: 'pointer',
           minHeight: 44,
+          transition: 'all 180ms ease-out',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.color = 'var(--rd-text-1)'
+          e.currentTarget.style.background = 'var(--rd-surface-hover)'
+          e.currentTarget.style.borderColor = 'var(--border-2)'
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.color = 'var(--rd-text-3)'
+          e.currentTarget.style.background = 'transparent'
+          e.currentTarget.style.borderColor = 'var(--border-1)'
         }}
       >
         Leave
@@ -1830,21 +1992,29 @@ function OmeControlBar({ onNext, onStop }) {
       <button
         onClick={onNext}
         aria-label="Next partner"
+        className="compact tactile-btn"
         style={{
           flex: 1,
-          padding: '12px 0',
+          padding: '10px 16px',
           borderRadius: 'var(--radius-md)',
-          background: 'var(--rd-surface-hover)',
-          border: '1px solid var(--border-1)',
-          color: 'var(--rd-text-1)',
+          background: 'var(--rd-accent)',
+          border: '1px solid var(--rd-accent)',
+          color: '#ffffff',
           fontFamily: 'var(--font-body)',
-          fontSize: 15,
+          fontSize: 14,
           fontWeight: 600,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           cursor: 'pointer',
           minHeight: 44,
+          transition: 'all 180ms ease-out',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.filter = 'brightness(1.08)'
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.filter = 'none'
         }}
       >
         Next
@@ -1853,7 +2023,7 @@ function OmeControlBar({ onNext, onStop }) {
   )
 }
 
-function MessageBubble({ role, time, name, children }) {
+function MessageBubble({ role, time, name, showHeader = true, children }) {
   const isMe = role === 'user' || role === 'me'
   const senderName = name || (isMe ? 'You' : 'Stranger')
   return (
@@ -1862,33 +2032,48 @@ function MessageBubble({ role, time, name, children }) {
         display: 'flex',
         flexDirection: 'column',
         alignItems: isMe ? 'flex-end' : 'flex-start',
-        maxWidth: 'min(85%, 540px)',
+        maxWidth: 'min(88%, 560px)',
         alignSelf: isMe ? 'flex-end' : 'flex-start',
         animation: 'milooMsgIn 180ms ease-out both',
       }}
     >
+      {showHeader && (
+        <div
+          style={{
+            fontSize: 11,
+            color: 'var(--rd-text-3)',
+            fontFamily: 'var(--font-body)',
+            marginBottom: 3,
+            marginTop: 6,
+            paddingLeft: isMe ? 0 : 2,
+            paddingRight: isMe ? 2 : 0,
+            userSelect: 'none',
+          }}
+        >
+          <span>{senderName}</span>
+          {time && (
+            <>
+              <span aria-hidden="true" style={{ opacity: 0.4, margin: '0 4px' }}>·</span>
+              <span>{time}</span>
+            </>
+          )}
+        </div>
+      )}
       <div
         style={{
-          padding: isMe ? '4px 0 4px 16px' : '8px 16px',
-          background: isMe ? 'transparent' : 'var(--rd-surface)',
+          padding: '2px 0',
+          background: 'transparent',
           color: isMe ? 'var(--rd-text-2)' : 'var(--rd-text-1)',
-          border: isMe ? 'none' : '1px solid var(--border-1)',
-          borderRadius: isMe ? '0' : '14px',
-          textAlign: isMe ? 'right' : 'left',
-          fontSize: 'clamp(15px, 1.6vw, 16px)',
+          fontSize: isMe ? '15px' : 'clamp(16px, 1.7vw, 17.5px)',
           lineHeight: 1.55,
           fontFamily: 'var(--font-body)',
+          textAlign: isMe ? 'right' : 'left',
           whiteSpace: 'pre-wrap',
           wordBreak: 'break-word',
         }}
       >
         {children}
       </div>
-      {time && (
-        <span style={{ fontSize: 11, color: 'var(--rd-text-3)', fontFamily: 'var(--font-body)', marginTop: 4, padding: isMe ? '0' : '0 4px' }}>
-          {senderName} <span aria-hidden="true" style={{ opacity: 0.5 }}>·</span> {time}
-        </span>
-      )}
     </div>
   )
 }
@@ -2048,6 +2233,7 @@ function VideoStage({ iceState, localStream, remoteStream, onFindNext }) {
 
 function ChatInput({ value, onChange, onSend, placeholder, inputRef }) {
   const [internalValue, setInternalValue] = useState('')
+  const [isFocused, setIsFocused] = useState(false)
   const isControlled = value !== undefined
   const displayValue = isControlled ? value : internalValue
 
@@ -2095,31 +2281,22 @@ function ChatInput({ value, onChange, onSend, placeholder, inputRef }) {
         padding: '6px 12px',
         borderRadius: '16px',
         background: 'var(--rd-surface)',
-        border: '1px solid var(--border-1)',
-        transition: 'border-color 180ms ease-out',
+        border: '1px solid',
+        borderColor: isFocused ? 'var(--rd-accent)' : 'var(--border-1)',
+        boxShadow: isFocused ? '0 0 0 1px var(--rd-accent)' : 'none',
+        transition: 'border-color 180ms ease-out, box-shadow 180ms ease-out',
         width: '100%',
       }}
     >
-      <span
-        style={{
-          color: 'var(--rd-text-3)',
-          fontFamily: 'var(--font-display)',
-          fontSize: 18,
-          lineHeight: '28px',
-          paddingBottom: 4,
-          userSelect: 'none',
-        }}
-        aria-hidden="true"
-      >
-        ›
-      </span>
       <textarea
         ref={textareaRef}
         rows={1}
         value={displayValue || ''}
         onChange={handleInput}
         onKeyDown={handleKeyDown}
-        placeholder={placeholder || 'Type a message…'}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        placeholder={placeholder || 'Say something…'}
         aria-label="Message input"
         style={{
           flex: 1,
