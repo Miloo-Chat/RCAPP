@@ -177,7 +177,7 @@ io.on('connection', (socket) => {
 
       try {
         const response = await groq.chat.completions.create({
-          model: 'groq/compound-mini',
+          model: 'openai/gpt-oss-20b',
           messages: [
             { role: 'system', content: `${SYSTEM_PROMPT}\n[${timeCtx}]` },
             ...session.history
