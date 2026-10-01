@@ -2362,8 +2362,8 @@ function ChatInput({ value, onChange, onSend, placeholder, inputRef }) {
         aria-label="Send message"
         className="compact scale-in"
         style={{
-          width: 32,
-          height: 32,
+          width: 44,
+          height: 44,
           borderRadius: '10px',
           border: 'none',
           background: (displayValue || '').trim() ? 'var(--rd-accent)' : 'var(--rd-surface-hover)',

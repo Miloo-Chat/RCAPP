@@ -7,8 +7,8 @@ export default function ThemeToggle({ theme, onToggle, style = {} }) {
       title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       className="compact icon-btn"
       style={{
-        width: '36px',
-        height: '36px',
+        width: '44px',
+        height: '44px',
         borderRadius: '50%',
         background: 'var(--surface-1)',
         border: '1px solid var(--border-1)',

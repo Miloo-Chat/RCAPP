@@ -305,6 +305,9 @@ export default function Home({
             <FooterLink onClick={() => navigate('/blog/random-video-chat-india')}>Random Video Chat</FooterLink>
             <FooterLink onClick={() => navigate('/blog/stranger-chat-india')}>Stranger Chat</FooterLink>
           </div>
+          <div style={{ width: '100%', color: 'var(--text-3)', fontSize: 12, lineHeight: 1.5, marginTop: 4 }}>
+            Some conversations may be with Milo, an AI companion.
+          </div>
         </div>
       </footer>
     </div>
