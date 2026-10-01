@@ -11,8 +11,6 @@ export default function Navbar({ theme, onToggleTheme, rightSlot }) {
         top: 0,
         zIndex: 50,
         background: 'var(--bg-0)',
-        borderTop: 'none',
-        outline: 'none',
         borderBottom: '1px solid var(--border-1)',
         transition: 'background 0.25s ease, border-color 0.25s ease',
       }}

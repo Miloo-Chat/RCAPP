@@ -425,8 +425,8 @@ button.compact, button.icon-btn {
 }
 @media (min-width: 900px) {
   .home-hero-layout {
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 56px;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 48px;
     margin-top: clamp(12px, 2.5vh, 32px);
     align-items: center;
   }
@@ -462,7 +462,7 @@ button.compact, button.icon-btn {
   .home-door {
     flex: 1;
     min-height: 460px;
-    padding: 40px 32px 36px;
+    padding: 40px 26px 36px;
   }
 }
 
@@ -486,10 +486,12 @@ button.compact, button.icon-btn {
 @media (min-width: 900px) {
   .door-text {
     border-radius: 120px 120px 16px 16px;
+    padding-top: 68px;
   }
   .door-video {
     border-radius: 120px 120px 16px 16px;
     margin-top: 52px;
+    padding-top: 68px;
   }
 }
 

@@ -186,6 +186,7 @@ export default function Home({
                     color: '#121110',
                     margin: '0 0 12px',
                     lineHeight: 1.12,
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   Text Chat
@@ -234,6 +235,7 @@ export default function Home({
                     color: 'var(--text-1)',
                     margin: '0 0 12px',
                     lineHeight: 1.12,
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   Video Chat
