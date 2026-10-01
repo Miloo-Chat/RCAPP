@@ -12,7 +12,7 @@ app.use(express.json());
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: "*", methods: ["GET", "POST"] }
-});                                                                              
+});
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
