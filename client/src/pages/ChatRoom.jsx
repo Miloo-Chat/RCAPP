@@ -991,14 +991,11 @@ export default function ChatRoom({
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 6,
-              padding: '6px 10px',
-              borderRadius: 'var(--radius-pill)',
-              background: 'var(--surface-1)',
-              border: '1px solid var(--border-1)',
-              fontSize: 11,
-              fontWeight: 600,
-              color: 'var(--text-3)',
+              gap: 8,
+              fontSize: 13,
+              fontFamily: 'var(--font-body)',
+              fontWeight: 500,
+              color: 'var(--rd-text-3)',
               whiteSpace: 'nowrap',
               flexShrink: 1,
               minWidth: 0,
@@ -1012,12 +1009,12 @@ export default function ChatRoom({
                 height: 6,
                 borderRadius: '50%',
                 background: statusDotColor(status, iceState),
-                boxShadow: `0 0 6px ${statusDotColor(status, iceState)}`,
+                opacity: 0.85,
                 flexShrink: 0,
               }}
               aria-hidden="true"
             />
-            <span style={{ textTransform: 'capitalize', overflow: 'hidden', textOverflow: 'ellipsis' }}>{statusLabel(status, iceState, isVideo, mood)}</span>
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{statusLabel(status, iceState, isVideo, mood)}</span>
           </div>
 
           <ThemeToggle theme={theme} onToggle={onToggleTheme} />
@@ -1095,12 +1092,11 @@ export default function ChatRoom({
 
 // ── Helper: status display ──
 function statusLabel(status, iceState, isVideo, mood) {
-  if (status === 'pre_permission') return 'Camera needed'
+  if (status === 'pre_permission') return 'Camera check'
   if (status === 'cam_error') return 'Camera blocked'
-  if (status === 'waiting' || status === 'text_connecting') return 'Finding match'
-  if (status === 'text_chat') return `Mood: ${mood}`
-  if (status === 'connected') return isVideo ? `ICE: ${iceState}` : 'Connected'
-  if (status === 'partner_left') return 'Partner left'
+  if (status === 'waiting' || status === 'text_connecting') return 'Looking for someone…'
+  if (status === 'text_chat' || status === 'connected') return 'Connected'
+  if (status === 'partner_left') return 'Disconnected'
   if (status === 'busy') return 'Server busy'
   if (status === 'slow_down') return 'Slowing down'
   return 'Connecting'
@@ -1532,10 +1528,10 @@ function MiloPanel({
         minHeight: 0,
         margin: '12px clamp(12px, 3vw, 20px)',
         borderRadius: 'var(--radius-lg)',
-        background: 'var(--bg-1)',
+        background: 'var(--rd-surface)',
         border: '1px solid var(--border-1)',
         overflow: 'hidden',
-        animation: 'milooMsgIn 240ms cubic-bezier(0.2, 0.8, 0.2, 1) both',
+        animation: 'milooMsgIn 180ms ease-out both',
       }}
     >
       {/* Persona header */}
@@ -1544,29 +1540,18 @@ function MiloPanel({
           display: 'flex',
           alignItems: 'center',
           gap: 10,
-          padding: '12px 14px',
+          padding: '12px 16px',
           borderBottom: '1px solid var(--border-1)',
-          background: 'var(--surface-1)',
+          background: 'var(--rd-surface)',
         }}
       >
-        <span style={{ fontSize: 22 }} aria-hidden="true">{currentPersona.emoji}</span>
+        <span style={{ fontSize: 20 }} aria-hidden="true">{currentPersona.emoji}</span>
         <div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-1)' }}>{currentPersona.label}</div>
-          <div style={{ fontSize: 11, color: 'var(--text-3)' }}>{currentPersona.blurb}</div>
+          <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--rd-text-1)', fontFamily: 'var(--font-body)' }}>
+            {currentPersona.label} <span style={{ color: 'var(--rd-text-3)', fontWeight: 400 }}>· AI companion</span>
+          </div>
+          <div style={{ fontSize: 12, color: 'var(--rd-text-3)', fontFamily: 'var(--font-body)' }}>{currentPersona.blurb}</div>
         </div>
-        <span
-          style={{
-            marginLeft: 'auto',
-            fontSize: 11,
-            fontWeight: 600,
-            color: 'var(--success)',
-            padding: '4px 10px',
-            borderRadius: 'var(--radius-pill)',
-            background: 'rgba(52, 211, 153, 0.1)',
-          }}
-        >
-          AI
-        </span>
       </div>
 
       {showPersonaPicker && (
@@ -1578,7 +1563,7 @@ function MiloPanel({
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))',
             gap: 8,
-            background: 'var(--surface-1)',
+            background: 'var(--rd-surface-hover)',
             borderBottom: '1px solid var(--border-1)',
           }}
         >
@@ -1590,8 +1575,8 @@ function MiloPanel({
               style={{
                 padding: '10px 8px',
                 borderRadius: 'var(--radius-md)',
-                background: 'var(--bg-2)',
-                color: 'var(--text-1)',
+                background: 'var(--rd-surface)',
+                color: 'var(--rd-text-1)',
                 border: '1px solid var(--border-1)',
                 cursor: 'pointer',
                 display: 'flex',
@@ -1601,9 +1586,9 @@ function MiloPanel({
                 textAlign: 'center',
               }}
             >
-              <span style={{ fontSize: 22 }}>{p.emoji}</span>
-              <strong style={{ fontSize: 12, fontWeight: 700 }}>{p.label}</strong>
-              <span style={{ fontSize: 10, color: 'var(--text-3)' }}>{p.blurb}</span>
+              <span style={{ fontSize: 20 }}>{p.emoji}</span>
+              <strong style={{ fontSize: 12, fontWeight: 600, fontFamily: 'var(--font-body)' }}>{p.label}</strong>
+              <span style={{ fontSize: 10, color: 'var(--rd-text-3)', fontFamily: 'var(--font-body)' }}>{p.blurb}</span>
             </button>
           ))}
         </div>
@@ -1616,92 +1601,39 @@ function MiloPanel({
           flex: 1,
           minHeight: 0,
           overflowY: 'auto',
-          padding: '14px',
+          padding: '16px',
           display: 'flex',
           flexDirection: 'column',
-          gap: 10,
+          gap: 12,
         }}
       >
         {miloMessages.map((m, i) => (
-          <MessageBubble key={i} role={m.role} time={m.time}>
+          <MessageBubble key={i} role={m.role} time={m.time} name={m.role === 'user' ? 'You' : currentPersona.label}>
             {m.content}
           </MessageBubble>
         ))}
         {miloTyping && (
-          <div style={{ alignSelf: 'flex-start', display: 'inline-flex', gap: 4, padding: '10px 14px', borderRadius: 'var(--radius-md)', background: 'var(--bg-2)', border: '1px solid var(--border-1)' }}>
-            <span className="typing-dot" />
-            <span className="typing-dot" />
-            <span className="typing-dot" />
+          <div style={{ alignSelf: 'flex-start', display: 'flex', alignItems: 'center', gap: 6, padding: '6px 0' }}>
+            <span className="terracotta-dot-pulse" />
+            <span style={{ fontSize: 12, color: 'var(--rd-text-3)', fontFamily: 'var(--font-body)' }}>{currentPersona.label} is typing…</span>
           </div>
         )}
         {miloCapped && (
-          <p style={{ fontSize: 12, color: 'var(--text-3)', textAlign: 'center', padding: '8px 0' }}>
+          <p style={{ fontSize: 12, color: 'var(--rd-text-3)', textAlign: 'center', padding: '8px 0', fontFamily: 'var(--font-body)' }}>
             Milo is pausing — try Find Next if you want a real person ✨
           </p>
         )}
       </div>
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          sendMiloMessage()
-        }}
-        style={{
-          display: 'flex',
-          gap: 8,
-          padding: '10px 12px',
-          borderTop: '1px solid var(--border-1)',
-          background: 'var(--surface-1)',
-        }}
-      >
-        <input
-          ref={miloInputRef}
-          type="text"
-          defaultValue={miloInput}
+      <div style={{ padding: '8px 12px 12px', background: 'var(--rd-surface)' }}>
+        <ChatInput
+          inputRef={miloInputRef}
+          value={miloInput}
           onChange={(e) => setMiloInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault()
-              sendMiloMessage()
-            }
-          }}
+          onSend={sendMiloMessage}
           placeholder="Type a message to Milo…"
-          aria-label="Message Milo"
-          style={{
-            flex: 1,
-            minWidth: 0,
-            padding: '10px 14px',
-            borderRadius: 'var(--radius-pill)',
-            border: '1px solid var(--border-1)',
-            background: 'var(--bg-2)',
-            color: 'var(--text-1)',
-            fontSize: 14,
-            outline: 'none',
-          }}
         />
-        <button
-          type="submit"
-          disabled={!miloInput.trim()}
-          aria-label="Send"
-          className="compact"
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: '50%',
-            border: 'none',
-            background: miloInput.trim() ? 'var(--accent)' : 'var(--bg-2)',
-            color: miloInput.trim() ? 'var(--accent-text)' : 'var(--text-3)',
-            cursor: miloInput.trim() ? 'pointer' : 'not-allowed',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 18,
-            flexShrink: 0,
-          }}
-        >
-          ➤
-        </button>
-      </form>
+      </div>
     </section>
   )
 }
@@ -1740,7 +1672,7 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
               💬 {showChat ? 'Hide Chat' : 'Chat'}
               {messages.length > 0 && !showChat && (
                 <span style={{
-                  background: '#ef4444',
+                  background: 'var(--rd-accent)',
                   borderRadius: '50%',
                   minWidth: 18,
                   height: 18,
@@ -1760,17 +1692,18 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
 
           <div className={`video-chat-panel ${showChat ? 'mobile-open' : ''}`}>
             <div style={{
-              padding: '8px 14px',
+              padding: '10px 14px',
               borderBottom: '1px solid var(--border-1)',
               fontSize: 12,
               fontWeight: 600,
-              color: 'var(--text-3)',
+              color: 'var(--rd-text-3)',
               flexShrink: 0,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
+              fontFamily: 'var(--font-body)',
             }}>
-              <span>💬 Chat with stranger</span>
+              <span>Chat with stranger</span>
               <button
                 className="mobile-chat-close-btn compact"
                 onClick={() => setShowChat(false)}
@@ -1786,17 +1719,18 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
               style={{
                 flex: 1,
                 overflowY: 'auto',
-                padding: '10px 14px',
+                padding: '14px',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 8,
+                gap: 10,
                 minHeight: 0,
               }}
             >
               {messages.length === 0 ? (
                 <p style={{
-                  color: 'var(--text-3)',
+                  color: 'var(--rd-text-3)',
                   fontSize: 13,
+                  fontFamily: 'var(--font-body)',
                   textAlign: 'center',
                   margin: 'auto',
                 }}>
@@ -1804,14 +1738,14 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
                 </p>
               ) : (
                 messages.map((m, i) => (
-                  <MessageBubble key={i} role={m.from === 'me' ? 'user' : 'assistant'} time={m.time}>
+                  <MessageBubble key={i} role={m.from === 'me' ? 'user' : 'stranger'} time={m.time}>
                     {m.text}
                   </MessageBubble>
                 ))
               )}
             </div>
 
-            <div style={{ flexShrink: 0 }}>
+            <div style={{ flexShrink: 0, padding: '8px 12px 12px' }}>
               <ChatInput onSend={sendText} placeholder="Type a message…" />
             </div>
           </div>
@@ -1826,23 +1760,23 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
               flex: 1,
               minHeight: 0,
               overflowY: 'auto',
-              padding: '14px',
+              padding: '16px',
               borderRadius: 'var(--radius-lg)',
-              background: 'var(--bg-1)',
+              background: 'var(--rd-surface)',
               border: '1px solid var(--border-1)',
               display: 'flex',
               flexDirection: 'column',
-              gap: 10,
+              gap: 12,
             }}
           >
             {messages.length === 0 && (
-              <div style={{ margin: 'auto', textAlign: 'center', color: 'var(--text-3)', fontSize: 14 }}>
+              <div style={{ margin: 'auto', textAlign: 'center', color: 'var(--rd-text-3)', fontSize: 14, fontFamily: 'var(--font-body)' }}>
                 Say hi — they're waiting too.
               </div>
             )}
             {messages.map((m, i) =>
               m.from === 'system' ? (
-                <div key={i} style={{ alignSelf: 'center', fontSize: 12, color: 'var(--text-3)', padding: '4px 10px', borderRadius: 'var(--radius-pill)', background: 'var(--surface-1)' }}>
+                <div key={i} style={{ alignSelf: 'center', fontSize: 12, color: 'var(--rd-text-3)', padding: '4px 10px', borderRadius: 'var(--radius-pill)', background: 'var(--rd-surface-hover)', fontFamily: 'var(--font-body)' }}>
                   {m.text}
                 </div>
               ) : (
@@ -1862,71 +1796,88 @@ function ChatView({ isVideo, iceState, messages, sendText, localStream, remoteSt
 
 function OmeControlBar({ onNext, onStop }) {
   return (
-    <div className="ome-control-bar">
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12,
+        padding: '12px 0',
+        paddingBottom: 'max(12px, env(safe-area-inset-bottom))',
+      }}
+    >
       <button
         onClick={onStop}
-        aria-label="Stop chat"
-        className="ome-control-btn ome-stop-btn"
+        aria-label="Leave chat"
+        style={{
+          flex: 1,
+          padding: '12px 0',
+          borderRadius: 'var(--radius-md)',
+          background: 'transparent',
+          border: '1px solid var(--border-1)',
+          color: 'var(--danger)',
+          fontFamily: 'var(--font-body)',
+          fontSize: 15,
+          fontWeight: 600,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          cursor: 'pointer',
+          minHeight: 44,
+        }}
       >
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <rect x="5" y="5" width="14" height="14" rx="2" />
-        </svg>
-        <span className="ome-control-label">Stop</span>
+        Leave
       </button>
-
       <button
         onClick={onNext}
-        aria-label="Next match"
-        className="ome-control-btn ome-next-btn"
+        aria-label="Next partner"
+        style={{
+          flex: 1,
+          padding: '12px 0',
+          borderRadius: 'var(--radius-md)',
+          background: 'var(--rd-surface-hover)',
+          border: '1px solid var(--border-1)',
+          color: 'var(--rd-text-1)',
+          fontFamily: 'var(--font-body)',
+          fontSize: 15,
+          fontWeight: 600,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          cursor: 'pointer',
+          minHeight: 44,
+        }}
       >
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <polygon points="5 4 15 12 5 20 5 4" fill="currentColor" />
-          <line x1="19" y1="5" x2="19" y2="19" />
-        </svg>
-        <span className="ome-control-label">Next</span>
+        Next
       </button>
     </div>
   )
 }
 
-function MessageBubble({ role, time, children }) {
+function MessageBubble({ role, time, name, children }) {
   const isMe = role === 'user' || role === 'me'
+  const senderName = name || (isMe ? 'You' : 'Stranger')
   return (
     <div
       style={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: isMe ? 'flex-end' : 'flex-start',
-        maxWidth: '85%',
+        maxWidth: 'min(85%, 540px)',
         alignSelf: isMe ? 'flex-end' : 'flex-start',
-        animation: 'milooMsgIn 220ms cubic-bezier(0.2, 0.8, 0.2, 1) both',
+        animation: 'milooMsgIn 180ms ease-out both',
       }}
     >
       <div
         style={{
-          padding: '8px 14px',
-          borderRadius: isMe ? 'var(--radius-md) var(--radius-md) 4px var(--radius-md)' : 'var(--radius-md) var(--radius-md) var(--radius-md) 4px',
-          background: isMe ? 'var(--gradient-cta)' : 'var(--bg-2)',
-          color: isMe ? 'var(--accent-text)' : 'var(--text-1)',
+          padding: isMe ? '4px 0 4px 16px' : '8px 16px',
+          background: isMe ? 'transparent' : 'var(--rd-surface)',
+          color: isMe ? 'var(--rd-text-2)' : 'var(--rd-text-1)',
           border: isMe ? 'none' : '1px solid var(--border-1)',
-          fontSize: 14,
-          lineHeight: 1.4,
+          borderRadius: isMe ? '0' : '14px',
+          textAlign: isMe ? 'right' : 'left',
+          fontSize: 'clamp(15px, 1.6vw, 16px)',
+          lineHeight: 1.55,
+          fontFamily: 'var(--font-body)',
           whiteSpace: 'pre-wrap',
           wordBreak: 'break-word',
         }}
@@ -1934,8 +1885,8 @@ function MessageBubble({ role, time, children }) {
         {children}
       </div>
       {time && (
-        <span style={{ fontSize: 10, color: 'var(--text-3)', marginTop: 4, padding: '0 4px' }}>
-          {isMe ? 'You' : 'Stranger'} · {time}
+        <span style={{ fontSize: 11, color: 'var(--rd-text-3)', fontFamily: 'var(--font-body)', marginTop: 4, padding: isMe ? '0' : '0 4px' }}>
+          {senderName} <span aria-hidden="true" style={{ opacity: 0.5 }}>·</span> {time}
         </span>
       )}
     </div>
@@ -2095,66 +2046,121 @@ function VideoStage({ iceState, localStream, remoteStream, onFindNext }) {
   )
 }
 
-function ChatInput({ onSend, placeholder }) {
-  const [value, setValue] = useState('')
+function ChatInput({ value, onChange, onSend, placeholder, inputRef }) {
+  const [internalValue, setInternalValue] = useState('')
+  const isControlled = value !== undefined
+  const displayValue = isControlled ? value : internalValue
+
+  const fallbackRef = useRef(null)
+  const textareaRef = inputRef || fallbackRef
+
+  const handleInput = (e) => {
+    const val = e.target.value
+    if (isControlled) {
+      if (onChange) onChange(e)
+    } else {
+      setInternalValue(val)
+    }
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`
+    }
+  }
+
+  const handleSend = () => {
+    const trimmed = (displayValue || '').trim()
+    if (!trimmed) return
+    onSend(trimmed)
+    if (!isControlled) {
+      setInternalValue('')
+    }
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+    }
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleSend()
+    }
+  }
+
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault()
-        const trimmed = value.trim()
-        if (!trimmed) return
-        onSend(trimmed)
-        setValue('')
-      }}
+    <div
       style={{
         display: 'flex',
+        alignItems: 'flex-end',
         gap: 8,
-        padding: '6px 6px 6px 14px',
-        borderRadius: 'var(--radius-pill)',
-        background: 'var(--surface-1)',
+        padding: '6px 12px',
+        borderRadius: '16px',
+        background: 'var(--rd-surface)',
         border: '1px solid var(--border-1)',
-        alignItems: 'center',
+        transition: 'border-color 180ms ease-out',
+        width: '100%',
       }}
     >
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder={placeholder}
-        aria-label="Message"
+      <span
+        style={{
+          color: 'var(--rd-text-3)',
+          fontFamily: 'var(--font-display)',
+          fontSize: 18,
+          lineHeight: '28px',
+          paddingBottom: 4,
+          userSelect: 'none',
+        }}
+        aria-hidden="true"
+      >
+        ›
+      </span>
+      <textarea
+        ref={textareaRef}
+        rows={1}
+        value={displayValue || ''}
+        onChange={handleInput}
+        onKeyDown={handleKeyDown}
+        placeholder={placeholder || 'Type a message…'}
+        aria-label="Message input"
         style={{
           flex: 1,
           minWidth: 0,
-          padding: '10px 0',
           background: 'transparent',
           border: 'none',
-          color: 'var(--text-1)',
-          fontSize: 14,
+          color: 'var(--rd-text-1)',
+          fontFamily: 'var(--font-body)',
+          fontSize: 16,
+          lineHeight: 1.5,
+          padding: '6px 0',
+          resize: 'none',
           outline: 'none',
+          maxHeight: 120,
+          overflowY: 'auto',
         }}
       />
       <button
-        type="submit"
-        disabled={!value.trim()}
-        aria-label="Send"
-        className="compact"
+        onClick={handleSend}
+        disabled={!(displayValue || '').trim()}
+        aria-label="Send message"
+        className="compact scale-in"
         style={{
-          width: 38,
-          height: 38,
-          borderRadius: '50%',
+          width: 32,
+          height: 32,
+          borderRadius: '10px',
           border: 'none',
-          background: value.trim() ? 'var(--accent)' : 'var(--bg-2)',
-          color: value.trim() ? 'var(--accent-text)' : 'var(--text-3)',
-          cursor: value.trim() ? 'pointer' : 'not-allowed',
+          background: (displayValue || '').trim() ? 'var(--rd-accent)' : 'var(--rd-surface-hover)',
+          color: (displayValue || '').trim() ? '#ffffff' : 'var(--rd-text-3)',
+          cursor: (displayValue || '').trim() ? 'pointer' : 'not-allowed',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           fontSize: 16,
           flexShrink: 0,
+          marginBottom: 2,
+          transition: 'all 180ms ease-out',
         }}
       >
-        ➤
+        ↑
       </button>
-    </form>
+    </div>
   )
 }

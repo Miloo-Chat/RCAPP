@@ -526,3 +526,38 @@ button.compact, button.icon-btn {
   transform: translateX(8px);
 }
 
+/* ── Chat Room v2 (Editorial / Quiet) ── */
+@keyframes milooMsgIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes milooPulseDot {
+  0%, 100% { opacity: 0.4; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+.terracotta-dot-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--rd-accent);
+  display: inline-block;
+  animation: milooPulseDot 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .terracotta-dot-pulse {
+    animation: none !important;
+    opacity: 0.8 !important;
+    transform: none !important;
+  }
+}
+
+
