@@ -22,7 +22,7 @@ function AppRoutes() {
   const getInitialTheme = () => {
     const saved = localStorage.getItem('miloo-theme')
     if (saved) return saved
-    return 'dark'
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
   }
   const [theme, setTheme] = useState(getInitialTheme)
 

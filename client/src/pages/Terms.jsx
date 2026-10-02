@@ -21,7 +21,7 @@ const sections = [
   {
     icon: '🤝',
     title: 'Respect Is Mandatory',
-    desc: 'Harassment, threats, hate, spam, coercion, and abusive behavior are not allowed. We may restrict access for people who abuse the service.',
+    desc: 'Harassment, threats, hate, spam, coercion, and abusive behavior are not allowed. Reports can lead to removal or bans.',
   },
   {
     icon: '🚫',
@@ -31,22 +31,17 @@ const sections = [
   {
     icon: '🛑',
     title: 'No Spam or Promotion',
-    desc: 'Bots, repeated copy-paste messages, suspicious links, promotions, and attempts to move users off-platform too quickly are against these terms.',
+    desc: 'Bots, repeated copy-paste messages, suspicious links, promotions, and attempts to move users off-platform too quickly may be blocked.',
   },
   {
     icon: '⚠️',
     title: 'Use Caution',
-    desc: 'Even in anonymous products, strangers are still strangers. If something feels wrong, leave the chat immediately.',
+    desc: 'Even in anonymous products, strangers are still strangers. If something feels wrong, leave, block, or report immediately.',
   },
   {
     icon: '🗂️',
     title: 'Limited Session Data',
     desc: 'The experience may use temporary technical identifiers to support matching, abuse prevention, and safety systems. Do not assume other users are verified.',
-  },
-  {
-    icon: '🤖',
-    title: 'AI Companions',
-    desc: 'Some conversations may be with Milo, an AI companion.',
   },
   {
     icon: '🔄',
@@ -210,7 +205,8 @@ export default function Terms({ onBack, theme, onToggleTheme }) {
             style={{
               padding: 'clamp(18px, 3vw, 24px)',
               borderRadius: 'var(--radius-lg)',
-              background: 'var(--surface-1)',
+              background:
+                'linear-gradient(135deg, rgba(255,107,74,0.10), rgba(255,61,129,0.10))',
               border: '1px solid var(--accent-border)',
               marginBottom: 20,
             }}
@@ -245,6 +241,8 @@ export default function Terms({ onBack, theme, onToggleTheme }) {
               {[
                 'Do not share phone numbers, Instagram, Snapchat, Telegram, or payment details too quickly.',
                 'If a chat feels pushy, sexual, manipulative, or suspicious, leave immediately.',
+                'Use Safe Mode if you want a softer start with more control.',
+                'Reporting helps improve trust and removes harmful users faster.',
               ].map((tip) => (
                 <li
                   key={tip}

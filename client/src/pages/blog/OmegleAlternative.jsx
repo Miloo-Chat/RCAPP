@@ -41,11 +41,11 @@ export default function OmegleAlternative() {
     document.head.appendChild(script)
 
     return () => {
-      document.title = 'Miloo — Meet Strangers Online | Free Random Chat'
+      document.title = 'Miloo — Meet Real Strangers Online | Free Random Chat'
       if (meta) {
         meta.setAttribute(
           'content',
-          'Miloo is a free random chat app to meet strangers online. The best Omegle alternative for text and video conversations — pick a mood to set the tone, stay safe, connect instantly.'
+          'Miloo is a free random chat app to meet strangers online. The best Omegle alternative for real video and voice conversations — match by mood, stay safe, connect instantly.'
         )
       }
       const existing = document.getElementById('article-jsonld')
@@ -213,8 +213,9 @@ export default function OmegleAlternative() {
                 >
                   BBC report on the closure
                 </a>{' '}
-                noted that the decision came after a significant legal settlement, marking the
-                end of an era for early internet anonymity.
+                noted that the decision came after a significant legal settlement. The lesson
+                for the industry was clear: random chat platforms need real moderation
+                infrastructure, not just a terms-of-service page.
               </p>
             </Section>
 
@@ -226,11 +227,11 @@ export default function OmegleAlternative() {
               </p>
               <ul style={listStyle}>
                 <li><strong style={{ color: 'var(--text-1)' }}>No signup required</strong> — friction kills spontaneity. The best apps get you into a conversation in under 30 seconds.</li>
-                <li><strong style={{ color: 'var(--text-1)' }}>Skip anytime</strong> — leave a chat with one tap whenever you want to move on.</li>
-                <li><strong style={{ color: 'var(--text-1)' }}>Setting the tone</strong> — pure randomness can be jarring. Picking a mood helps set the tone of the chat for better conversations.</li>
+                <li><strong style={{ color: 'var(--text-1)' }}>Active moderation</strong> — a reporting system, trust scoring, and fingerprint-based bans make a real difference.</li>
+                <li><strong style={{ color: 'var(--text-1)' }}>Intentional matching</strong> — pure randomness leads to disconnects. Matching by interest or mood produces better conversations.</li>
                 <li><strong style={{ color: 'var(--text-1)' }}>Mobile-friendly</strong> — most users in India are on mobile. A clunky desktop-only experience won't cut it.</li>
                 <li><strong style={{ color: 'var(--text-1)' }}>Free to use</strong> — paywalls for basic features are a dealbreaker for most users.</li>
-                <li><strong style={{ color: 'var(--text-1)' }}>Privacy-first</strong> — no stored video, no account data, and no registration required.</li>
+                <li><strong style={{ color: 'var(--text-1)' }}>Privacy-first</strong> — no stored video, no account data, no tracking beyond what's needed for safety.</li>
               </ul>
               <p>With those criteria in mind, here are the top options available to Indian users in 2026.</p>
             </Section>
@@ -240,25 +241,28 @@ export default function OmegleAlternative() {
                 <strong style={{ color: 'var(--text-1)' }}>Miloo</strong> is the top pick for
                 anyone looking for a genuine <strong style={{ color: 'var(--text-1)' }}>omegle alternative india</strong> users
                 can actually trust. It's completely free, requires no account, and gets you
-                into a conversation in seconds. Whether you want to{' '}
+                into a real conversation in seconds. Whether you want to{' '}
                 <strong style={{ color: 'var(--text-1)' }}>chat with strangers india</strong>-wide
                 or connect with someone from anywhere in the world, Miloo handles it without
                 the friction.
               </p>
               <p style={{ marginBottom: 16 }}>
-                What sets Miloo apart is the ability to pick a mood to set the tone of the chat.
-                Instead of being thrown into a random chat blindly, you pick a vibe — deep talk,
-                casual, gaming, music, or just venting. The result is conversations that start
-                with a shared context, helping avoid awkward silences.
+                What sets Miloo apart is mood-based matching. Instead of being thrown into a
+                random chat blindly, you pick a vibe — deep talk, casual, gaming, music, or
+                just venting — and Miloo finds someone on the same wavelength. The result is
+                conversations that actually go somewhere, not just awkward silences and
+                disconnects.
               </p>
               <p style={{ marginBottom: 12 }}>Key features:</p>
               <ul style={listStyle}>
                 <li><strong style={{ color: 'var(--text-1)' }}>Random chat no signup</strong> — open the app and you're in</li>
                 <li>Text and video modes — your choice every session</li>
-                <li>Pick a mood to set the tone of the chat</li>
-                <li>Some conversations may be with Milo, an AI companion</li>
-                <li>Skip anytime with one click</li>
+                <li>Mood-based matching for better conversations</li>
+                <li>Safe Mode — start with your video blurred for extra privacy</li>
+                <li>AI companion (Milo) keeps you company while you wait for a match</li>
+                <li>18+ only, with fingerprint-based banning for repeat offenders</li>
                 <li>Works on any device, no download needed</li>
+                <li>Reconnect codes — share a 6-digit code to chat with the same person again</li>
               </ul>
               <p>
                 If you're looking to <strong style={{ color: 'var(--text-1)' }}>meet strangers online free</strong> without
@@ -342,27 +346,39 @@ export default function OmegleAlternative() {
                 Chatroulette is one of the originals. It's still running, still free, and
                 still completely random. The moderation has improved over the years with
                 AI-based content filtering, but the experience remains hit-or-miss. It's a
-                fine fallback, but it lacks the tone-setting features that help
-                conversations get started.
+                fine fallback, but it lacks the intentionality that makes Miloo conversations
+                feel worth having. There's no mood or interest matching — you get whoever is
+                next in the queue.
               </p>
             </Section>
 
             <Section title="Is Miloo Safe?">
               <p style={{ marginBottom: 16 }}>
                 Safety is the most common question people ask about random chat apps, and for
-                good reason — Omegle's closure was largely a safety story. Miloo is designed
-                to keep things simple and private.
+                good reason — Omegle's closure was largely a safety story. Miloo was built
+                with that history in mind.
               </p>
               <p style={{ marginBottom: 16 }}>
-                The platform is completely anonymous — there are no accounts, no signups,
-                and no personal data is collected or stored. Video is streamed peer-to-peer
-                using WebRTC, meaning it goes directly between users and never touches Miloo's
-                servers. There is no recording, no storage, and no replay.
+                Several layers of protection are built into the platform. First, there are no
+                accounts — which means no personal data is stored and no profile can be
+                targeted. Video is streamed peer-to-peer using WebRTC, meaning it goes
+                directly between users and never touches Miloo's servers. There is no
+                recording, no storage, and no replay.
+              </p>
+              <p style={{ marginBottom: 16 }}>
+                On the moderation side, Miloo uses a trust scoring system. Users who send
+                suspicious messages, get reported, or skip conversations too quickly accumulate
+                negative trust scores that affect their matching priority. Users who receive
+                three or more reports are fingerprint-banned — meaning a simple page refresh
+                won't get them back in. Links and contact-sharing (phone numbers, social
+                handles, payment apps) are automatically blocked in chat.
               </p>
               <p>
-                You are always in control of your session: you can skip or leave a chat at any
-                time with a single click. As with any platform involving strangers, common sense
-                applies — keep your personal details private and move on if a chat feels uncomfortable.
+                Safe Mode is available for users who want extra control — it starts your
+                video blurred so you can choose when to reveal yourself. The platform is 18+
+                only. As with any platform involving strangers, common sense still applies:
+                don't share personal information, and use the report button if something
+                feels wrong.
               </p>
             </Section>
 
@@ -375,8 +391,9 @@ export default function OmegleAlternative() {
                 <li>
                   <strong style={{ color: 'var(--text-1)' }}>Pick a specific mood.</strong>{' '}
                   "Surprise me" is fine, but if you're in the mood for a deep conversation,
-                  selecting "Deep Talk" helps set the tone of the chat. The conversation
-                  starts with a shared context instead of awkward silence.
+                  selecting "Deep Talk" will match you with someone who's also looking for
+                  that. The conversation starts with shared intent instead of awkward
+                  silence.
                 </li>
                 <li>
                   <strong style={{ color: 'var(--text-1)' }}>Use the conversation starter.</strong>{' '}
@@ -394,10 +411,16 @@ export default function OmegleAlternative() {
                   and lets you focus on the conversation itself. You can always switch to
                   video once you're comfortable.
                 </li>
+                <li>
+                  <strong style={{ color: 'var(--text-1)' }}>Use the reconnect code.</strong>{' '}
+                  If you have a great conversation, request a reconnect code before the chat
+                  ends. Share it with your partner so you can find each other again — it's
+                  valid for 10 minutes.
+                </li>
               </ul>
               <p>
                 The best conversations on Miloo happen when both people are genuinely curious
-                about the other person. Picking a mood helps set the tone, but the rest
+                about the other person. The mood system helps filter for that, but the rest
                 is up to you.
               </p>
             </Section>
@@ -407,14 +430,15 @@ export default function OmegleAlternative() {
                 If you're in India and want the best <strong style={{ color: 'var(--text-1)' }}>omegle alternative india</strong> has
                 to offer in 2026, Miloo is the clear answer. It's the only platform that
                 combines <strong style={{ color: 'var(--text-1)' }}>random chat no signup</strong>,
-                the ability to pick a mood to set the tone, and complete anonymity — all for free. No other
+                mood-based matching, and a genuinely safe environment — all for free. No other
                 app in this list comes close to that combination.
               </p>
               <p>
-                The random chat space is crowded, but many apps are paywalled or clunky to use.
-                Miloo keeps it straightforward: the platform is free, works on any device, and gets
-                you into a conversation in under a minute. Give it a try — you don't even need
-                to create an account.
+                The random chat space is crowded, but most apps are either paywalled,
+                bot-heavy, or poorly moderated. Miloo was built specifically to fix those
+                problems. The platform is free, works on any device, and gets you into a real
+                conversation in under a minute. Give it a try — you don't even need to create
+                an account.
               </p>
             </Section>
           </div>
@@ -427,7 +451,7 @@ export default function OmegleAlternative() {
             padding: 'clamp(24px, 4vw, 40px)',
             borderRadius: 'var(--radius-xl)',
             background:
-              'var(--surface-1)',
+              'linear-gradient(135deg, rgba(255,107,74,0.14), rgba(255,61,129,0.14))',
             border: '1px solid var(--accent-border)',
             textAlign: 'center',
             maxWidth: 720,

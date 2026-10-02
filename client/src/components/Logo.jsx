@@ -1,25 +1,26 @@
 // client/src/components/Logo.jsx
 //
-// A custom wordmark treatment for Miloo: Fraunces "miloo" with a distinctive terracotta dot.
+// A small, brandable SVG logo for Miloo. Features the spark/bolt mark
+// with the brand accent gradient.
 
-export default function Logo({ size = 28 }) {
+export default function Logo({ size = 32 }) {
   return (
-    <div
-      aria-label="Miloo logo"
-      style={{
-        display: 'inline-flex',
-        alignItems: 'baseline',
-        fontFamily: 'var(--font-display)',
-        fontSize: size,
-        fontWeight: 600,
-        letterSpacing: '-0.03em',
-        color: 'var(--text-1)',
-        lineHeight: 1,
-        userSelect: 'none',
-      }}
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      style={{ display: 'block', flexShrink: 0 }}
     >
-      miloo
-      <span style={{ color: 'var(--accent)', marginLeft: '1px' }}>.</span>
-    </div>
+      <defs>
+        <linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="var(--accent, #FF6B4A)" />
+          <stop offset="100%" stopColor="var(--accent-2, #FF3D81)" />
+        </linearGradient>
+      </defs>
+      <path d="M17 2 L8 18 H15 L13 30 L26 12 H18 L17 2Z" fill="url(#logoGrad)" />
+    </svg>
   )
 }
