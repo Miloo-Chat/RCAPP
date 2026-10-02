@@ -21,7 +21,7 @@ const sections = [
   {
     icon: '🤝',
     title: 'Respect Is Mandatory',
-    desc: 'Harassment, threats, hate, spam, coercion, and abusive behavior are not allowed. Reports can lead to removal or bans.',
+    desc: 'Harassment, threats, hate, spam, coercion, and abusive behavior are not allowed. We may restrict access for people who abuse the service.',
   },
   {
     icon: '🚫',
@@ -31,12 +31,12 @@ const sections = [
   {
     icon: '🛑',
     title: 'No Spam or Promotion',
-    desc: 'Bots, repeated copy-paste messages, suspicious links, promotions, and attempts to move users off-platform too quickly may be blocked.',
+    desc: 'Bots, repeated copy-paste messages, suspicious links, promotions, and attempts to move users off-platform too quickly are against these terms.',
   },
   {
     icon: '⚠️',
     title: 'Use Caution',
-    desc: 'Even in anonymous products, strangers are still strangers. If something feels wrong, leave, block, or report immediately.',
+    desc: 'Even in anonymous products, strangers are still strangers. If something feels wrong, leave the chat immediately.',
   },
   {
     icon: '🗂️',
