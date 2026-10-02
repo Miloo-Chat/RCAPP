@@ -7,3 +7,6 @@ node_modules
 .DS_Store[cite: 1]
 .kiro/[cite: 1]
 node_modules/[cite: 1]
+.mcp.json
+CLAUDE.md
+.redesign/
