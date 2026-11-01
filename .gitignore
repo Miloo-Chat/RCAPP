@@ -1,12 +1,45 @@
-node_modules
-.env
+# Dependencies
+node_modules/
+*/node_modules/
 
-# Security & System Files[cite: 1]
-.env[cite: 1]
-.env.local[cite: 1]
-.DS_Store[cite: 1]
-.kiro/[cite: 1]
-node_modules/[cite: 1]
+# Environment files
+.env
+.env.*
+!.env.example
+client/.env
+client/.env.*
+!client/.env.example
+server/.env
+server/.env.*
+!server/.env.example
+
+# OS files
+.DS_Store
+**/.DS_Store
+Thumbs.db
+
+# Build outputs & cache
+dist/
+dist-ssr/
+client/dist/
+build/
+.cache/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor & local tooling
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
 .mcp.json
 CLAUDE.md
 .redesign/
+server/data/

@@ -7,9 +7,10 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useCanonical from '../../hooks/useCanonical'
 import Navbar from '../../components/Navbar'
+import Footer from '../../components/Footer'
 import Logo from '../../components/Logo'
 
-export default function OmegleAlternative() {
+export default function OmegleAlternative({ theme, onToggleTheme }) {
   useCanonical('https://www.miloo.chat/blog/omegle-alternative')
   const navigate = useNavigate()
 
@@ -56,6 +57,8 @@ export default function OmegleAlternative() {
   return (
     <div className="page page-enter" style={{ background: 'var(--bg-0)' }}>
       <Navbar
+        theme={theme}
+        onToggleTheme={onToggleTheme}
         rightSlot={
           <button
             onClick={() => navigate('/')}
@@ -481,22 +484,8 @@ export default function OmegleAlternative() {
             Try Miloo Free →
           </button>
         </aside>
-
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 8,
-            marginTop: 32,
-            color: 'var(--text-3)',
-            fontSize: 12,
-          }}
-        >
-          <Logo size={16} />
-          <span>© {new Date().getFullYear()} Miloo · Made with care</span>
-        </div>
       </main>
+      <Footer />
     </div>
   )
 }

@@ -23,6 +23,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { io as socketIO } from 'socket.io-client'
 import Logo from '../components/Logo'
 import ThemeToggle from '../components/ThemeToggle'
+import ReportModal from '../components/ReportModal'
 
 // ---------------------------------------------------------------------------
 // Config
@@ -408,6 +409,36 @@ function nowTime() {
   return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }
 
+function getOrCreateClientId() {
+  try {
+    if (typeof document !== 'undefined' && document.cookie) {
+      const match = document.cookie.match(/(?:^|;\s*)miloo_uid=([^;]+)/)
+      if (match && match[1]) {
+        const uid = decodeURIComponent(match[1])
+        try { localStorage.setItem('miloo_uid', uid) } catch {}
+        return uid
+      }
+    }
+    const saved = typeof localStorage !== 'undefined' ? localStorage.getItem('miloo_uid') : null
+    if (saved) {
+      if (typeof document !== 'undefined') {
+        document.cookie = `miloo_uid=${encodeURIComponent(saved)}; Path=/; Max-Age=31536000; SameSite=Lax`
+      }
+      return saved
+    }
+    const newUid = `uid_${Date.now()}_${Math.random().toString(36).substring(2, 12)}`
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('miloo_uid', newUid)
+    }
+    if (typeof document !== 'undefined') {
+      document.cookie = `miloo_uid=${encodeURIComponent(newUid)}; Path=/; Max-Age=31536000; SameSite=Lax`
+    }
+    return newUid
+  } catch {
+    return `uid_anon_${Math.random().toString(36).substring(2, 10)}`
+  }
+}
+
 function getFingerprint() {
   try {
     return (
@@ -438,6 +469,8 @@ export default function ChatRoom({
   const [localStreamReady, setLocalStreamReady] = useState(false)
   const [partnerId, setPartnerId] = useState(null)
   const [messages, setMessages] = useState([])
+  const [reportModalOpen, setReportModalOpen] = useState(false)
+  const [banReason, setBanReason] = useState(null)
 
   const [miloActive, setMiloActive] = useState(false)
   const [miloMessages, setMiloMessages] = useState([])
@@ -778,11 +811,23 @@ export default function ChatRoom({
 
   // ── Socket lifecycle ──
   useEffect(() => {
+    const clientId = getOrCreateClientId()
     const sock = socketIO(SERVER, {
       transports: ['websocket', 'polling'],
-      auth: { fingerprint: getFingerprint() },
+      auth: { clientId, fingerprint: getFingerprint() },
+      query: { clientId },
     })
     socketRef.current = sock
+
+    sock.on('banned', (payload) => {
+      const reason = (payload && payload.reason) || 'Your access to Miloo has been suspended due to violations of our Community Guidelines and Safety Policies.'
+      setBanReason(reason)
+      setStatus('banned')
+      if (autoNextTimerRef.current) clearTimeout(autoNextTimerRef.current)
+      if (miloTimerRef.current) clearTimeout(miloTimerRef.current)
+      if (handoffTimerRef.current) clearTimeout(handoffTimerRef.current)
+      try { sock.disconnect() } catch {}
+    })
 
     sock.on('connect', () => {
       if (hasJoinedRef.current) {
@@ -1004,6 +1049,22 @@ export default function ChatRoom({
     }
   }, [intent, teardownWebRTC])
 
+  const handleBlockUser = useCallback(() => {
+    const pid = partnerIdRef.current
+    if (pid) {
+      try {
+        const stored = JSON.parse(localStorage.getItem('miloo_blocked_users') || '[]')
+        if (!stored.includes(pid)) {
+          stored.push(pid)
+          localStorage.setItem('miloo_blocked_users', JSON.stringify(stored.slice(-500)))
+        }
+      } catch {
+        // ignore
+      }
+    }
+    findNext()
+  }, [findNext])
+
   // ── Render ──
   return (
     <>
@@ -1078,9 +1139,99 @@ export default function ChatRoom({
               aria-hidden="true"
             />
             <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{statusLabel(status, iceState, isVideo, mood)}</span>
+
+            {/* AI Companion Transparency Badge */}
+            {((partnerId && partnerId.startsWith('bot_')) || miloActive) && (
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  padding: '2px 8px',
+                  borderRadius: 'var(--radius-pill)',
+                  background: 'rgba(230, 99, 69, 0.15)',
+                  border: '1px solid var(--accent)',
+                  color: 'var(--accent)',
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: '0.04em',
+                }}
+                title="You are chatting with Milo, an AI conversational companion."
+              >
+                🤖 Milo · AI Companion
+              </span>
+            )}
           </div>
 
-          <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            {(status === 'connected' || status === 'text_chat') && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setReportModalOpen(true)}
+                  title="Report abusive behavior"
+                  aria-label="Report User"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 4,
+                    padding: '6px 10px',
+                    borderRadius: 'var(--radius-pill)',
+                    background: 'var(--surface-1)',
+                    border: '1px solid var(--border-1)',
+                    color: 'var(--text-2)',
+                    fontSize: 12,
+                    fontWeight: 500,
+                    cursor: 'pointer',
+                    transition: 'all 160ms ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--text-1)'
+                    e.currentTarget.style.borderColor = 'var(--danger)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--text-2)'
+                    e.currentTarget.style.borderColor = 'var(--border-1)'
+                  }}
+                >
+                  <span aria-hidden="true">🚩</span>
+                  <span>Report</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleBlockUser}
+                  title="Block this partner and skip"
+                  aria-label="Block User"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 4,
+                    padding: '6px 10px',
+                    borderRadius: 'var(--radius-pill)',
+                    background: 'var(--surface-1)',
+                    border: '1px solid var(--border-1)',
+                    color: 'var(--text-2)',
+                    fontSize: 12,
+                    fontWeight: 500,
+                    cursor: 'pointer',
+                    transition: 'all 160ms ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--text-1)'
+                    e.currentTarget.style.borderColor = 'var(--border-2)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--text-2)'
+                    e.currentTarget.style.borderColor = 'var(--border-1)'
+                  }}
+                >
+                  <span aria-hidden="true">🚫</span>
+                  <span>Block</span>
+                </button>
+              </>
+            )}
+            <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+          </div>
         </header>
 
         {/* ── Main body ── */}
@@ -1140,7 +1291,85 @@ export default function ChatRoom({
           {status === 'partner_left' && <PartnerLeftView onNext={findNext} onExit={onExit} />}
           {status === 'busy' && <SimpleStatusView title="Server is busy" desc="Too many open sockets from your network." />}
           {status === 'slow_down' && <SimpleStatusView title="Slowing down…" desc="Hang on, we'll re-queue you in a sec." />}
+          {status === 'banned' && (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '40px 24px',
+                textAlign: 'center',
+                gap: 16,
+                maxWidth: 520,
+                margin: 'auto',
+                background: 'var(--surface-1)',
+                border: '1px solid var(--border-1)',
+                borderRadius: 'var(--radius-lg)',
+                boxShadow: 'var(--shadow)',
+              }}
+            >
+              <div style={{ fontSize: '48px' }}>🚫</div>
+              <h2 style={{ margin: 0, fontSize: '22px', fontFamily: 'var(--font-display)', color: 'var(--danger, #ff5c5c)' }}>
+                Access Suspended
+              </h2>
+              <p style={{ margin: 0, fontSize: '14px', lineHeight: 1.6, color: 'var(--text-2)' }}>
+                {banReason || 'Your access to Miloo has been suspended due to violations of our Community Guidelines and Safety Policies.'}
+              </p>
+              <div style={{ display: 'flex', gap: 12, marginTop: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
+                <button
+                  type="button"
+                  onClick={onExit}
+                  style={{
+                    padding: '10px 24px',
+                    borderRadius: 'var(--radius-pill)',
+                    border: 'none',
+                    background: 'var(--accent)',
+                    color: '#fff',
+                    fontWeight: 600,
+                    fontSize: '14px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Return to Home
+                </button>
+                <a
+                  href="/safety"
+                  style={{
+                    padding: '10px 20px',
+                    borderRadius: 'var(--radius-pill)',
+                    border: '1px solid var(--border-1)',
+                    color: 'var(--text-2)',
+                    textDecoration: 'none',
+                    fontSize: '14px',
+                  }}
+                >
+                  Safety Guidelines
+                </a>
+                <a
+                  href="/contact"
+                  style={{
+                    padding: '10px 20px',
+                    borderRadius: 'var(--radius-pill)',
+                    border: '1px solid var(--border-1)',
+                    color: 'var(--text-2)',
+                    textDecoration: 'none',
+                    fontSize: '14px',
+                  }}
+                >
+                  Contact Support
+                </a>
+              </div>
+            </div>
+          )}
         </main>
+
+        <ReportModal
+          isOpen={reportModalOpen}
+          onClose={() => setReportModalOpen(false)}
+          reportedUser={partnerIdRef.current || partnerId}
+          onBlockAndNext={handleBlockUser}
+        />
       </div>
     </>
   )

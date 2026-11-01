@@ -1,333 +1,146 @@
-// client/src/pages/Terms.jsx
-//
-// Safety, terms & privacy page. Clean card layout, fully responsive.
-
-import { useNavigate } from 'react-router-dom'
-import useCanonical from '../hooks/useCanonical'
+import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
-import Logo from '../components/Logo'
+import Footer from '../components/Footer'
+import SEOHead from '../components/SEOHead'
 
-const sections = [
-  {
-    icon: '🔞',
-    title: '18+ Only',
-    desc: 'Miloo is only for adults. If someone is under 18, they should not use the platform.',
-  },
-  {
-    icon: '🕶️',
-    title: 'Anonymous by Design',
-    desc: 'You do not need to create an account to start chatting. Avoid sharing your name, phone number, social handles, address, or any private details.',
-  },
-  {
-    icon: '🤝',
-    title: 'Respect Is Mandatory',
-    desc: 'Harassment, threats, hate, spam, coercion, and abusive behavior are not allowed. We may restrict access for people who abuse the service.',
-  },
-  {
-    icon: '🚫',
-    title: 'No Sexual Misconduct',
-    desc: 'Sexually explicit behavior, exploitation, nudity, and predatory conduct are prohibited. Safety comes before growth.',
-  },
-  {
-    icon: '🛑',
-    title: 'No Spam or Promotion',
-    desc: 'Bots, repeated copy-paste messages, suspicious links, promotions, and attempts to move users off-platform too quickly are against these terms.',
-  },
-  {
-    icon: '⚠️',
-    title: 'Use Caution',
-    desc: 'Even in anonymous products, strangers are still strangers. If something feels wrong, leave the chat immediately.',
-  },
-  {
-    icon: '🗂️',
-    title: 'Limited Session Data',
-    desc: 'The experience may use temporary technical identifiers to support matching, abuse prevention, and safety systems. Do not assume other users are verified.',
-  },
-  {
-    icon: '🤖',
-    title: 'AI Companions',
-    desc: 'Some conversations may be with Milo, an AI companion.',
-  },
-  {
-    icon: '🔄',
-    title: 'Rules Can Change',
-    desc: 'Miloo may update these terms, safety rules, and moderation systems as the product evolves.',
-  },
-]
+const SUPPORT_EMAIL = import.meta.env.VITE_SUPPORT_EMAIL || 'support@miloo.chat'
 
-export default function Terms({ onBack, theme, onToggleTheme }) {
-  useCanonical('https://www.miloo.chat/terms')
-  const navigate = useNavigate()
-  const handleBack = onBack || (() => navigate('/'))
-
+export default function Terms({ theme, onToggleTheme }) {
   return (
     <div className="page page-enter" style={{ background: 'var(--bg-0)' }}>
+      <SEOHead
+        title="Terms of Service — Miloo (18+ Adults Only)"
+        description="Miloo Terms of Service: Platform rules, strict 18+ eligibility requirement, acceptable use policies, AI companion disclosures, and user agreements."
+        canonicalUrl="https://www.miloo.chat/terms"
+      />
+
       <Navbar theme={theme} onToggleTheme={onToggleTheme} />
 
-      <main
-        className="container"
-        style={{
-          flex: 1,
-          paddingTop: 'clamp(24px, 4vh, 40px)',
-          paddingBottom: 'clamp(40px, 6vh, 60px)',
-          width: '100%',
-        }}
-      >
-        <div style={{ maxWidth: 760, margin: '0 auto' }}>
-          {/* Header card */}
-          <header
-            className="glass"
-            style={{
-              padding: 'clamp(20px, 3vw, 32px)',
-              borderRadius: 'var(--radius-xl)',
-              marginBottom: 'clamp(20px, 3vh, 28px)',
-            }}
-          >
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 6,
-                padding: '6px 12px',
-                borderRadius: 'var(--radius-pill)',
-                background: 'var(--accent-dim)',
-                border: '1px solid var(--accent-border)',
-                color: 'var(--accent-2)',
-                fontSize: 12,
-                fontWeight: 700,
-                marginBottom: 16,
-              }}
-            >
-              <span aria-hidden="true">🛡️</span>
-              <span>Safety, Terms & Privacy</span>
-            </div>
-
-            <h1
-              style={{
-                fontSize: 'clamp(28px, 5vw, 44px)',
-                fontWeight: 800,
-                letterSpacing: '-0.04em',
-                lineHeight: 1.05,
-                color: 'var(--text-1)',
-                marginBottom: 12,
-              }}
-            >
-              Keep Miloo{' '}
-              <span className="gradient-text">human, safe, and worth returning to.</span>
-            </h1>
-
-            <p
-              style={{
-                color: 'var(--text-2)',
-                fontSize: 'clamp(14px, 1.5vw, 16px)',
-                lineHeight: 1.7,
-                maxWidth: 620,
-              }}
-            >
-              Miloo works best when people show up with respect, curiosity, and boundaries.
-              These rules exist to protect users and keep the experience from becoming
-              another chaotic random chat app.
-            </p>
-
-            <div
-              style={{
-                marginTop: 16,
-                color: 'var(--text-3)',
-                fontSize: 12,
-                fontWeight: 600,
-              }}
-            >
-              Last updated: April 2026
-            </div>
-          </header>
-
-          {/* Rules grid */}
+      <main className="container" style={{ paddingTop: 'clamp(32px, 5vw, 56px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 880 }}>
+        <header style={{ marginBottom: 40, textAlign: 'left' }}>
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
-              gap: 12,
-              marginBottom: 20,
+              display: 'inline-block',
+              fontSize: '12px',
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: 'var(--accent)',
+              marginBottom: 12,
             }}
           >
-            {sections.map((section) => (
-              <article
-                key={section.title}
-                className="card-hover"
-                style={{
-                  padding: 'clamp(16px, 2.5vw, 20px)',
-                  borderRadius: 'var(--radius-lg)',
-                  background: 'var(--surface-1)',
-                  border: '1px solid var(--border-1)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 8,
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span
-                    aria-hidden="true"
-                    style={{
-                      fontSize: 20,
-                      width: 36,
-                      height: 36,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      borderRadius: 'var(--radius-sm)',
-                      background: 'var(--accent-dim)',
-                      flexShrink: 0,
-                    }}
-                  >
-                    {section.icon}
-                  </span>
-                  <h3
-                    style={{
-                      fontSize: 16,
-                      fontWeight: 700,
-                      color: 'var(--text-1)',
-                      letterSpacing: '-0.01em',
-                    }}
-                  >
-                    {section.title}
-                  </h3>
-                </div>
-                <p
-                  style={{
-                    fontSize: 14,
-                    color: 'var(--text-2)',
-                    lineHeight: 1.65,
-                  }}
-                >
-                  {section.desc}
-                </p>
-              </article>
-            ))}
+            Legal & Compliance
           </div>
-
-          {/* Smart safety habits */}
-          <section
+          <h1
             style={{
-              padding: 'clamp(18px, 3vw, 24px)',
-              borderRadius: 'var(--radius-lg)',
-              background: 'var(--surface-1)',
-              border: '1px solid var(--accent-border)',
-              marginBottom: 20,
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(32px, 4.5vw, 52px)',
+              fontWeight: 500,
+              lineHeight: 1.15,
+              color: 'var(--text-1)',
+              margin: '0 0 16px',
             }}
           >
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                marginBottom: 12,
-              }}
-            >
-              <span aria-hidden="true" style={{ fontSize: 20 }}>
-                💡
-              </span>
-              <h3 style={{ fontSize: 17, fontWeight: 800, color: 'var(--text-1)' }}>
-                Smart safety habits
-              </h3>
-            </div>
-            <ul
-              style={{
-                display: 'grid',
-                gap: 8,
-                color: 'var(--text-2)',
-                fontSize: 14,
-                lineHeight: 1.65,
-                paddingLeft: 0,
-                listStyle: 'none',
-                margin: 0,
-              }}
-            >
-              {[
-                'Do not share phone numbers, Instagram, Snapchat, Telegram, or payment details too quickly.',
-                'If a chat feels pushy, sexual, manipulative, or suspicious, leave immediately.',
-              ].map((tip) => (
-                <li
-                  key={tip}
-                  style={{
-                    display: 'flex',
-                    gap: 10,
-                    paddingLeft: 0,
-                  }}
-                >
-                  <span style={{ color: 'var(--accent-2)', flexShrink: 0 }}>•</span>
-                  <span>{tip}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          {/* Footer card */}
-          <footer
-            className="glass"
+            Terms of Service
+          </h1>
+          <p
             style={{
-              padding: 'clamp(16px, 2.5vw, 22px)',
-              borderRadius: 'var(--radius-lg)',
-              textAlign: 'center',
-            }}
-          >
-            <p
-              style={{
-                fontSize: 13,
-                color: 'var(--text-3)',
-                lineHeight: 1.7,
-                margin: 0,
-              }}
-            >
-              Questions or support:
-              <br />
-              <a
-                href="mailto:support@miloo.app"
-                style={{ color: 'var(--accent-2)', fontWeight: 700, textDecoration: 'none' }}
-              >
-                support@miloo.app
-              </a>
-            </p>
-          </footer>
-
-          <div style={{ textAlign: 'center', marginTop: 24 }}>
-            <button
-              onClick={handleBack}
-              className="compact"
-              style={{
-                background: 'var(--surface-1)',
-                color: 'var(--text-2)',
-                fontSize: 14,
-                fontWeight: 600,
-                padding: '10px 20px',
-                borderRadius: 'var(--radius-pill)',
-                border: '1px solid var(--border-1)',
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 6,
-              }}
-            >
-              <span aria-hidden="true">←</span>
-              <span>Back to home</span>
-            </button>
-          </div>
-
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 8,
-              marginTop: 32,
+              fontSize: '14px',
               color: 'var(--text-3)',
-              fontSize: 12,
+              margin: 0,
             }}
           >
-            <Logo size={16} />
-            <span>© {new Date().getFullYear()} Miloo · Made with care</span>
+            Last Updated: November 1, 2026 · Effective Immediately
+          </p>
+        </header>
+
+        <article className="content-prose">
+          <h2>1. Acceptance of Terms & 18+ Age Requirement</h2>
+          <p>
+            Welcome to Miloo (accessible via <a href="https://www.miloo.chat" style={{ color: 'var(--accent)' }}>https://www.miloo.chat</a>). By accessing, browsing, or using our website, services, and real-time chat features, you agree to be bound by these Terms of Service ("Terms") and our <Link to="/privacy" style={{ color: 'var(--accent)' }}>Privacy Policy</Link> and <Link to="/community-guidelines" style={{ color: 'var(--accent)' }}>Community Guidelines</Link>. If you do not agree with any part of these Terms, you must immediately discontinue use of the platform.
+          </p>
+          <div
+            style={{
+              background: 'var(--accent-dim)',
+              border: '1px solid var(--accent)',
+              borderRadius: 'var(--radius-md)',
+              padding: '16px 20px',
+              margin: '24px 0',
+            }}
+          >
+            <p style={{ margin: 0, fontWeight: 600, color: 'var(--text-1)' }}>
+              🔞 MANDATORY ELIGIBILITY: YOU MUST BE AT LEAST 18 YEARS OF AGE TO USE MILOO.
+            </p>
+            <p style={{ margin: '8px 0 0', fontSize: '14px', color: 'var(--text-2)' }}>
+              Miloo is an adult-only platform. Individuals under the age of 18 are strictly prohibited from entering chat rooms, accessing video features, or interacting with other users. By clicking "Start Chat" or confirming our age prompt, you represent and warrant under penalty of perjury that you are at least 18 years old.
+            </p>
           </div>
-        </div>
+
+          <h2>2. Description of the Service</h2>
+          <p>
+            Miloo provides an unauthenticated, anonymous peer-to-peer text and video chat service. The service allows two users to be paired randomly based on mutual availability. Miloo does not require user accounts, passwords, or personal credentials. Users understand that conversations occur in real time and are unscripted.
+          </p>
+
+          <h2>3. Prohibited Conduct & Acceptable Use Policy</h2>
+          <p>
+            You agree to use Miloo in a lawful, civil, and responsible manner. You agree that you will NOT:
+          </p>
+          <ul>
+            <li><strong>Transmit or display child exploitation material:</strong> Any depiction or solicitation involving minors will result in immediate permanent bans and instant reporting to the National Center for Missing & Exploited Children (NCMEC) and law enforcement agencies.</li>
+            <li><strong>Display nudity or sexual acts:</strong> Nudity, lewd gestures, sexual solicitation, non-consensual sexual exhibitionism, or webcam exposure are strictly prohibited.</li>
+            <li><strong>Harass, intimidate, or threaten others:</strong> Hate speech, slurs, stalking, blackmail, death threats, or encouraging self-harm will not be tolerated.</li>
+            <li><strong>Commit fraud or financial scams:</strong> You may not solicit money, cryptocurrency, gift cards, or impersonate other persons or organizations.</li>
+            <li><strong>Deploy unauthorized automated scripts:</strong> You may not use automated bots, scrapers, crawlers (except compliant search engine crawlers), or socket flooders against our signaling infrastructure.</li>
+            <li><strong>Violate intellectual property:</strong> You may not broadcast copyrighted media, movies, or proprietary audio streams without authorization.</li>
+          </ul>
+
+          <h2>4. AI Conversational Companions</h2>
+          <p>
+            To provide continuous conversational availability when human queue sizes are low, Miloo offers Milo, an artificial intelligence conversational companion. Whenever you are connected to Milo, the interface will display a visible AI badge. Milo is intended for casual entertainment and does not provide professional, medical, legal, or psychological advice.
+          </p>
+
+          <h2>5. Reporting & Enforcement Mechanisms</h2>
+          <p>
+            Miloo provides built-in <strong>Report User</strong> and <strong>Block User</strong> controls. If a user is reported or identified engaging in abusive or prohibited conduct, Miloo reserves the right to terminate active sessions, block IP addresses, and restrict device fingerprints without prior notice or liability.
+          </p>
+
+          <h2>6. Third-Party Advertisements & Google AdSense</h2>
+          <p>
+            Miloo displays advertisements on its public informational pages provided by third-party ad networks, including Google AdSense. Your interactions with advertisers are solely between you and the respective third party. We do not place ads inside private chat sessions.
+          </p>
+
+          <h2>7. Disclaimer of Warranties</h2>
+          <p>
+            MILOO IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. TO THE MAXIMUM EXTENT PERMITTED BY LAW, MILOO DISCLAIMS ALL WARRANTIES, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. WE DO NOT GUARANTEE THAT THE SERVICE WILL BE UNINTERRUPTED, BUG-FREE, OR SECURE, NOR DO WE WARRANT THE CONDUCT, SUITABILITY, OR STATEMENTS OF ANY STRANGER YOU MAY ENCOUNTER.
+          </p>
+
+          <h2>8. Limitation of Liability</h2>
+          <p>
+            TO THE FULLEST EXTENT PERMISSIBLE BY APPLICABLE LAW, MILOO AND ITS OPERATORS, AFFILIATES, AND AGENTS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF OR IN CONNECTION WITH YOUR USE OF THE SERVICE, INCLUDING ANY INTERACTIONS, BEHAVIORS, OR CONTENT TRANSMITTED BY OTHER USERS.
+          </p>
+
+          <h2>9. Indemnification</h2>
+          <p>
+            You agree to defend, indemnify, and hold harmless Miloo and its operators from and against any claims, liabilities, damages, losses, and expenses (including legal fees) arising from or relating to your violation of these Terms or your conduct on the platform.
+          </p>
+
+          <h2>10. Modifications to Terms</h2>
+          <p>
+            Miloo reserves the right to update or modify these Terms at any time. When changes occur, the "Last Updated" date at the top of this page will be revised. Your continued use of the platform after updates indicates your acceptance of the revised Terms.
+          </p>
+
+          <h2>11. Contact Information</h2>
+          <p>
+            If you have questions regarding these Terms of Service, please reach out to us:
+          </p>
+          <p>
+            <strong>Support Desk:</strong> <a href={`mailto:${SUPPORT_EMAIL}`} style={{ color: 'var(--accent)' }}>{SUPPORT_EMAIL}</a><br />
+            <strong>Contact Page:</strong> <Link to="/contact" style={{ color: 'var(--accent)' }}>https://www.miloo.chat/contact</Link>
+          </p>
+        </article>
       </main>
+
+      <Footer />
     </div>
   )
 }

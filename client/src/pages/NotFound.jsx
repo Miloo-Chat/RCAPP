@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
 
 export default function NotFound({ theme, onToggleTheme }) {
   const navigate = useNavigate()
@@ -65,6 +66,7 @@ export default function NotFound({ theme, onToggleTheme }) {
           <span>Back to Home</span>
         </button>
       </main>
+      <Footer />
     </div>
   )
 }
