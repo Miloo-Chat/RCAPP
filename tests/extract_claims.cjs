@@ -21,8 +21,9 @@ const files = [
 console.log('=== EXTERNAL LINKS AUDIT ===\n');
 
 for (const f of files) {
-  if (!fs.existsSync(f)) continue;
-  const content = fs.readFileSync(f, 'utf8');
+  const fullPath = path.resolve(__dirname, '..', f);
+  if (!fs.existsSync(fullPath)) continue;
+  const content = fs.readFileSync(fullPath, 'utf8');
   const links = content.match(/https?:\/\/[^\s"'`<>]+/g) || [];
   const external = [...new Set(links.filter(l => 
     !l.includes('miloo.chat') && 

@@ -11,7 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const CLIENT_DIST = path.resolve(__dirname, 'client/dist');
+const CLIENT_DIST = path.resolve(__dirname, '../client/dist');
 
 const PUBLIC_ROUTES = [
   '/',

@@ -33,7 +33,7 @@ jobs:
 
       - name: Verify Ad Isolation Integrity
         run: |
-          node test_ad_isolation.cjs
+          node tests/test_ad_isolation.cjs
 
       - name: Build Application & Static Prerender
         run: |
@@ -42,11 +42,11 @@ jobs:
 
       - name: Run Content Quality & Word Count Audit
         run: |
-          node qa_content_audit.cjs
+          node tests/qa_content_audit.cjs
 
       - name: Verify Internal Links & Crawl Reachability
         run: |
-          node verify_crawl.cjs
+          node tests/verify_crawl.cjs
 
       - name: Run Lychee Link Checker
         uses: lycheeverse/lychee-action@v2
@@ -62,8 +62,8 @@ jobs:
 
       - name: Run pa11y Accessibility Audit
         run: |
-          node test_a11y.cjs
+          node tests/test_a11y.cjs
 
       - name: Run Lighthouse CI with Strict Budgets
         run: |
-          node run_lighthouse.cjs
+          node tests/run_lighthouse.cjs

@@ -3,7 +3,7 @@
 
 const { execSync, spawn } = require('child_process');
 const http = require('http');
-const bcrypt = require('./server/node_modules/bcryptjs');
+const bcrypt = require('../server/node_modules/bcryptjs');
 
 async function runAdminSecurityTests() {
   console.log('================================================================');

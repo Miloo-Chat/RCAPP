@@ -8,10 +8,10 @@
 const fs = require('fs')
 const path = require('path')
 
-const siteConfig = fs.readFileSync(path.resolve(__dirname, 'client/src/config/site.js'), 'utf8')
+const siteConfig = fs.readFileSync(path.resolve(__dirname, '../client/src/config/site.js'), 'utf8')
 const SHOW_SEO_POSTS = siteConfig.includes('export const SHOW_SEO_POSTS = true')
 
-const DIST_DIR = path.resolve(__dirname, 'client/dist')
+const DIST_DIR = path.resolve(__dirname, '../client/dist')
 
 if (!fs.existsSync(DIST_DIR)) {
   console.error('client/dist not found. Run "npm run build" first.')

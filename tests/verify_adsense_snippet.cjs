@@ -11,7 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
 
-const CLIENT_DIST = path.resolve(__dirname, 'client/dist');
+const CLIENT_DIST = path.resolve(__dirname, '../client/dist');
 const ADSENSE_PLACEHOLDER_ID = 'ca-pub-XXXXXXXXXXXXXXXX';
 const OLD_ID = 'ca-pub-4205636224784725';
 
@@ -98,8 +98,8 @@ if (activeScriptFound === 0) {
 
 // 3. Verify Old ID ca-pub-4205636224784725 is nowhere in built files or source code
 console.log('\n--- 3. Checking for Old ID (ca-pub-4205636224784725) Elimination ---');
-const adsTxtPath = path.resolve(__dirname, 'ads.txt');
-const clientAdsTxtPath = path.resolve(__dirname, 'client/public/ads.txt');
+const adsTxtPath = path.resolve(__dirname, '../ads.txt');
+const clientAdsTxtPath = path.resolve(__dirname, '../client/public/ads.txt');
 
 const adsTxtContent = fs.readFileSync(adsTxtPath, 'utf8');
 const clientAdsTxtContent = fs.readFileSync(clientAdsTxtPath, 'utf8');

@@ -10,7 +10,7 @@ const {
   checkDetoxify,
   checkRegexPatterns,
   TOXIC_PATTERNS
-} = require('./server/moderation');
+} = require('../server/moderation');
 
 async function runModerationTests() {
   console.log('================================================================');
@@ -151,7 +151,7 @@ async function runModerationTests() {
   console.log('\n--- TEST GROUP 4: Fail-Safe Handling (All Backends Unreachable) ---');
   try {
     // Ensure data/incidents.log exists or can be verified
-    const incidentLogPath = path.join(__dirname, 'server', 'data', 'incidents.log');
+    const incidentLogPath = path.join(__dirname, '..', 'server', 'data', 'incidents.log');
     const prevSize = fs.existsSync(incidentLogPath) ? fs.statSync(incidentLogPath).size : 0;
 
     // Call with forced unreachable / all backends failing

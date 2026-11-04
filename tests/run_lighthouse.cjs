@@ -14,7 +14,7 @@ const TARGETS = onlyHome
       { name: 'privacy', url: `${baseUrl}/privacy` },
     ];
 
-const outDir = path.join(__dirname, 'lighthouse-reports');
+const outDir = path.join(__dirname, '..', 'lighthouse-reports');
 if (!fs.existsSync(outDir)) {
   fs.mkdirSync(outDir, { recursive: true });
 }

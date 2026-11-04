@@ -14,7 +14,7 @@ const path = require('path');
 const FakeTimers = require('@sinonjs/fake-timers');
 
 // Ensure module resolution finds socket.io & socket.io-client across monorepo structure
-const clientIoPath = path.resolve(__dirname, 'client/node_modules/socket.io-client');
+const clientIoPath = path.resolve(__dirname, '../client/node_modules/socket.io-client');
 const ioClient = require(clientIoPath);
 
 process.env.PORT = '5199';
@@ -28,8 +28,8 @@ async function runNoBotsTestSuite() {
   console.log('================================================================\n');
 
   // Load server module in-process
-  const { server } = require('./server/index.js');
-  const metrics = require('./server/metrics.js');
+  const { server } = require('../server/index.js');
+  const metrics = require('../server/metrics.js');
 
   // Wait briefly for server socket binding
   await new Promise((r) => setTimeout(r, 600));

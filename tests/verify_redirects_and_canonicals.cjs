@@ -15,8 +15,8 @@ let fail = 0;
 // 1. Verify vercel.json redirect rules
 console.log('Test 1: Verify vercel.json 301 redirect configuration...');
 const vercelFiles = [
-  path.resolve(__dirname, 'vercel.json'),
-  path.resolve(__dirname, 'client/vercel.json'),
+  path.resolve(__dirname, '../vercel.json'),
+  path.resolve(__dirname, '../client/vercel.json'),
 ];
 
 for (const vFile of vercelFiles) {
@@ -48,7 +48,7 @@ for (const vFile of vercelFiles) {
 
 // 2. Verify sitemap.xml URLs
 console.log('\nTest 2: Verify sitemap.xml URLs use https://miloo.chat/...');
-const sitemapPath = path.resolve(__dirname, 'client/public/sitemap.xml');
+const sitemapPath = path.resolve(__dirname, '../client/public/sitemap.xml');
 const sitemapContent = fs.readFileSync(sitemapPath, 'utf8');
 const locMatches = sitemapContent.match(/<loc>(.*?)<\/loc>/g) || [];
 
@@ -76,7 +76,7 @@ if (invalidSitemapLocs === 0) {
 
 // 3. Verify built static pages in client/dist
 console.log('\nTest 3: Verify all built static pages use miloo.chat (no www) in canonicals and og:url...');
-const distDir = path.resolve(__dirname, 'client/dist');
+const distDir = path.resolve(__dirname, '../client/dist');
 const htmlFiles = [];
 
 function findHtmlFiles(dir) {

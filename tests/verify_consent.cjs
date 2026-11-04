@@ -9,8 +9,8 @@ const assert = require('assert');
 
 console.log('🧪 Starting Consent & Funding Choices Verification...\n');
 
-const cookieBannerPath = path.resolve(__dirname, 'client/src/components/CookieBanner.jsx');
-const adSenseScriptPath = path.resolve(__dirname, 'client/src/components/AdSenseScript.jsx');
+const cookieBannerPath = path.resolve(__dirname, '../client/src/components/CookieBanner.jsx');
+const adSenseScriptPath = path.resolve(__dirname, '../client/src/components/AdSenseScript.jsx');
 
 const bannerContent = fs.readFileSync(cookieBannerPath, 'utf8');
 const adScriptContent = fs.readFileSync(adSenseScriptPath, 'utf8');

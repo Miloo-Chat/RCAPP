@@ -18,7 +18,7 @@ console.log('--- RUNNING AD ISOLATION INTEGRITY AUDIT ---')
 let violations = 0
 
 for (const relPath of FORBIDDEN_FILES) {
-  const fullPath = path.resolve(__dirname, relPath)
+  const fullPath = path.resolve(__dirname, '..', relPath)
   if (!fs.existsSync(fullPath)) {
     console.error(`❌ Target file missing: ${relPath}`)
     violations++

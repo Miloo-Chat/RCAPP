@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 const files = [
   'client/src/pages/Privacy.jsx',
@@ -18,8 +19,9 @@ const files = [
 ];
 
 for (const f of files) {
-  if (!fs.existsSync(f)) continue;
-  const content = fs.readFileSync(f, 'utf8');
+  const fullPath = path.resolve(__dirname, '..', f);
+  if (!fs.existsSync(fullPath)) continue;
+  const content = fs.readFileSync(fullPath, 'utf8');
   // Match sentences or lines with stats, laws, acts, or percentages
   const lines = content.split('\n');
   const matched = [];
