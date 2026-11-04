@@ -414,6 +414,18 @@ const ROUTES_META = {
 const ADSENSE_SNIPPET = `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUB_ID}" crossorigin="anonymous"></script>`
 
 async function prerender() {
+  const isProduction = process.env.NODE_ENV === 'production' || process.env.CHECK_PRODUCTION_BUILD === '1' || process.env.PRODUCTION_BUILD === 'true';
+  const backendHttp = process.env.BACKEND_HTTP_ORIGIN;
+  const backendWss = process.env.BACKEND_WSS_ORIGIN;
+
+  if (isProduction && (!backendHttp || !backendWss)) {
+    console.error('\n❌ PRODUCTION BUILD FAILED: Missing required backend origin environment variables.');
+    if (!backendHttp) console.error('   Missing: BACKEND_HTTP_ORIGIN (e.g. BACKEND_HTTP_ORIGIN=https://api.example.com)');
+    if (!backendWss) console.error('   Missing: BACKEND_WSS_ORIGIN (e.g. BACKEND_WSS_ORIGIN=wss://api.example.com)');
+    console.error('Both variables are strictly required to assemble production Content-Security-Policy.\n');
+    process.exit(1);
+  }
+
   const templatePath = toAbsolute('dist/index.html')
   if (!fs.existsSync(templatePath)) {
     console.error('dist/index.html not found. Run "vite build" first.')
@@ -577,6 +589,56 @@ async function prerender() {
   } catch (err) {
     console.warn('Sitemap/RSS generation failed:', err.message)
   }
+
+  // 3. Inject production origins and copy vercel.json if backend origins provided
+  if (backendHttp && backendWss) {
+    const vercelFiles = [
+      toAbsolute('vercel.json'),
+      toAbsolute('../vercel.json'),
+      toAbsolute('dist/vercel.json'),
+    ]
+    const originsStr = `${backendHttp} ${backendWss}`
+
+    for (const vFile of vercelFiles) {
+      if (fs.existsSync(vFile)) {
+        try {
+          const cfg = JSON.parse(fs.readFileSync(vFile, 'utf8'))
+          for (const entry of cfg.headers || []) {
+            for (const h of entry.headers || []) {
+              if (h.key.toLowerCase() === 'content-security-policy') {
+                if (!h.value.includes(backendHttp)) {
+                  h.value = h.value.replace("connect-src 'self'", `connect-src 'self' ${originsStr}`)
+                }
+              }
+            }
+          }
+          fs.writeFileSync(vFile, JSON.stringify(cfg, null, 2), 'utf8')
+        } catch (_) {}
+      }
+    }
+  }
+
+  // 4. Print CSP verification summary for / and /chat
+  try {
+    const vPath = toAbsolute('vercel.json')
+    if (fs.existsSync(vPath)) {
+      const cfg = JSON.parse(fs.readFileSync(vPath, 'utf8'))
+      console.log('\n================================================================================')
+      console.log('SECURITY HEADERS & CSP CONFIGURATION (/ and /chat):')
+      console.log('================================================================================')
+      for (const entry of cfg.headers || []) {
+        if (entry.source === '/' || entry.source === '/(.*)' || entry.source === '/chat(.*)') {
+          console.log(`Route [${entry.source}]:`)
+          for (const h of entry.headers) {
+            if (h.key === 'Content-Security-Policy' || h.key === 'Permissions-Policy') {
+              console.log(`  ${h.key}: ${h.value}`)
+            }
+          }
+        }
+      }
+      console.log('================================================================================\n')
+    }
+  } catch (_) {}
 
   console.log('Static prerendering complete!')
 }

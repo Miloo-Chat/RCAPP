@@ -29,9 +29,11 @@ export default function Home({
   const { timeEngine, atmosphere, isNight, isDark: ctxIsDark } = useAtmosphere()
   const hour = timeEngine?.hour ?? 12
   // Real luminance check of background paper: values < 128 are dark night wash, >= 128 are light paper wash
-  const paperLuminance = atmosphere?.paperBg
-    ? (atmosphere.paperBg[0] * 0.299 + atmosphere.paperBg[1] * 0.587 + atmosphere.paperBg[2] * 0.114)
-    : (isNight ? 50 : 240)
+  const paperLuminance = Array.isArray(atmosphere?.paperBgRgb)
+    ? (atmosphere.paperBgRgb[0] * 0.299 + atmosphere.paperBgRgb[1] * 0.587 + atmosphere.paperBgRgb[2] * 0.114)
+    : (Array.isArray(atmosphere?.paperBg)
+      ? (atmosphere.paperBg[0] * 0.299 + atmosphere.paperBg[1] * 0.587 + atmosphere.paperBg[2] * 0.114)
+      : (isNight ? 50 : 240))
   const isDark = ctxIsDark ?? (paperLuminance < 128)
 
   // Contrast-compliant font colors across light, dusk, and night atmospheric conditions (all >= 7:1)

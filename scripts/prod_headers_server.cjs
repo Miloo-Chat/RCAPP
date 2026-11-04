@@ -1,17 +1,16 @@
 // scripts/prod_headers_server.cjs
 // Static server applying production headers strictly matching vercel.json.
-// Reads real origins from environment if provided.
+// Reads real origins from environment if provided. Supports gzip compression for performance audits.
 
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
+const zlib = require('zlib');
 
 const PORT = parseInt(process.env.PORT || '8899', 10);
 const DIST_DIR = path.resolve(__dirname, '../client/dist');
-
-// Read vercel.json to extract route rules
-const vercelConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../client/vercel.json'), 'utf8'));
+const VERCEL_JSON_PATH = path.resolve(__dirname, '../client/vercel.json');
 
 // MIME types
 const MIME_TYPES = {
@@ -32,20 +31,34 @@ const MIME_TYPES = {
   '.ttf': 'font/ttf',
 };
 
+const COMPRESSIBLE_EXTS = new Set(['.html', '.js', '.mjs', '.css', '.json', '.svg', '.txt', '.xml']);
+
 function getHeadersForRoute(pathname) {
   const mergedHeaders = {};
+  let vercelConfig;
+  try {
+    vercelConfig = JSON.parse(fs.readFileSync(VERCEL_JSON_PATH, 'utf8'));
+  } catch {
+    vercelConfig = { headers: [] };
+  }
 
   for (const entry of vercelConfig.headers || []) {
-    // Vercel source pattern regex matching
-    // e.g. "/(.*)", "/chat(.*)", "/admin(.*)", "/blog/omegle-alternative(.*)"
     let patternStr = entry.source.replace(/\(\.\*\)/g, '.*');
     const regex = new RegExp(`^${patternStr}$`);
     if (regex.test(pathname)) {
       for (const h of entry.headers) {
         let val = h.value;
         if (h.key.toLowerCase() === 'content-security-policy') {
-          const apiOrigins = process.env.API_ORIGINS || 'http://localhost:3001 ws://localhost:3001';
-          val = val.replace("connect-src 'self'", `connect-src 'self' ${apiOrigins}`);
+          let apiOrigins = process.env.API_ORIGINS;
+          if (!apiOrigins && (process.env.BACKEND_HTTP_ORIGIN || process.env.BACKEND_WSS_ORIGIN)) {
+            apiOrigins = `${process.env.BACKEND_HTTP_ORIGIN || ''} ${process.env.BACKEND_WSS_ORIGIN || ''}`.trim();
+          }
+          if (!apiOrigins) {
+            apiOrigins = 'http://localhost:3001 ws://localhost:3001';
+          }
+          if (!val.includes(apiOrigins)) {
+            val = val.replace("connect-src 'self'", `connect-src 'self' ${apiOrigins}`);
+          }
         }
         mergedHeaders[h.key.toLowerCase()] = val;
       }
@@ -96,10 +109,16 @@ const server = http.createServer((req, res) => {
     return res.end();
   }
 
-  fs.createReadStream(filePath).pipe(res);
+  const acceptEncoding = req.headers['accept-encoding'] || '';
+  if (COMPRESSIBLE_EXTS.has(ext) && acceptEncoding.includes('gzip')) {
+    res.setHeader('Content-Encoding', 'gzip');
+    const gzip = zlib.createGzip();
+    fs.createReadStream(filePath).pipe(gzip).pipe(res);
+  } else {
+    fs.createReadStream(filePath).pipe(res);
+  }
 });
 
 server.listen(PORT, () => {
   console.log(`Production headers server running on port ${PORT}`);
 });
-

@@ -65,9 +65,11 @@ export default function ChatButtons({
 
   // 3) Shadow tokens
   const shadowColor = isNight ? 'rgba(243, 239, 230, 0.35)' : 'rgba(26, 26, 26, 0.9)'
-  const isDarkPaper = (atmosphere?.paperBg
-    ? (atmosphere.paperBg[0] * 0.299 + atmosphere.paperBg[1] * 0.587 + atmosphere.paperBg[2] * 0.114)
-    : (isNight ? 50 : 240)) < 128
+  const isDarkPaper = (Array.isArray(atmosphere?.paperBgRgb)
+    ? (atmosphere.paperBgRgb[0] * 0.299 + atmosphere.paperBgRgb[1] * 0.587 + atmosphere.paperBgRgb[2] * 0.114)
+    : (Array.isArray(atmosphere?.paperBg)
+      ? (atmosphere.paperBg[0] * 0.299 + atmosphere.paperBg[1] * 0.587 + atmosphere.paperBg[2] * 0.114)
+      : (isNight ? 50 : 240))) < 128
   const captionColor = isDarkPaper ? '#F0F3F8' : '#1A1A1A'
 
   return (

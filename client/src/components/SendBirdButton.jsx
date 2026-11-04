@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { trackEvent } from '../utils/analytics'
+import { useAtmosphere } from '../context/AtmosphereContext'
 
 export default function SendBirdButton({ style = {}, label = 'Send a bird', variant = 'default' }) {
   const [copied, setCopied] = useState(false)
+  const { isNight } = useAtmosphere()
 
   const handleShare = async () => {
     trackEvent('share_click')
@@ -44,9 +46,9 @@ export default function SendBirdButton({ style = {}, label = 'Send a bird', vari
         gap: '8px',
         padding: variant === 'small' ? '6px 14px' : '10px 20px',
         borderRadius: 'var(--radius-pill)',
-        background: 'var(--surface-1)',
-        border: '1.5px solid var(--border-2)',
-        color: 'var(--text-1)',
+        background: isNight ? '#222A4A' : '#FFFFFF',
+        border: `1.5px solid ${isNight ? 'rgba(220, 225, 236, 0.45)' : 'rgba(26, 26, 26, 0.25)'}`,
+        color: isNight ? '#FFFFFF' : '#1A1A1A',
         fontFamily: "var(--font-hand), 'Caveat', cursive, sans-serif",
         fontSize: variant === 'small' ? '18px' : '20px',
         fontWeight: 600,
@@ -57,11 +59,11 @@ export default function SendBirdButton({ style = {}, label = 'Send a bird', vari
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-1px)'
-        e.currentTarget.style.backgroundColor = 'var(--surface-2)'
+        e.currentTarget.style.backgroundColor = isNight ? '#2E385E' : '#F7F4EE'
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'none'
-        e.currentTarget.style.backgroundColor = 'var(--surface-1)'
+        e.currentTarget.style.backgroundColor = isNight ? '#222A4A' : '#FFFFFF'
       }}
     >
       <span aria-hidden="true" style={{ fontSize: '18px' }}>🕊️</span>

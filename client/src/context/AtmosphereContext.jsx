@@ -15,9 +15,11 @@ const AtmosphereContext = createContext(null)
 export function AtmosphereProvider({ children }) {
   const timeEngine = useTimeEngine()
   const { atmosphere, hour } = timeEngine
-  const paperLuminance = atmosphere?.paperBg
-    ? (atmosphere.paperBg[0] * 0.299 + atmosphere.paperBg[1] * 0.587 + atmosphere.paperBg[2] * 0.114)
-    : (hour < 5.0 || hour >= 19.0 ? 50 : 240)
+  const paperLuminance = Array.isArray(atmosphere?.paperBgRgb)
+    ? (atmosphere.paperBgRgb[0] * 0.299 + atmosphere.paperBgRgb[1] * 0.587 + atmosphere.paperBgRgb[2] * 0.114)
+    : (Array.isArray(atmosphere?.paperBg)
+      ? (atmosphere.paperBg[0] * 0.299 + atmosphere.paperBg[1] * 0.587 + atmosphere.paperBg[2] * 0.114)
+      : (hour < 5.0 || hour >= 19.0 ? 50 : 240))
   const isNight = paperLuminance < 128
 
   // Dynamically set CSS custom properties on document.documentElement
@@ -124,6 +126,7 @@ export function AtmosphereProvider({ children }) {
     timeEngine,
     atmosphere,
     isNight,
+    isDark: isNight,
     hour,
   }), [timeEngine, atmosphere, isNight, hour])
 

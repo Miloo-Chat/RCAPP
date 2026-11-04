@@ -49,6 +49,19 @@ export const SHOW_SEO_POSTS =
     import.meta.env.VITE_SHOW_SEO_POSTS === 'true') ||
   false
 
+// Feature flags for interactive UI components
+export const ENABLE_GOLDEN_HOURS =
+  (typeof import.meta !== 'undefined' &&
+    import.meta.env &&
+    import.meta.env.VITE_ENABLE_GOLDEN_HOURS !== 'false') ??
+  true
+
+export const ENABLE_GOLDEN_HOUR_NOTIFICATIONS =
+  (typeof import.meta !== 'undefined' &&
+    import.meta.env &&
+    import.meta.env.VITE_ENABLE_GOLDEN_HOUR_NOTIFICATIONS !== 'false') ??
+  true
+
 // Author information constant for all editorial safety and blog articles
 export const ARTICLE_AUTHOR = {
   name: 'Miloo Safety & Editorial Team',

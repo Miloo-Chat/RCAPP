@@ -1711,37 +1711,35 @@ function MatchingView({
             </p>
           </div>
 
-          {/* Real Online Count Badge (Strictly Real — Never Fake) */}
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
-              padding: '4px 12px',
-              borderRadius: 'var(--radius-pill)',
-              background: 'var(--surface-1)',
-              border: '1px solid var(--border-1)',
-              fontSize: 12.5,
-              color: 'var(--text-2)',
-              marginTop: 10,
-              marginBottom: 20,
-            }}
-          >
-            <span
+          {/* Real Online Count Badge (Strictly Real — Never Fake; hidden when 0 or 1) */}
+          {onlineCount !== null && onlineCount > 1 && (
+            <div
               style={{
-                width: 7,
-                height: 7,
-                borderRadius: '50%',
-                background: (onlineCount && onlineCount > 1) ? '#10b981' : 'var(--text-3)',
-                display: 'inline-block',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '4px 12px',
+                borderRadius: 'var(--radius-pill)',
+                background: 'var(--surface-1)',
+                border: '1px solid var(--border-1)',
+                fontSize: 12.5,
+                color: 'var(--text-2)',
+                marginTop: 10,
+                marginBottom: 20,
               }}
-            />
-            <span>
-              {onlineCount !== null
-                ? `${onlineCount} ${onlineCount === 1 ? 'bird' : 'birds'} here now`
-                : 'Connecting to wire...'}
-            </span>
-          </div>
+            >
+              <span
+                style={{
+                  width: 7,
+                  height: 7,
+                  borderRadius: '50%',
+                  background: '#10b981',
+                  display: 'inline-block',
+                }}
+              />
+              <span>{`${onlineCount} birds here now`}</span>
+            </div>
+          )}
 
           {/* Thumb-friendly Cancel Button */}
           <div
