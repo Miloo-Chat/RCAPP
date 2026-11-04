@@ -5,6 +5,21 @@
   "scripts": {
     "server": "npm --prefix server start || node server/index.js",
     "client": "npm --prefix client run dev",
-    "dev": "npx concurrently \"npm run server\" \"npm run client\""
+    "dev": "npx concurrently \"npm run server\" \"npm run client\"",
+    "build": "cd client && npm run build",
+    "test": "bash scripts/no-bots-check.sh && node test_no_bots.cjs",
+    "test:ad-isolation": "node test_ad_isolation.cjs",
+    "test:crawl": "node verify_crawl.cjs",
+    "test:content-qa": "node qa_content_audit.cjs",
+    "test:moderation": "node test_moderation.cjs",
+    "test:admin-security": "node test_admin_security.cjs",
+    "test:two-browsers": "node test_two_browsers_no_bots.cjs",
+    "test:pa11y": "node test_a11y.cjs",
+    "test:lighthouse": "node run_lighthouse.cjs",
+    "quality-gate": "node test_ad_isolation.cjs && cd client && npm run build && cd .. && node qa_content_audit.cjs && node verify_crawl.cjs"
+  },
+  "devDependencies": {
+    "@sinonjs/fake-timers": "^15.4.0",
+    "puppeteer": "^25.16.0"
   }
 }

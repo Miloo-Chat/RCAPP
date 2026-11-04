@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { trackEvent } from '../utils/analytics'
 
 const REASONS = [
   { id: 'harassment', label: 'Harassment or Bullying', desc: 'Targeted insults, offensive slurs, or aggressive behavior' },
@@ -11,7 +12,7 @@ const REASONS = [
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL || ''
 
-export default function ReportModal({ isOpen, onClose, reportedUser, onBlockAndNext }) {
+export default function ReportModal({ isOpen, onClose, reportedUser, onBlockAndNext, sessionId, recentMessages = [] }) {
   const [selectedReason, setSelectedReason] = useState('harassment')
   const [notes, setNotes] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -26,6 +27,10 @@ export default function ReportModal({ isOpen, onClose, reportedUser, onBlockAndN
     setError('')
 
     try {
+      trackEvent('report_clicked', { reason: selectedReason })
+    } catch (_) {}
+
+    try {
       const res = await fetch(`${SERVER_URL}/api/reports`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -33,6 +38,8 @@ export default function ReportModal({ isOpen, onClose, reportedUser, onBlockAndN
           reportedUser: reportedUser || 'unknown_partner',
           reason: selectedReason,
           context: notes,
+          sessionId: sessionId || '',
+          recentMessages: Array.isArray(recentMessages) ? recentMessages.slice(-20) : [],
         }),
       })
 

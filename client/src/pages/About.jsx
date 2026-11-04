@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import SEOHead from '../components/SEOHead'
+import WatercolorMiniBanner from '../components/watercolor/WatercolorMiniBanner'
+import { ARTICLE_AUTHOR } from '../config/site'
 
 export default function About({ theme, onToggleTheme }) {
   return (
@@ -9,13 +11,28 @@ export default function About({ theme, onToggleTheme }) {
       <SEOHead
         title="About Miloo — Our Story & Vision for Modern Anonymous Chat"
         description="Learn why Miloo was built: reviving spontaneous human connection online with modern WebRTC peer privacy, zero profiling, and uncompromising safety standards."
-        canonicalUrl="https://www.miloo.chat/about"
+        canonicalUrl="https://miloo.chat/about"
+        ogImage="https://miloo.chat/og/about.png"
       />
 
       <Navbar theme={theme} onToggleTheme={onToggleTheme} />
 
-      <main className="container" style={{ paddingTop: 'clamp(32px, 5vw, 56px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 880 }}>
-        <header style={{ marginBottom: 48, textAlign: 'left' }}>
+      <main className="container" style={{ paddingTop: 'clamp(20px, 3.5vw, 40px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 880 }}>
+        {/* Subtle watercolor sagging wire & perched ink sparrows */}
+        <WatercolorMiniBanner />
+
+        {/* Breadcrumbs linking back to home */}
+        <nav aria-label="Breadcrumb" style={{ marginBottom: 20 }}>
+          <ol style={{ display: 'flex', gap: 8, alignItems: 'center', listStyle: 'none', padding: 0, margin: 0, fontSize: 13, color: 'var(--text-3)' }}>
+            <li>
+              <Link to="/" style={{ color: 'var(--accent)', textDecoration: 'none' }}>Home</Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li aria-current="page" style={{ color: 'var(--text-1)' }}>About</li>
+          </ol>
+        </nav>
+
+        <header style={{ marginBottom: 44, textAlign: 'left' }}>
           <div
             style={{
               display: 'inline-block',
@@ -73,7 +90,18 @@ export default function About({ theme, onToggleTheme }) {
             <li><strong>Aesthetically Thoughtful:</strong> Designed with clean, elegant typography, warm terracotta accents, and responsive layouts that look stunning on any screen.</li>
           </ul>
 
-          <h2>3. Our Core Architectural Principles</h2>
+          <h2>3. The Spontaneous Web & Miloo's Role</h2>
+          <p>
+            Miloo was created as an independent, free random video and text chat platform built for adults seeking genuine, spontaneous conversations with strangers from across the globe. Inspired by the open, unfiltered serendipity of early-web communication platforms like Omegle, Miloo reimagines stranger chat for the modern era with robust technical privacy, modern WebRTC peer-to-peer security, and a strict 18+ community environment.
+          </p>
+          <p>
+            Unlike conventional social networks that require extensive user profiles, persistent friend graphs, and invasive data collection, Miloo operates on a strict zero-retention philosophy. You do not need to register an account, download native software, or link an email or phone number. When you click either "Text Chat" or "Video Chat", our signaling server immediately pairs you with an active, available stranger who is also looking for a conversation.
+          </p>
+          <p>
+            Our mission is to sustain an open digital salon where curious adults can exchange global perspectives, practice foreign languages, debate philosophy, discuss cinema, or simply share a laugh late at night, without algorithmic feeds deciding who you are allowed to encounter. Learn more in our <Link to="/safety">Safety Center</Link> or review our <Link to="/faq">Frequently Asked Questions</Link>.
+          </p>
+
+          <h2>4. Our Core Architectural Principles</h2>
           <p>
             Every feature we design at Miloo is guided by four non-negotiable engineering principles:
           </p>
@@ -87,20 +115,45 @@ export default function About({ theme, onToggleTheme }) {
             <li>
               <strong>Proactive Abuse Protection:</strong> Anonymous does not mean unaccountable. We empower users with immediate Report and Block capabilities and use automated rate-limiting to prevent spam, script flooding, and harassment.
             </li>
-            <li>
-              <strong>Transparent Artificial Intelligence:</strong> When traffic is quiet and human queues are waiting, we offer Milo, an AI conversational partner. We clearly label Milo so our community is never misled about whom they are speaking with.
-            </li>
           </ol>
 
-          <h2>4. Strictly for Adults (18+)</h2>
+          <h2>5. Strictly for Adults (18+)</h2>
           <p>
             Miloo is dedicated exclusively to adult users. We do not permit minors on the site under any circumstances. We enforce mandatory age confirmation gates before any user enters chat rooms and maintain zero tolerance for illegal content, child exploitation, non-consensual imagery, and predatory conduct.
           </p>
 
-          <h2>5. How We Keep Miloo Free</h2>
+          <h2>6. How We Keep Miloo Free</h2>
           <p>
             To keep Miloo fast, dependable, and free for visitors around the world, we display privacy-compliant advertisements on our public content pages through Google AdSense. We strictly forbid advertisements within private chat and video call screens to protect your conversational privacy and ensure an uninterrupted user experience.
           </p>
+
+          {/* Section 7 with #team anchor */}
+          <section id="team" style={{ marginTop: 44, paddingTop: 28, borderTop: '1px solid var(--border-1)' }}>
+            <h2>7. Editorial & Safety Team</h2>
+            <p>
+              The <strong>{ARTICLE_AUTHOR.name}</strong> comprises experienced privacy researchers, communication designers, and safety engineers dedicated to open-web security and digital civil rights.
+            </p>
+            <p>
+              Our editorial mission is to author rigorous, practical, and candid guides on personal privacy, WebRTC hygiene, cyberstalking prevention, and anti-fraud awareness. Every safety article published in the <Link to="/blog">Miloo Blog</Link> is reviewed against current threat intelligence and vetted for practical clarity before publication.
+            </p>
+            <div
+              className="content-card"
+              style={{
+                background: 'var(--surface-1)',
+                border: '1px solid var(--border-2)',
+                borderRadius: 'var(--radius-lg)',
+                padding: '20px 24px',
+                marginTop: 20,
+              }}
+            >
+              <h4 style={{ margin: '0 0 8px', fontFamily: 'var(--font-display)', fontSize: 18, color: 'var(--text-1)' }}>
+                Editorial Review Standards
+              </h4>
+              <p style={{ margin: 0, fontSize: 14, color: 'var(--text-2)', lineHeight: 1.6 }}>
+                All guides are periodically audited and updated to reflect new browser security policies, WebRTC RFC updates, and changing digital risks. We do not accept sponsored content or guest posts from commercial VPN affiliates. Have questions or corrections? Contact our desk at <a href="mailto:support@miloo.chat" style={{ color: 'var(--accent)' }}>support@miloo.chat</a> or visit our <Link to="/transparency">Transparency Center</Link>.
+              </p>
+            </div>
+          </section>
         </article>
 
         {/* CTA */}
@@ -118,7 +171,7 @@ export default function About({ theme, onToggleTheme }) {
               padding: '12px 28px',
               borderRadius: 'var(--radius-pill)',
               background: 'var(--accent)',
-              color: '#ffffff',
+              color: 'var(--accent-text, #ffffff)',
               fontSize: '15px',
               fontWeight: 600,
               textDecoration: 'none',

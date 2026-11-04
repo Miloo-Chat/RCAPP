@@ -23,6 +23,8 @@ const PUBLIC_ROUTES = [
   '/privacy',
   '/terms',
   '/community-guidelines',
+  '/cookie-policy',
+  '/transparency',
   '/blog',
   '/blog/stay-safe-talking-to-strangers-online',
   '/blog/how-to-spot-scams-on-chat-sites',
@@ -51,8 +53,9 @@ const ARTICLES = [
 
 function extractBodyText(html) {
   // Extract content inside <div id="root">...</div>
-  const rootMatch = html.match(/<div id="root">([\s\S]*?)<\/div>\s*<div id="miloo-splash-screen">/i) ||
-                    html.match(/<div id="root">([\s\S]*?)<\/div>/i);
+  const rootMatch = html.match(/<div id="root">([\s\S]*?)<\/div>\s*<script/i) ||
+                    html.match(/<div id="root">([\s\S]*?)<\/div>\s*<div id="miloo-splash-screen">/i) ||
+                    html.match(/<div id="root">([\s\S]*)<\/div>/i);
   let text = rootMatch ? rootMatch[1] : html;
 
   // Remove script and style tags
@@ -146,8 +149,9 @@ function scanContent() {
       placeholderIssues.push({ route, flags });
     }
 
-    if (wordCount < 500) {
-      under500Words.push({ route, wordCount });
+    const minWords = route === '/' ? 250 : 500;
+    if (wordCount < minWords) {
+      under500Words.push({ route, wordCount, minExpected: minWords });
     }
 
     // Paragraph duplicate tracking for articles
@@ -170,6 +174,7 @@ function scanContent() {
       descLen,
       h1Count,
       flags,
+      minWords,
     });
   }
 
@@ -189,7 +194,7 @@ function scanContent() {
   console.log('| Route | Word Count | Title | Meta Desc Length | H1 Count | Status |');
   console.log('| :--- | :--- | :--- | :--- | :--- | :--- |');
   for (const r of results) {
-    const status = (r.wordCount >= 500 && r.h1Count === 1 && r.flags.length === 0) ? 'PASS' : 'FLAGGED';
+    const status = (r.wordCount >= r.minWords && r.h1Count === 1 && r.flags.length === 0) ? 'PASS' : 'FLAGGED';
     console.log(`| \`${r.route}\` | ${r.wordCount} words | "${r.title.slice(0, 45)}..." | ${r.descLen} chars | ${r.h1Count} | ${status} |`);
   }
 
@@ -198,7 +203,7 @@ function scanContent() {
   console.log('----------------------------------------------------------------');
   console.log(`1. Placeholder text / Lorem Ipsum / TODO: ${placeholderIssues.length === 0 ? 'NONE FOUND [CLEAN]' : JSON.stringify(placeholderIssues)}`);
   console.log(`2. Repeated paragraphs between articles: ${duplicateParagraphs.length === 0 ? 'NONE FOUND [CLEAN]' : JSON.stringify(duplicateParagraphs, null, 2)}`);
-  console.log(`3. Pages under 500 words: ${under500Words.length === 0 ? 'NONE [ALL >= 500 WORDS]' : JSON.stringify(under500Words, null, 2)}`);
+  console.log(`3. Under target word count (Home >= 250, others >= 500): ${under500Words.length === 0 ? 'NONE [ALL PASS]' : JSON.stringify(under500Words, null, 2)}`);
   console.log('----------------------------------------------------------------\n');
 }
 

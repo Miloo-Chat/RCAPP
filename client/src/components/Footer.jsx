@@ -1,60 +1,55 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import Logo from './Logo'
+import { useAtmosphere } from '../context/AtmosphereContext'
+import WatercolorLogo from './watercolor/WatercolorLogo'
+import { isSoundMuted, toggleSoundMuted, playBirdChirp } from './watercolor/soundEngine'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
+  const { isNight } = useAtmosphere()
+  const [muted, setMuted] = useState(true)
+
+  useEffect(() => {
+    setMuted(isSoundMuted())
+  }, [])
+
+  const handleToggleSound = () => {
+    const next = toggleSoundMuted()
+    setMuted(next)
+    if (!next) {
+      setTimeout(() => playBirdChirp(0), 100)
+    }
+  }
+
+  const handleOpenCookieSettings = () => {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('miloo_open_cookie_settings'))
+    }
+  }
 
   return (
     <footer
       style={{
         borderTop: '1px solid var(--border-1)',
-        background: 'var(--bg-0)',
-        paddingTop: 'clamp(40px, 6vw, 64px)',
-        paddingBottom: 'clamp(32px, 5vw, 48px)',
+        backgroundColor: isNight ? '#121726' : '#FAF4EB',
+        paddingTop: 'clamp(40px, 6vw, 56px)',
+        paddingBottom: 'clamp(32px, 5vw, 44px)',
         position: 'relative',
         zIndex: 10,
       }}
     >
-      <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-        {/* Top Grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-            gap: 32,
-          }}
-        >
+      <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
+        {/* Top Grid: 2 columns on mobile, 4 on desktop */}
+        <div className="footer-grid">
           {/* Column 1: Brand & Mission */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            <Link
-              to="/"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 10,
-                textDecoration: 'none',
-                color: 'inherit',
-              }}
-            >
-              <Logo size={26} />
-              <span
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '22px',
-                  fontWeight: 600,
-                  letterSpacing: '-0.02em',
-                  color: 'var(--text-1)',
-                }}
-              >
-                Miloo
-              </span>
-            </Link>
+          <div className="footer-brand-col" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <WatercolorLogo color="var(--text-1)" isNight={isNight} size={32} showDetail={true} />
             <p
               style={{
                 color: 'var(--text-2)',
                 fontSize: '14px',
                 lineHeight: 1.6,
-                maxWidth: 300,
+                maxWidth: 320,
                 margin: 0,
               }}
             >
@@ -81,11 +76,11 @@ export default function Footer() {
           </div>
 
           {/* Column 2: Platform Links */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <h4
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <h3
               style={{
                 fontFamily: 'var(--font-body)',
-                fontSize: '13px',
+                fontSize: '12px',
                 fontWeight: 700,
                 letterSpacing: '0.06em',
                 textTransform: 'uppercase',
@@ -94,10 +89,13 @@ export default function Footer() {
               }}
             >
               Explore Miloo
-            </h4>
+            </h3>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
               <li>
-                <FooterLink to="/">Home</FooterLink>
+                <FooterLink to="/about">About</FooterLink>
+              </li>
+              <li>
+                <FooterLink to="/contact">Contact</FooterLink>
               </li>
               <li>
                 <FooterLink to="/how-it-works">How It Works</FooterLink>
@@ -106,26 +104,20 @@ export default function Footer() {
                 <FooterLink to="/safety">Safety Center</FooterLink>
               </li>
               <li>
-                <FooterLink to="/faq">Frequently Asked Questions</FooterLink>
+                <FooterLink to="/faq">FAQ</FooterLink>
               </li>
               <li>
-                <FooterLink to="/blog">Blog & Guides</FooterLink>
-              </li>
-              <li>
-                <FooterLink to="/about">About Us</FooterLink>
-              </li>
-              <li>
-                <FooterLink to="/contact">Contact & Support</FooterLink>
+                <FooterLink to="/blog">Blog</FooterLink>
               </li>
             </ul>
           </div>
 
           {/* Column 3: Safety & Legal */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <h4
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <h3
               style={{
                 fontFamily: 'var(--font-body)',
-                fontSize: '13px',
+                fontSize: '12px',
                 fontWeight: 700,
                 letterSpacing: '0.06em',
                 textTransform: 'uppercase',
@@ -134,29 +126,56 @@ export default function Footer() {
               }}
             >
               Legal & Trust
-            </h4>
+            </h3>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
               <li>
-                <FooterLink to="/terms">Terms of Service</FooterLink>
+                <FooterLink to="/privacy">Privacy Policy</FooterLink>
               </li>
               <li>
-                <FooterLink to="/privacy">Privacy Policy</FooterLink>
+                <FooterLink to="/cookie-policy">Cookie Policy</FooterLink>
+              </li>
+              <li>
+                <FooterLink to="/terms">Terms (18+)</FooterLink>
               </li>
               <li>
                 <FooterLink to="/community-guidelines">Community Guidelines</FooterLink>
               </li>
               <li>
-                <FooterLink to="/safety#reporting">Report Abuse</FooterLink>
+                <FooterLink to="/transparency">Transparency & Moderation</FooterLink>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={handleOpenCookieSettings}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    minHeight: '32px',
+                    color: 'var(--text-1)',
+                    fontSize: '14px',
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    margin: 0,
+                    cursor: 'pointer',
+                    font: 'inherit',
+                    transition: 'color var(--ease)',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--accent)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-1)')}
+                >
+                  Cookie settings
+                </button>
               </li>
             </ul>
           </div>
 
-          {/* Column 4: Transparent AI & Ad Policy */}
+          {/* Column 4: Transparent Standards & Audio Control */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <h4
+            <h3
               style={{
                 fontFamily: 'var(--font-body)',
-                fontSize: '13px',
+                fontSize: '12px',
                 fontWeight: 700,
                 letterSpacing: '0.06em',
                 textTransform: 'uppercase',
@@ -164,28 +183,51 @@ export default function Footer() {
                 margin: 0,
               }}
             >
-              Transparency
-            </h4>
+              Experience & Transparency
+            </h3>
             <p
               style={{
-                color: 'var(--text-3)',
+                color: 'var(--text-2)',
                 fontSize: '13px',
                 lineHeight: 1.6,
                 margin: 0,
               }}
             >
-              Miloo is committed to transparent standards. When waiting queues are empty, some conversations may be facilitated by Milo, an AI companion clearly labeled as such.
+              Advertisements appear solely on informational pages via Google AdSense. Ads and trackers are never loaded inside active video or text chat rooms.
             </p>
-            <p
-              style={{
-                color: 'var(--text-3)',
-                fontSize: '13px',
-                lineHeight: 1.6,
-                margin: 0,
-              }}
-            >
-              Advertisements are served solely on public informational pages through Google AdSense. Ads are never displayed inside private chat sessions.
-            </p>
+
+            {/* Subtle Chirp Audio Mute Toggle */}
+            <div style={{ marginTop: 4 }}>
+              <button
+                type="button"
+                onClick={handleToggleSound}
+                aria-label={muted ? 'Chirp sound: Muted (Click to enable)' : 'Chirp sound: Active (Click to mute)'}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  padding: '6px 12px',
+                  borderRadius: 'var(--radius-pill)',
+                  background: 'var(--surface-1)',
+                  border: '1px solid var(--border-1)',
+                  color: 'var(--text-1)',
+                  fontSize: '13px',
+                  cursor: 'pointer',
+                  transition: 'background var(--ease), border-color var(--ease)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'var(--surface-2)'
+                  e.currentTarget.style.borderColor = 'var(--accent)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'var(--surface-1)'
+                  e.currentTarget.style.borderColor = 'var(--border-1)'
+                }}
+              >
+                <span>{muted ? '🔇' : '🐦'}</span>
+                <span>Chirp sound: {muted ? 'Muted' : 'On'}</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -193,19 +235,19 @@ export default function Footer() {
         <div
           style={{
             borderTop: '1px solid var(--border-1)',
-            paddingTop: 24,
+            paddingTop: 20,
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'wrap',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: 16,
+            gap: 12,
             fontSize: '13px',
-            color: 'var(--text-3)',
+            color: 'var(--text-2)',
           }}
         >
-          <div>© {currentYear} Miloo (miloo.chat). All rights reserved.</div>
-          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+          <div>© {currentYear} miloo (miloo.chat). All rights reserved.</div>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
             <span>Anonymous Peer-to-Peer WebRTC</span>
             <span>·</span>
             <span>No Registration Required</span>
@@ -223,13 +265,16 @@ function FooterLink({ to, children }) {
     <Link
       to={to}
       style={{
-        color: 'var(--text-2)',
+        display: 'inline-flex',
+        alignItems: 'center',
+        minHeight: '32px',
+        color: 'var(--text-1)',
         fontSize: '14px',
         textDecoration: 'none',
-        transition: 'color 180ms ease',
+        transition: 'color var(--ease)',
       }}
       onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--accent)')}
-      onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-2)')}
+      onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-1)')}
     >
       {children}
     </Link>

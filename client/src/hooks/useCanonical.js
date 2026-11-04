@@ -16,7 +16,7 @@ export default function useCanonical(url) {
     tag.setAttribute('href', canonical)
     return () => {
       // Restore to root on unmount so there's always a canonical present
-      tag.setAttribute('href', 'https://www.miloo.chat/')
+      tag.setAttribute('href', 'https://miloo.chat/')
     }
   }, [url])
 }

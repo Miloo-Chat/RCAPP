@@ -1,63 +1,95 @@
-import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
+// client/src/pages/Home.jsx
+//
+// Miloo — Minimal Watercolor Zen Homepage
+// Aesthetic: Hand-painted minimal watercolor on textured cream paper matching the reference image.
+// Strictly centered layout with generous whitespace:
+// - Top bar: "miloo" on left, "How it works / Safety / About" on right.
+// - Centered headline "Meet a real stranger." about 25% from top.
+// - Subline "No algorithm. No signup. Just connect."
+// - Centered hero art: ONE large watercolor sun (~420px wide) / pale full moon at night,
+//   with two diagonal sagging ink wires and 9 ink silhouette birds.
+// - Under the art, centered: "Text chat" & "Video chat" buttons side by side (20px gap).
+// - Footer: "Anonymous · Instant · Real people", then tiny links Terms, Privacy, FAQ.
+// - Tiny "scroll" hint under footer line.
+// - Calm paper-style section below the fold (~400 words).
+
+import { useState, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
 import AgeGateModal from '../components/AgeGateModal'
+import { useAtmosphere } from '../context/AtmosphereContext'
+import WatercolorLogo from '../components/watercolor/WatercolorLogo'
+import WatercolorScene from '../components/watercolor/WatercolorScene'
+import SendBirdButton from '../components/SendBirdButton'
 
 export default function Home({
   onStartText,
   onStartVideo,
-  theme,
-  onToggleTheme,
 }) {
-  const navigate = useNavigate()
+  const { timeEngine, atmosphere, isNight, isDark: ctxIsDark } = useAtmosphere()
+  const hour = timeEngine?.hour ?? 12
+  // Real luminance check of background paper: values < 128 are dark night wash, >= 128 are light paper wash
+  const paperLuminance = atmosphere?.paperBg
+    ? (atmosphere.paperBg[0] * 0.299 + atmosphere.paperBg[1] * 0.587 + atmosphere.paperBg[2] * 0.114)
+    : (isNight ? 50 : 240)
+  const isDark = ctxIsDark ?? (paperLuminance < 128)
+
+  // Contrast-compliant font colors across light, dusk, and night atmospheric conditions (all >= 7:1)
+  const bodyTextColor = isDark ? '#FFFFFF' : '#1E1B18'
+  const subTextColor = isDark ? '#E2E8F0' : '#2E2A26'
+  const mutedTextColor = isDark ? '#C4D2E2' : '#3E3830'
+  const dividerColor = isDark ? '#9EB0C6' : '#5E5850'
+  const accentColor = isDark ? '#F8C0B2' : '#7A1E0A'
+  const accentLinkColor = isDark ? '#F8C0B2' : '#7A1E0A'
+
+  const { moonPhase } = timeEngine
+
+  // 18+ Age verification state
   const [ageModalOpen, setAgeModalOpen] = useState(false)
+  const [pendingAction, setPendingAction] = useState(null)
   const [pendingMode, setPendingMode] = useState('video')
 
-  // Real visitor local time for subtle human connection
-  const [timeStr, setTimeStr] = useState(() => {
+  // Check age verification status
+  const isAgeVerified = useCallback(() => {
+    if (typeof window === 'undefined') return false
     try {
-      return new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }).toLowerCase()
+      return (
+        localStorage.getItem('miloo_age_confirmed') === 'true' ||
+        sessionStorage.getItem('miloo_age_confirmed') === 'true'
+      )
     } catch {
-      return ''
+      return false
     }
-  })
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      try {
-        setTimeStr(new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }).toLowerCase())
-      } catch {
-        // ignore
-      }
-    }, 15000)
-    return () => clearInterval(timer)
   }, [])
 
-  const handleStartAttempt = (mode) => {
-    const isVerified = sessionStorage.getItem('miloo_age_confirmed') === 'true'
-    if (isVerified) {
-      if (mode === 'text') onStartText()
-      else onStartVideo()
-    } else {
-      setPendingMode(mode)
-      setAgeModalOpen(true)
-    }
-  }
+  const handleRequestAgeModal = useCallback((mode, proceedCallback) => {
+    setPendingMode(mode)
+    setPendingAction(() => proceedCallback)
+    setAgeModalOpen(true)
+  }, [])
 
-  const handleAgeConfirm = () => {
-    sessionStorage.setItem('miloo_age_confirmed', 'true')
+  const handleAgeConfirm = useCallback(() => {
+    try {
+      localStorage.setItem('miloo_age_confirmed', 'true')
+      sessionStorage.setItem('miloo_age_confirmed', 'true')
+    } catch {
+      // ignore
+    }
     setAgeModalOpen(false)
-    if (pendingMode === 'text') onStartText()
-    else onStartVideo()
-  }
+    if (pendingAction) {
+      pendingAction()
+      setPendingAction(null)
+    } else {
+      if (pendingMode === 'text') onStartText?.()
+      else onStartVideo?.()
+    }
+  }, [pendingAction, pendingMode, onStartText, onStartVideo])
 
   const schemaJson = {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: 'Miloo',
-    url: 'https://www.miloo.chat',
+    url: 'https://miloo.chat',
     description: 'Free anonymous random video and text chat platform for adults. Connect with strangers securely without login or signup.',
     applicationCategory: 'SocialNetworkingApplication',
     operatingSystem: 'Any',
@@ -69,480 +101,531 @@ export default function Home({
   }
 
   return (
-    <div className="page page-enter" style={{ background: 'var(--bg-0)', position: 'relative' }}>
+    <div
+      className="miloo-watercolor-page"
+      style={{
+        position: 'relative',
+        width: '100%',
+        minHeight: '100vh',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        backgroundColor: atmosphere.paperBgCss,
+        color: atmosphere.textColor,
+        transition: 'background-color 0.8s ease, color 0.8s ease',
+        boxSizing: 'border-box',
+        isolation: 'isolate',
+      }}
+    >
       <SEOHead
-        title="Miloo — Free Anonymous Random Video & Text Chat (18+)"
-        description="Connect with random strangers instantly on Miloo. Free peer-to-peer video and text chat with no login, no apps, and strict privacy protection. Strictly 18+."
-        canonicalUrl="https://www.miloo.chat/"
+        title="Miloo — Meet a real stranger. Instant, anonymous, no algorithm."
+        description="Instant anonymous connection with random real strangers. No signup, no profiles, no algorithm. Peaceful watercolor canvas with real-time video and text chat."
+        canonicalUrl="https://miloo.chat/"
         schemaJson={schemaJson}
       />
 
-      {/* ── ATMOSPHERE (GRAIN & SLOW AMBIENT LIGHT) ── */}
-      <div className="grain-overlay" aria-hidden="true" />
-      <div className="ambient-light" aria-hidden="true" />
-
-      {/* ── NAVBAR ── */}
-      <Navbar theme={theme} onToggleTheme={onToggleTheme} />
-
-      {/* ── HERO & TWO DOORS (ABOVE THE FOLD) ── */}
-      <main
-        className="container"
+      {/* ── 1. EXACT ONE SCREEN HERO (Desktop 100vh) ── */}
+      <section
+        className="watercolor-hero-screen"
         style={{
+          width: '100%',
+          height: '100vh',
+          minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center',
-          paddingTop: 'clamp(32px, 6vh, 64px)',
-          paddingBottom: 'clamp(40px, 6vh, 64px)',
+          justifyContent: 'space-between',
           position: 'relative',
-          zIndex: 2,
+          boxSizing: 'border-box',
         }}
       >
-        <div className="home-hero-layout">
-          {/* ── LEFT COLUMN: EDITORIAL HERO COPY ── */}
-          <div style={{ textAlign: 'left', maxWidth: 540 }}>
-            {timeStr && (
-              <div
-                className="fade-in-up"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  fontSize: '13px',
-                  color: 'var(--text-3)',
-                  marginBottom: '18px',
-                  fontFamily: 'var(--font-body)',
-                  letterSpacing: '0.01em',
-                }}
-              >
-                <span
-                  style={{
-                    width: 6,
-                    height: 6,
-                    borderRadius: '50%',
-                    background: 'var(--accent)',
-                    display: 'inline-block',
-                    opacity: 0.9,
-                  }}
-                />
-                <span>It's {timeStr}. Serendipity awaits.</span>
-              </div>
-            )}
+        {/* Top Bar (Logo on left, "How it works / Safety / About" on right) */}
+        <header
+          className="watercolor-top-bar"
+          style={{
+            width: '100%',
+            padding: 'clamp(14px, 2.2vh, 24px) clamp(20px, 4vw, 48px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            zIndex: 30,
+            boxSizing: 'border-box',
+          }}
+        >
+          {/* Top-Left: Miloo Ink Wordmark */}
+          <div>
+            <WatercolorLogo
+              color={atmosphere.textColor}
+              isNight={isDark}
+              size={24}
+            />
+          </div>
 
-            <h1
-              className="fade-in-up"
+          {/* Top-Right: Pure minimal links only */}
+          <nav
+            aria-label="Main Navigation"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              fontFamily: 'var(--font-serif)',
+              fontSize: '15px',
+            }}
+          >
+            <Link
+              to="/how-it-works"
+              className="nav-ink-link"
               style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(38px, 5.2vw, 64px)',
-                fontWeight: 400,
-                letterSpacing: '-0.03em',
-                lineHeight: 1.08,
-                margin: '0 0 20px',
-                color: 'var(--text-1)',
+                color: atmosphere.textColor,
+                textDecoration: 'none',
+                transition: 'opacity 0.2s ease',
               }}
             >
-              Talk to someone unexpected.
+              How it works
+            </Link>
+
+            <span style={{ color: dividerColor }}>/</span>
+
+            <Link
+              to="/safety"
+              className="nav-ink-link"
+              style={{
+                color: atmosphere.textColor,
+                textDecoration: 'none',
+                transition: 'opacity 0.2s ease',
+              }}
+            >
+              Safety
+            </Link>
+
+            <span style={{ color: dividerColor }}>/</span>
+
+            <Link
+              to="/about"
+              className="nav-ink-link"
+              style={{
+                color: atmosphere.textColor,
+                textDecoration: 'none',
+                transition: 'opacity 0.2s ease',
+              }}
+            >
+              About
+            </Link>
+
+            <span style={{ color: dividerColor }}>/</span>
+
+            <SendBirdButton variant="small" />
+          </nav>
+        </header>
+
+        {/* Center Content (Headline, Sun/Wires Artwork, Text/Video Buttons) */}
+        <main
+          className="watercolor-main-container"
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            padding: '0 clamp(16px, 3vw, 32px)',
+            boxSizing: 'border-box',
+            zIndex: 10,
+          }}
+        >
+          {/* Centered Headline & Subline (~25% from top) */}
+          <div
+            className="watercolor-hero-text"
+            style={{
+              position: 'relative',
+              zIndex: 25,
+              textAlign: 'center',
+              marginBottom: 'clamp(6px, 1.2vh, 14px)',
+              maxWidth: '680px',
+              width: '100%',
+            }}
+          >
+            <h1
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: 'clamp(32px, 3.4vw, 46px)',
+                fontWeight: 500,
+                lineHeight: 1.15,
+                letterSpacing: '-0.02em',
+                color: atmosphere.textColor,
+                margin: '0 0 8px 0',
+                transition: 'color 0.4s ease',
+              }}
+            >
+              Meet a real stranger.
             </h1>
 
             <p
-              className="fade-in-up"
               style={{
-                fontSize: 'clamp(15px, 1.6vw, 18px)',
-                color: 'var(--text-2)',
-                lineHeight: 1.65,
-                margin: '0 0 28px',
-                maxWidth: 480,
+                fontFamily: 'var(--font-body)',
+                fontSize: 'clamp(14px, 1.2vw, 17px)',
+                fontWeight: 400,
+                lineHeight: 1.4,
+                color: subTextColor,
+                margin: 0,
+                letterSpacing: '0.01em',
+                transition: 'color 0.4s ease',
               }}
             >
-              A late-night conversation, a spontaneous story, or just passing the time. Miloo connects adults worldwide for 1-on-1 random video and text chats. No accounts, no profiling, and zero friction.
+              No algorithm. No signup. Just connect.
             </p>
-
-            {/* Quick feature tags */}
-            <div
-              className="fade-in-up"
-              style={{
-                color: 'var(--text-3)',
-                fontSize: '13px',
-                lineHeight: 1.5,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                flexWrap: 'wrap',
-              }}
-            >
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                <span style={{ color: 'var(--accent)' }}>✓</span> Anonymous by design
-              </span>
-              <span style={{ opacity: 0.35 }}>·</span>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                <span style={{ color: 'var(--accent)' }}>✓</span> Peer-to-peer WebRTC
-              </span>
-              <span style={{ opacity: 0.35 }}>·</span>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                <span style={{ color: 'var(--accent)' }}>✓</span> Strictly 18+
-              </span>
-            </div>
           </div>
 
-          {/* ── RIGHT COLUMN: THE TWO ARCHED DOORS ── */}
-          <div className="home-doors fade-in-up">
-            {/* DOOR 1: TEXT CHAT */}
-            <button
-              onClick={() => handleStartAttempt('text')}
-              className="home-door door-text"
-              aria-label="Enter Text Chat"
-            >
-              <div style={{ width: '100%' }}>
-                <div style={{ fontSize: '13px', fontWeight: 600, color: 'rgba(18, 17, 16, 0.7)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
-                  Option 01
-                </div>
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(28px, 2.8vw, 36px)',
-                    fontWeight: 400,
-                    letterSpacing: '-0.02em',
-                    color: '#121110',
-                    margin: '0 0 12px',
-                    lineHeight: 1.12,
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  Text Chat
-                </h2>
-                <p
-                  style={{
-                    fontSize: '15px',
-                    color: 'rgba(18, 17, 16, 0.88)',
-                    lineHeight: 1.5,
-                    margin: 0,
-                  }}
-                >
-                  Instant messaging with strangers. No camera required, zero social pressure.
-                </p>
-              </div>
+          {/* Hero Artwork & Centered Main Buttons (Unchanged) */}
+          <WatercolorScene
+            atmosphere={atmosphere}
+            moonPhase={moonPhase}
+            timeEngine={timeEngine}
+            onStartText={onStartText}
+            onStartVideo={onStartVideo}
+            isAgeVerified={isAgeVerified}
+            onRequestAgeModal={handleRequestAgeModal}
+          />
+        </main>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 32 }}>
-                <span style={{ fontSize: '13px', fontWeight: 600, color: '#121110' }}>
-                  Start Texting
-                </span>
-                <span
-                  className="door-arrow"
-                  style={{
-                    fontSize: '28px',
-                    lineHeight: 1,
-                    color: '#121110',
-                    display: 'inline-block',
-                    transition: 'transform 220ms ease-out',
-                  }}
-                >
-                  →
-                </span>
-              </div>
-            </button>
-
-            {/* DOOR 2: VIDEO CHAT */}
-            <button
-              onClick={() => handleStartAttempt('video')}
-              className="home-door door-video"
-              aria-label="Enter Video Chat"
-            >
-              <div style={{ width: '100%' }}>
-                <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
-                  Option 02
-                </div>
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(28px, 2.8vw, 36px)',
-                    fontWeight: 400,
-                    letterSpacing: '-0.02em',
-                    color: 'var(--text-1)',
-                    margin: '0 0 12px',
-                    lineHeight: 1.12,
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  Video Chat
-                </h2>
-                <p
-                  style={{
-                    fontSize: '15px',
-                    color: 'var(--text-2)',
-                    lineHeight: 1.5,
-                    margin: 0,
-                  }}
-                >
-                  Direct face-to-face video and voice. Instant encrypted peer connection.
-                </p>
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 32 }}>
-                <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-1)' }}>
-                  Start Video
-                </span>
-                <span
-                  className="door-arrow"
-                  style={{
-                    fontSize: '28px',
-                    lineHeight: 1,
-                    color: 'var(--text-1)',
-                    display: 'inline-block',
-                    transition: 'transform 220ms ease-out',
-                  }}
-                >
-                  →
-                </span>
-              </div>
-            </button>
+        {/* Hero Footer (Trust line, tiny links, and scroll hint) */}
+        <footer
+          className="watercolor-footer"
+          style={{
+            width: '100%',
+            padding: 'clamp(8px, 1.5vh, 16px) clamp(20px, 4vw, 40px)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '4px',
+            zIndex: 30,
+            boxSizing: 'border-box',
+          }}
+        >
+          {/* Trust Line */}
+          <div
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontSize: 'clamp(13px, 1.3vw, 14.5px)',
+              letterSpacing: '0.08em',
+              color: bodyTextColor,
+              textAlign: 'center',
+              userSelect: 'none',
+            }}
+          >
+            Anonymous · Instant · Real people
           </div>
-        </div>
-      </main>
 
-      {/* ── BELOW THE FOLD: RICH ORIGINAL CONTENT (> 500 WORDS) ── */}
+          {/* Tiny Links: Terms, Privacy, FAQ */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              fontFamily: 'var(--font-body)',
+              fontSize: '12.5px',
+              color: bodyTextColor,
+            }}
+          >
+            <Link to="/terms" className="footer-ink-link" style={{ color: 'inherit', textDecoration: 'none' }}>
+              Terms
+            </Link>
+            <span style={{ color: dividerColor }}>·</span>
+            <Link to="/privacy" className="footer-ink-link" style={{ color: 'inherit', textDecoration: 'none' }}>
+              Privacy
+            </Link>
+            <span style={{ color: dividerColor }}>·</span>
+            <Link to="/faq" className="footer-ink-link" style={{ color: 'inherit', textDecoration: 'none' }}>
+              FAQ
+            </Link>
+          </div>
+
+          {/* Tiny Scroll Hint under Footer Line */}
+          <div
+            className="home-scroll-hint"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              fontSize: '11px',
+              fontFamily: 'var(--font-body)',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: mutedTextColor,
+              marginTop: '4px',
+              userSelect: 'none',
+              opacity: 0.85,
+            }}
+          >
+            <span>Scroll to explore</span>
+            <span style={{ fontSize: '12px', lineHeight: 1 }} aria-hidden="true">↓</span>
+          </div>
+        </footer>
+      </section>
+
+      {/* ── 2. BELOW THE FOLD: CALM PAPER-STYLE SECTION (~400 WORDS) ── */}
       <section
+        className="watercolor-home-paper-section"
+        aria-label="About Miloo Platform"
         style={{
-          borderTop: '1px solid var(--border-1)',
-          background: 'var(--surface-1)',
-          paddingTop: 'clamp(48px, 8vw, 80px)',
-          paddingBottom: 'clamp(48px, 8vw, 80px)',
+          width: '100%',
+          backgroundColor: atmosphere.paperBgCss,
+          borderTop: `1px solid ${isNight ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)'}`,
+          padding: 'clamp(48px, 6vw, 76px) clamp(20px, 4vw, 40px)',
+          boxSizing: 'border-box',
           position: 'relative',
-          zIndex: 2,
+          zIndex: 20,
         }}
       >
-        <div className="container" style={{ maxWidth: 960 }}>
-          {/* Section 1: What is Miloo? */}
-          <div style={{ marginBottom: 56 }}>
-            <div
+        <div
+          style={{
+            maxWidth: '860px',
+            margin: '0 auto',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '36px',
+          }}
+        >
+          {/* Subtitle & Heading */}
+          <div style={{ textAlign: 'center' }}>
+            <span
               style={{
-                display: 'inline-block',
-                fontSize: '12px',
-                fontWeight: 700,
-                letterSpacing: '0.08em',
+                fontFamily: 'var(--font-serif)',
+                fontSize: '13px',
+                letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: 'var(--accent)',
-                marginBottom: 12,
+                color: accentColor,
+                fontWeight: 600,
+                display: 'block',
+                marginBottom: '10px',
               }}
             >
-              The Modern Serendipity Network
-            </div>
+              Quiet Serendipity
+            </span>
             <h2
               style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(26px, 3.2vw, 38px)',
+                fontFamily: 'var(--font-serif)',
+                fontSize: 'clamp(28px, 3.2vw, 40px)',
                 fontWeight: 500,
-                color: 'var(--text-1)',
-                marginBottom: 20,
+                letterSpacing: '-0.02em',
+                color: atmosphere.textColor,
+                margin: 0,
                 lineHeight: 1.2,
               }}
             >
-              What is Miloo and How Does It Work?
+              A Peaceful Space for Real Human Conversation
             </h2>
-            <div className="content-prose">
-              <p>
-                Miloo is an independent, free random video and text chat platform built for adults seeking genuine, spontaneous conversations with strangers from across the globe. Inspired by the open, unfiltered serendipity of early-web communication platforms like Omegle, Miloo reimagines stranger chat for the modern era with robust technical privacy, modern WebRTC peer-to-peer security, and a strict 18+ community environment.
-              </p>
-              <p>
-                Unlike conventional social networks that require extensive user profiles, persistent friend graphs, and invasive data collection, Miloo operates on a strict zero-retention philosophy. You do not need to register an account, download native software, or link an email or phone number. When you click either "Text Chat" or "Video Chat", our signaling server immediately pairs you with an active, available stranger who is also looking for a conversation.
-              </p>
-            </div>
           </div>
 
-          {/* Section 2: Step-by-Step Walkthrough Cards */}
-          <div style={{ marginBottom: 64 }}>
+          {/* 1. What Miloo Is */}
+          <div style={{ fontSize: '16px', lineHeight: 1.75, color: bodyTextColor, fontFamily: 'var(--font-body)' }}>
+            <p style={{ margin: 0 }}>
+              Miloo is an intentional sanctuary for spontaneous human conversation on the open web. In an internet dominated by algorithmic curation, addictive feeds, and performative social profiles, Miloo revives the lost art of unscripted serendipity. You open your browser, enter a quiet watercolor canvas, and instantly connect with a real person somewhere across the globe. There are no logins, no follower metrics, no public histories, and no algorithmic bias—just two strangers sharing a genuine, unburdened human moment.
+            </p>
+          </div>
+
+          {/* 2. How It Works in 3 Short Steps */}
+          <div>
             <h3
               style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '24px',
-                color: 'var(--text-1)',
-                marginBottom: 24,
+                fontFamily: 'var(--font-serif)',
+                fontSize: '22px',
+                fontWeight: 600,
+                color: atmosphere.textColor,
+                margin: '0 0 16px',
               }}
             >
-              How to Start Chatting in 3 Simple Steps
+              How It Works in Three Simple Steps
             </h3>
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-                gap: 20,
+                gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                gap: '20px',
               }}
             >
-              <div className="content-card">
-                <div style={{ fontSize: '28px', marginBottom: 14 }}>🚪</div>
-                <h4 style={{ fontSize: '18px', color: 'var(--text-1)', margin: '0 0 10px', fontFamily: 'var(--font-display)' }}>
-                  1. Pick Your Mode
-                </h4>
-                <p style={{ margin: 0, fontSize: '14px', lineHeight: 1.6, color: 'var(--text-2)' }}>
-                  Choose Text Chat for quiet, low-bandwidth text messaging, or Video Chat to connect directly via webcam and microphone.
+              <div
+                style={{
+                  padding: '20px',
+                  borderRadius: 'var(--radius-md)',
+                  background: isNight ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)',
+                  border: `1px solid ${isNight ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)'}`,
+                }}
+              >
+                <div style={{ fontSize: '13px', fontWeight: 700, color: accentColor, textTransform: 'uppercase', marginBottom: '8px' }}>Step 1</div>
+                <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', margin: '0 0 8px', color: atmosphere.textColor }}>Choose Your Medium</h4>
+                <p style={{ fontSize: '14px', lineHeight: 1.6, color: subTextColor, margin: 0 }}>
+                  Select text chat for quiet, reflective exchanges, or video chat for face-to-face spontaneous dialogue. No downloads or installations needed.
                 </p>
               </div>
 
-              <div className="content-card">
-                <div style={{ fontSize: '28px', marginBottom: 14 }}>🔞</div>
-                <h4 style={{ fontSize: '18px', color: 'var(--text-1)', margin: '0 0 10px', fontFamily: 'var(--font-display)' }}>
-                  2. Confirm 18+ Age
-                </h4>
-                <p style={{ margin: 0, fontSize: '14px', lineHeight: 1.6, color: 'var(--text-2)' }}>
-                  Miloo is strictly for adults. Confirm that you are at least 18 years old and agree to treat strangers with mutual respect and dignity.
+              <div
+                style={{
+                  padding: '20px',
+                  borderRadius: 'var(--radius-md)',
+                  background: isNight ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)',
+                  border: `1px solid ${isNight ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)'}`,
+                }}
+              >
+                <div style={{ fontSize: '13px', fontWeight: 700, color: accentColor, textTransform: 'uppercase', marginBottom: '8px' }}>Step 2</div>
+                <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', margin: '0 0 8px', color: atmosphere.textColor }}>Connect Instantly</h4>
+                <p style={{ fontSize: '14px', lineHeight: 1.6, color: subTextColor, margin: 0 }}>
+                  Confirm you are 18 or older. Our matchmaking system immediately pairs you peer-to-peer with a waiting partner using encrypted WebRTC.
                 </p>
               </div>
 
-              <div className="content-card">
-                <div style={{ fontSize: '28px', marginBottom: 14 }}>⚡</div>
-                <h4 style={{ fontSize: '18px', color: 'var(--text-1)', margin: '0 0 10px', fontFamily: 'var(--font-display)' }}>
-                  3. Instant Connection
-                </h4>
-                <p style={{ margin: 0, fontSize: '14px', lineHeight: 1.6, color: 'var(--text-2)' }}>
-                  Get paired in seconds. Talk for as long as you enjoy, or tap "Skip / Next" at any moment to instantly meet someone new.
+              <div
+                style={{
+                  padding: '20px',
+                  borderRadius: 'var(--radius-md)',
+                  background: isNight ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)',
+                  border: `1px solid ${isNight ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)'}`,
+                }}
+              >
+                <div style={{ fontSize: '13px', fontWeight: 700, color: accentColor, textTransform: 'uppercase', marginBottom: '8px' }}>Step 3</div>
+                <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', margin: '0 0 8px', color: atmosphere.textColor }}>Skip or Move On Freely</h4>
+                <p style={{ fontSize: '14px', lineHeight: 1.6, color: subTextColor, margin: 0 }}>
+                  Converse as long as the chemistry lasts. When ready, tap Skip to cleanly detach. The active session and memory are immediately wiped clean.
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Section 3: Safety, Moderation & Privacy Architecture */}
-          <div style={{ marginBottom: 64 }}>
+          {/* 3. How We Keep It Safe */}
+          <div>
             <h3
               style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '24px',
-                color: 'var(--text-1)',
-                marginBottom: 20,
+                fontFamily: 'var(--font-serif)',
+                fontSize: '22px',
+                fontWeight: 600,
+                color: atmosphere.textColor,
+                margin: '0 0 12px',
               }}
             >
-              Safety, Moderation, and Real-Time Abuse Prevention
+              How We Keep It Safe
             </h3>
-            <div className="content-prose">
-              <p>
-                Anonymous chat should be enjoyable and safe. Because random platforms attract individuals from every background, Miloo implements multi-layered safety controls directly into every chat room:
-              </p>
-              <ul>
+            <p style={{ fontSize: '15px', lineHeight: 1.7, color: bodyTextColor, margin: '0 0 12px' }}>
+              Civil, enjoyable conversations require uncompromising safety protections. We protect our community through three core pillars:
+            </p>
+            <ul style={{ paddingLeft: '20px', fontSize: '15px', lineHeight: 1.7, color: bodyTextColor, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <li>
+                <strong>Strictly 18+ Adults Only:</strong> Minors are strictly prohibited from entering rooms. We enforce a mandatory age verification gate before allowing room entry.
+              </li>
+              <li>
+                <strong>Instant Report & Block Controls:</strong> Every conversation includes prominent one-click report and block tools. Blocking instantly severs the connection and blacklists the individual from your session.
+              </li>
+              <li>
+                <strong>Proactive Multi-Layered Moderation:</strong> Our automated heuristics monitor report frequency and abusive patterns, enforcing temporary suspensions, device fingerprint restrictions, and permanent IP bans against bad actors.
+              </li>
+            </ul>
+          </div>
+
+          {/* 4. Who Miloo Is For */}
+          <div>
+            <h3
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '22px',
+                fontWeight: 600,
+                color: atmosphere.textColor,
+                margin: '0 0 12px',
+              }}
+            >
+              Who Miloo Is For
+            </h3>
+            <p style={{ fontSize: '15px', lineHeight: 1.7, color: bodyTextColor, margin: 0 }}>
+              Miloo is designed for curious minds, night owls, language learners practicing dialogue, travelers seeking global perspectives, and anyone feeling tired of algorithmic echo chambers. Whether you want to share a laugh after a long workday, discuss music with someone continents away, or enjoy peaceful company during midnight tea, Miloo offers a thoughtful, respectful space for real human voices.
+            </p>
+          </div>
+
+          {/* 5. Links to How It Works, Safety Center, FAQ and 3 Blog Articles */}
+          <div
+            style={{
+              paddingTop: '20px',
+              borderTop: `1px solid ${isNight ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)'}`,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px',
+            }}
+          >
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', alignItems: 'center' }}>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: mutedTextColor, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                Explore Miloo:
+              </span>
+              <Link to="/how-it-works" style={{ color: accentLinkColor, textDecoration: 'underline', textUnderlineOffset: '3px', fontSize: '14px', fontWeight: 500 }}>
+                How It Works
+              </Link>
+              <span style={{ color: dividerColor }}>·</span>
+              <Link to="/safety" style={{ color: accentLinkColor, textDecoration: 'underline', textUnderlineOffset: '3px', fontSize: '14px', fontWeight: 500 }}>
+                Safety Center
+              </Link>
+              <span style={{ color: dividerColor }}>·</span>
+              <Link to="/faq" style={{ color: accentLinkColor, textDecoration: 'underline', textUnderlineOffset: '3px', fontSize: '14px', fontWeight: 500 }}>
+                FAQ
+              </Link>
+            </div>
+
+            <div>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: mutedTextColor, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '8px' }}>
+                Featured Safety & Conversation Guides:
+              </span>
+              <ul style={{ paddingLeft: '20px', margin: 0, display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '14px', color: bodyTextColor }}>
                 <li>
-                  <strong>One-Tap User Reporting:</strong> Every chat screen features an accessible "Report" button with granular violation categories (Harassment, Nudity / Explicit Content, Spam, Threats, Scams). Reports are dispatched to our moderation queue with minimal diagnostic metadata.
+                  <Link to="/blog/stay-safe-talking-to-strangers-online" style={{ color: accentLinkColor, textDecoration: 'underline', textUnderlineOffset: '2px' }}>
+                    How to Stay Safe Talking to Strangers Online
+                  </Link>{' '}
+                  — Proven strategies to guard your identity and recognize manipulation.
                 </li>
                 <li>
-                  <strong>Instant User Blocking:</strong> If a partner makes you uncomfortable, tap "Block User" to immediately sever the connection and blacklist that partner's session ID, guaranteeing you will not be paired with them again.
+                  <Link to="/blog/tips-for-starting-good-conversation-with-stranger" style={{ color: accentLinkColor, textDecoration: 'underline', textUnderlineOffset: '2px' }}>
+                    10 Tips for Starting a Great Conversation with a Stranger
+                  </Link>{' '}
+                  — Playful icebreakers and active listening techniques.
                 </li>
                 <li>
-                  <strong>Encrypted Peer-to-Peer Streams:</strong> Video and audio calls travel directly between browsers using WebRTC DTLS/SRTP encryption. Miloo never intercepts, inspects, or records your private video streams.
-                </li>
-                <li>
-                  <strong>Transparent AI Companion Notice:</strong> If waiting queues are low during quiet hours, Miloo provides an AI conversational partner named Milo. All AI interactions are visibly labeled so you always know whether you are chatting with a human or an automated partner.
+                  <Link to="/blog/protecting-privacy-in-video-chat" style={{ color: accentLinkColor, textDecoration: 'underline', textUnderlineOffset: '2px' }}>
+                    Protecting Your Privacy in Video Chat: Checklist
+                  </Link>{' '}
+                  — Easy environmental sweep to ensure webcam privacy.
                 </li>
               </ul>
             </div>
           </div>
-
-          {/* Section 4: Who Is Miloo For? (Strict 18+ Adult Policy) */}
-          <div
-            style={{
-              background: 'var(--bg-0)',
-              border: '1px solid var(--border-2)',
-              borderRadius: 'var(--radius-xl)',
-              padding: 'clamp(24px, 4vw, 40px)',
-              marginBottom: 56,
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-              <span style={{ fontSize: '28px' }}>🔞</span>
-              <h3
-                style={{
-                  margin: 0,
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '22px',
-                  color: 'var(--text-1)',
-                }}
-              >
-                Strictly 18+ Adults Only Policy
-              </h3>
-            </div>
-            <div className="content-prose" style={{ margin: 0 }}>
-              <p>
-                Miloo is designed exclusively for mature adults aged 18 and older. Minors are strictly prohibited from using the platform. Because stranger interactions are unscripted, users may encounter sensitive conversations or adult topics. We maintain zero tolerance for child sexual abuse material (CSAM), non-consensual sexually explicit content, harassment, stalking, hate speech, and scams. Any detected or reported violations result in immediate device fingerprint and IP bans.
-              </p>
-              <p style={{ margin: 0 }}>
-                To learn more about keeping your identity protected while meeting strangers online, read our comprehensive{' '}
-                <Link to="/safety" style={{ color: 'var(--accent)' }}>
-                  Safety Guide
-                </Link>{' '}
-                and review our{' '}
-                <Link to="/community-guidelines" style={{ color: 'var(--accent)' }}>
-                  Community Guidelines
-                </Link>
-                .
-              </p>
-            </div>
-          </div>
-
-          {/* Section 5: Bottom CTA */}
-          <div
-            style={{
-              textAlign: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 16,
-              paddingTop: 16,
-            }}
-          >
-            <h3
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '28px',
-                color: 'var(--text-1)',
-                margin: 0,
-              }}
-            >
-              Ready to meet someone new?
-            </h3>
-            <p style={{ color: 'var(--text-2)', maxWidth: 480, margin: 0, fontSize: '15px' }}>
-              Jump in with zero signups. Free, anonymous, and instant.
-            </p>
-            <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center', marginTop: 8 }}>
-              <button
-                onClick={() => handleStartAttempt('video')}
-                style={{
-                  padding: '12px 28px',
-                  borderRadius: 'var(--radius-pill)',
-                  border: 'none',
-                  background: 'var(--accent)',
-                  color: '#ffffff',
-                  fontSize: '15px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  boxShadow: 'var(--shadow-sm)',
-                }}
-              >
-                Start Video Chat →
-              </button>
-              <button
-                onClick={() => handleStartAttempt('text')}
-                style={{
-                  padding: '12px 28px',
-                  borderRadius: 'var(--radius-pill)',
-                  border: '1px solid var(--border-2)',
-                  background: 'var(--surface-1)',
-                  color: 'var(--text-1)',
-                  fontSize: '15px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-              >
-                Start Text Chat →
-              </button>
-            </div>
-          </div>
         </div>
       </section>
-
-      {/* ── FOOTER ── */}
-      <Footer />
 
       {/* ── 18+ AGE GATE MODAL ── */}
       <AgeGateModal
         isOpen={ageModalOpen}
         targetMode={pendingMode}
         onConfirm={handleAgeConfirm}
-        onCancel={() => setAgeModalOpen(false)}
+        onCancel={() => {
+          setAgeModalOpen(false)
+          setPendingAction(null)
+        }}
       />
+
+      <style>{`
+        .nav-ink-link:hover, .footer-ink-link:hover {
+          opacity: 1 !important;
+          text-decoration: underline !important;
+          text-underline-offset: 3px;
+        }
+
+        @media (max-width: 640px) {
+          .watercolor-hero-screen {
+            height: auto !important;
+            min-height: 100vh !important;
+            padding-bottom: 24px !important;
+          }
+          .watercolor-hero-text h1 {
+            font-size: 30px !important;
+          }
+          .watercolor-hero-artwork {
+            height: 280px !important;
+            min-height: 240px !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }

@@ -1,91 +1,104 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import SEOHead from '../components/SEOHead'
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL || ''
 
+// Moderation portal UI is isolated in its own chunk and loaded ONLY after verified authentication
+const AdminModerationPortal = lazy(() => import('./admin/AdminModerationPortal'))
+
 export default function AdminModeration({ theme, onToggleTheme }) {
-  const [token, setToken] = useState(() => {
-    try {
-      return sessionStorage.getItem('miloo_admin_token') || ''
-    } catch {
-      return ''
-    }
-  })
-  const [inputToken, setInputToken] = useState('')
-  const [reports, setReports] = useState([])
-  const [filter, setFilter] = useState('all')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [bannedCount, setBannedCount] = useState(0)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [checkingSession, setCheckingSession] = useState(true)
+  const [password, setPassword] = useState('')
+  const [loginLoading, setLoginLoading] = useState(false)
+  const [loginError, setLoginError] = useState('')
+  const [lockoutSec, setLockoutSec] = useState(0)
 
-  const fetchReports = async (authToken) => {
-    setLoading(true)
-    setError('')
-    try {
-      const res = await fetch(`${SERVER_URL}/api/admin/reports?token=${encodeURIComponent(authToken)}`)
-      if (!res.ok) {
-        throw new Error('Invalid administrative token or unauthorized access.')
-      }
-      const data = await res.json()
-      setReports(data.reports || [])
-      setBannedCount(data.bannedCount || 0)
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
-  }
-
+  // Verify server-side session on mount via httpOnly cookie
   useEffect(() => {
-    if (token) {
-      fetchReports(token)
+    let isMounted = true
+    const checkSession = async () => {
+      try {
+        const res = await fetch(`${SERVER_URL}/api/admin/session`, {
+          credentials: 'include',
+        })
+        if (res.ok && isMounted) {
+          setIsAuthenticated(true)
+        }
+      } catch {
+        // Not authenticated
+      } finally {
+        if (isMounted) setCheckingSession(false)
+      }
     }
-  }, [token])
+    checkSession()
+    return () => { isMounted = false }
+  }, [])
 
-  const handleLogin = (e) => {
+  // Lockout countdown timer
+  useEffect(() => {
+    if (lockoutSec <= 0) return
+    const timer = setInterval(() => {
+      setLockoutSec((prev) => (prev > 0 ? prev - 1 : 0))
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [lockoutSec])
+
+  const handleLogin = async (e) => {
     e.preventDefault()
-    if (!inputToken.trim()) return
-    sessionStorage.setItem('miloo_admin_token', inputToken.trim())
-    setToken(inputToken.trim())
-  }
+    if (!password || loginLoading || lockoutSec > 0) return
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('miloo_admin_token')
-    setToken('')
-    setReports([])
-  }
+    setLoginLoading(true)
+    setLoginError('')
 
-  const handleAction = async (reportId, action) => {
     try {
-      const res = await fetch(`${SERVER_URL}/api/admin/reports/${reportId}/action?token=${encodeURIComponent(token)}`, {
+      const res = await fetch(`${SERVER_URL}/api/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action }),
+        credentials: 'include',
+        body: JSON.stringify({ password }),
       })
-      if (!res.ok) throw new Error('Failed to apply moderation action.')
-      // Refresh list
-      fetchReports(token)
-    } catch (err) {
-      alert(err.message)
+
+      const data = await res.json()
+
+      if (res.ok && data.success) {
+        setIsAuthenticated(true)
+        setPassword('')
+        setLoginError('')
+      } else {
+        if (res.status === 429 && data.remainingSec) {
+          setLockoutSec(data.remainingSec)
+        }
+        setLoginError(data.error || 'Authentication failed. Please verify credentials.')
+      }
+    } catch {
+      setLoginError('Unable to reach server. Please check your network connection.')
+    } finally {
+      setLoginLoading(false)
     }
   }
 
-  const filteredReports = reports.filter((r) => {
-    if (filter === 'all') return true
-    if (filter === 'pending') return r.status === 'pending'
-    if (filter === 'banned') return r.status === 'banned' || r.status === 'suspended'
-    if (filter === 'dismissed') return r.status === 'dismissed'
-    return true
-  })
+  const handleLogout = async () => {
+    try {
+      await fetch(`${SERVER_URL}/api/admin/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      })
+    } catch {
+      // ignore
+    }
+    setIsAuthenticated(false)
+  }
 
   return (
     <div className="page page-enter" style={{ background: 'var(--bg-0)' }}>
-      {/* Set noindex on admin page */}
+      {/* Strictly noindex */}
       <SEOHead
-        title="Admin Moderation Portal — Miloo"
-        description="Internal moderation and safety dashboard for review of user reports."
+        title="Admin Portal — Miloo"
+        description="Internal administrative portal."
+        noindex={true}
       />
 
       <Navbar theme={theme} onToggleTheme={onToggleTheme} />
@@ -100,7 +113,7 @@ export default function AdminModeration({ theme, onToggleTheme }) {
               Moderation & Report Review
             </h1>
           </div>
-          {token && (
+          {isAuthenticated && (
             <button
               onClick={handleLogout}
               style={{
@@ -118,27 +131,32 @@ export default function AdminModeration({ theme, onToggleTheme }) {
           )}
         </header>
 
-        {!token ? (
-          <div className="content-card" style={{ maxWidth: 440, margin: '40px auto', textAlign: 'center' }}>
+        {checkingSession ? (
+          <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-3)' }}>
+            Verifying administrative authorization…
+          </div>
+        ) : !isAuthenticated ? (
+          <div className="content-card" style={{ maxWidth: 440, margin: '40px auto', textAlign: 'center', padding: '32px 24px' }}>
             <div style={{ fontSize: 32, marginBottom: 12 }}>🛡️</div>
             <h2 style={{ margin: '0 0 10px', fontSize: 20, fontFamily: 'var(--font-display)', color: 'var(--text-1)' }}>
               Admin Access Required
             </h2>
             <p style={{ margin: '0 0 20px', fontSize: 14, color: 'var(--text-2)' }}>
-              Enter your administrative secret token to access the safety moderation portal.
+              Enter administrator password to access the safety moderation portal.
             </p>
             <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <input
                 type="password"
                 required
-                placeholder="Admin Secret Token"
-                value={inputToken}
-                onChange={(e) => setInputToken(e.target.value)}
+                disabled={loginLoading || lockoutSec > 0}
+                placeholder={lockoutSec > 0 ? `Locked out (${lockoutSec}s)` : "Administrator Password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 style={{
                   padding: '12px 14px',
-                  borderRadius: 'var(--radius-md)',
+                  borderRadius: 'var(--radius-sm)',
+                  border: '1px solid var(--border-1)',
                   background: 'var(--bg-0)',
-                  border: '1px solid var(--border-2)',
                   color: 'var(--text-1)',
                   fontSize: 14,
                   outline: 'none',
@@ -146,195 +164,32 @@ export default function AdminModeration({ theme, onToggleTheme }) {
               />
               <button
                 type="submit"
+                disabled={loginLoading || lockoutSec > 0}
                 style={{
                   padding: '12px',
-                  borderRadius: 'var(--radius-pill)',
-                  background: 'var(--accent)',
-                  color: '#fff',
+                  borderRadius: 'var(--radius-sm)',
                   border: 'none',
-                  fontSize: 14,
+                  background: lockoutSec > 0 ? 'var(--text-3)' : 'var(--accent)',
+                  color: '#fff',
                   fontWeight: 600,
-                  cursor: 'pointer',
+                  fontSize: 14,
+                  cursor: lockoutSec > 0 ? 'not-allowed' : 'pointer',
+                  opacity: loginLoading ? 0.7 : 1,
                 }}
               >
-                Authenticate & Access Dashboard →
+                {loginLoading ? 'Verifying…' : lockoutSec > 0 ? `Locked Out (${lockoutSec}s)` : 'Sign In'}
               </button>
             </form>
-          </div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-            {/* Stats Bar */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                gap: 16,
-              }}
-            >
-              <div className="content-card" style={{ padding: '16px 20px' }}>
-                <div style={{ fontSize: 12, color: 'var(--text-3)', textTransform: 'uppercase' }}>Total Reports</div>
-                <div style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-1)', marginTop: 4 }}>{reports.length}</div>
-              </div>
-              <div className="content-card" style={{ padding: '16px 20px' }}>
-                <div style={{ fontSize: 12, color: 'var(--text-3)', textTransform: 'uppercase' }}>Pending Review</div>
-                <div style={{ fontSize: 28, fontWeight: 700, color: 'var(--warning)', marginTop: 4 }}>
-                  {reports.filter((r) => r.status === 'pending').length}
-                </div>
-              </div>
-              <div className="content-card" style={{ padding: '16px 20px' }}>
-                <div style={{ fontSize: 12, color: 'var(--text-3)', textTransform: 'uppercase' }}>Banned Identities</div>
-                <div style={{ fontSize: 28, fontWeight: 700, color: 'var(--danger)', marginTop: 4 }}>{bannedCount}</div>
-              </div>
-            </div>
-
-            {/* Filter Tabs */}
-            <div style={{ display: 'flex', gap: 10, borderBottom: '1px solid var(--border-1)', paddingBottom: 12 }}>
-              {['all', 'pending', 'banned', 'dismissed'].map((t) => (
-                <button
-                  key={t}
-                  onClick={() => setFilter(t)}
-                  style={{
-                    padding: '6px 14px',
-                    borderRadius: 'var(--radius-pill)',
-                    border: 'none',
-                    background: filter === t ? 'var(--accent-dim)' : 'transparent',
-                    color: filter === t ? 'var(--accent)' : 'var(--text-2)',
-                    fontWeight: filter === t ? 600 : 500,
-                    fontSize: 13,
-                    cursor: 'pointer',
-                    textTransform: 'capitalize',
-                  }}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-
-            {loading ? (
-              <div style={{ textAlign: 'center', padding: 40, color: 'var(--text-2)' }}>Loading reports...</div>
-            ) : filteredReports.length === 0 ? (
-              <div className="content-card" style={{ textAlign: 'center', padding: 48, color: 'var(--text-3)' }}>
-                No reports matching filter "{filter}".
-              </div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                {filteredReports.map((rep) => (
-                  <div
-                    key={rep.id}
-                    className="content-card"
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: 12,
-                      borderLeft: `4px solid ${
-                        rep.status === 'pending'
-                          ? 'var(--warning)'
-                          : rep.status === 'banned'
-                          ? 'var(--danger)'
-                          : 'var(--border-2)'
-                      }`,
-                    }}
-                  >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 8 }}>
-                      <div>
-                        <span
-                          style={{
-                            fontSize: 11,
-                            fontWeight: 700,
-                            padding: '3px 8px',
-                            borderRadius: 'var(--radius-pill)',
-                            background: 'var(--surface-2)',
-                            color: 'var(--text-1)',
-                            textTransform: 'uppercase',
-                            marginRight: 8,
-                          }}
-                        >
-                          {rep.reason}
-                        </span>
-                        <span style={{ fontSize: 13, color: 'var(--text-3)' }}>
-                          {new Date(rep.timestamp).toLocaleString()}
-                        </span>
-                      </div>
-                      <span
-                        style={{
-                          fontSize: 12,
-                          fontWeight: 600,
-                          color: rep.status === 'pending' ? 'var(--warning)' : rep.status === 'banned' ? 'var(--danger)' : 'var(--text-3)',
-                          textTransform: 'capitalize',
-                        }}
-                      >
-                        Status: {rep.status}
-                      </span>
-                    </div>
-
-                    <div style={{ fontSize: 14, color: 'var(--text-2)' }}>
-                      <strong>Reported Target:</strong> <code style={{ color: 'var(--accent)' }}>{rep.reportedUser}</code>
-                    </div>
-
-                    {rep.context && (
-                      <div
-                        style={{
-                          background: 'var(--bg-0)',
-                          padding: '8px 12px',
-                          borderRadius: 'var(--radius-sm)',
-                          fontSize: 13,
-                          color: 'var(--text-2)',
-                        }}
-                      >
-                        Context: {rep.context}
-                      </div>
-                    )}
-
-                    <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', paddingTop: 8 }}>
-                      <button
-                        onClick={() => handleAction(rep.id, 'dismiss')}
-                        style={{
-                          padding: '6px 14px',
-                          borderRadius: 'var(--radius-pill)',
-                          border: '1px solid var(--border-1)',
-                          background: 'transparent',
-                          color: 'var(--text-2)',
-                          fontSize: 13,
-                          cursor: 'pointer',
-                        }}
-                      >
-                        Dismiss
-                      </button>
-                      <button
-                        onClick={() => handleAction(rep.id, 'warn')}
-                        style={{
-                          padding: '6px 14px',
-                          borderRadius: 'var(--radius-pill)',
-                          border: '1px solid var(--warning)',
-                          background: 'rgba(217, 119, 6, 0.1)',
-                          color: 'var(--warning)',
-                          fontSize: 13,
-                          cursor: 'pointer',
-                        }}
-                      >
-                        Warn
-                      </button>
-                      <button
-                        onClick={() => handleAction(rep.id, 'ban')}
-                        style={{
-                          padding: '6px 14px',
-                          borderRadius: 'var(--radius-pill)',
-                          border: 'none',
-                          background: 'var(--danger)',
-                          color: '#fff',
-                          fontSize: 13,
-                          fontWeight: 600,
-                          cursor: 'pointer',
-                        }}
-                      >
-                        Ban Identity
-                      </button>
-                    </div>
-                  </div>
-                ))}
+            {loginError && (
+              <div style={{ marginTop: 14, fontSize: 13, color: 'var(--danger)', lineHeight: 1.4 }}>
+                {loginError}
               </div>
             )}
           </div>
+        ) : (
+          <Suspense fallback={<div style={{ textAlign: 'center', padding: 48, color: 'var(--text-3)' }}>Loading moderation tooling…</div>}>
+            <AdminModerationPortal onLogout={handleLogout} />
+          </Suspense>
         )}
       </main>
 

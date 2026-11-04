@@ -2,8 +2,17 @@ import { Link } from 'react-router-dom'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
 import SEOHead from '../../components/SEOHead'
+import WatercolorMiniBanner from '../../components/watercolor/WatercolorMiniBanner'
+import { SHOW_SEO_POSTS } from '../../config/site'
 
-const ARTICLES = [
+const RISKY_SLUGS = [
+  'omegle-alternative',
+  'random-video-chat-india',
+  'stranger-chat-india',
+  'video-chat-no-signup',
+]
+
+const ALL_ARTICLES = [
   {
     slug: 'stay-safe-talking-to-strangers-online',
     title: 'How to Stay Safe Talking to Strangers Online: The Complete Modern Guide',
@@ -87,31 +96,72 @@ const ARTICLES = [
 ]
 
 export default function BlogIndex({ theme, onToggleTheme }) {
+  const articles = SHOW_SEO_POSTS
+    ? ALL_ARTICLES
+    : ALL_ARTICLES.filter((a) => !RISKY_SLUGS.includes(a.slug))
+
   return (
     <div className="page page-enter" style={{ background: 'var(--bg-0)' }}>
       <SEOHead
         title="Miloo Blog — Safety Guides, Chat Tips & Online Privacy"
         description="Explore expert guides on staying safe talking to strangers online, spotting digital scams, protecting webcam privacy, and starting engaging conversations."
-        canonicalUrl="https://www.miloo.chat/blog"
+        canonicalUrl="https://miloo.chat/blog"
+        ogImage="https://miloo.chat/og/blog.png"
       />
 
       <Navbar theme={theme} onToggleTheme={onToggleTheme} />
 
-      <main className="container" style={{ paddingTop: 'clamp(32px, 5vw, 56px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 1040 }}>
-        <header style={{ marginBottom: 48, textAlign: 'left' }}>
-          <div
-            style={{
-              display: 'inline-block',
-              fontSize: '12px',
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: 'var(--accent)',
-              marginBottom: 12,
-            }}
-          >
-            Miloo Publication & Resources
+      <main className="container" style={{ paddingTop: 'clamp(20px, 3.5vw, 40px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 1040 }}>
+        {/* Subtle watercolor sagging wire & perched ink sparrows */}
+        <WatercolorMiniBanner />
+
+        {/* Breadcrumb Navigation */}
+        <nav aria-label="Breadcrumb" style={{ marginBottom: 20 }}>
+          <ol style={{ display: 'flex', gap: 8, alignItems: 'center', listStyle: 'none', padding: 0, margin: 0, fontSize: 13, color: 'var(--text-3)' }}>
+            <li>
+              <Link to="/" style={{ color: 'var(--accent)', textDecoration: 'none' }}>Home</Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li aria-current="page" style={{ color: 'var(--text-1)' }}>Blog</li>
+          </ol>
+        </nav>
+
+        <header style={{ marginBottom: 44, textAlign: 'left' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 12 }}>
+            <div
+              style={{
+                display: 'inline-block',
+                fontSize: '12px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: 'var(--accent)',
+              }}
+            >
+              Miloo Publication & Resources
+            </div>
+            <a
+              href="/rss.xml"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                fontSize: '12px',
+                fontWeight: 600,
+                color: 'var(--accent)',
+                textDecoration: 'none',
+                padding: '4px 10px',
+                borderRadius: 'var(--radius-pill)',
+                background: 'var(--surface-1)',
+                border: '1px solid var(--border-2)',
+              }}
+              title="Subscribe via RSS feed"
+            >
+              <span>📡</span>
+              <span>RSS Feed</span>
+            </a>
           </div>
+
           <h1
             style={{
               fontFamily: 'var(--font-display)',
@@ -135,113 +185,189 @@ export default function BlogIndex({ theme, onToggleTheme }) {
           >
             Insights on staying safe, spotting scams, protecting webcam privacy, and building meaningful conversations with strangers on the modern web.
           </p>
+          <p
+            style={{
+              fontSize: '15px',
+              color: 'var(--text-2)',
+              lineHeight: 1.65,
+              maxWidth: 760,
+              margin: '14px 0 0',
+            }}
+          >
+            Looking for quick safety rules? Check our <Link to="/safety" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: 600 }}>Safety Center</Link>, review the <Link to="/faq" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: 600 }}>Frequently Asked Questions</Link>, or read our editorial standards in <Link to="/about#team" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: 600 }}>About Us</Link>.
+          </p>
         </header>
 
         {/* Article Grid */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: 28,
+            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+            gap: 24,
           }}
         >
-          {ARTICLES.map((art) => (
+          {articles.map((article) => (
             <article
-              key={art.slug}
+              key={article.slug}
               className="content-card"
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                padding: '24px',
+                padding: 'clamp(20px, 3vw, 28px)',
+                borderRadius: 'var(--radius-xl)',
+                border: '1px solid var(--border-1)',
+                background: 'var(--surface-1)',
+                boxShadow: 'var(--shadow-sm)',
+                transition: 'transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--accent)'
+                e.currentTarget.style.transform = 'translateY(-2px)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--border-1)'
+                e.currentTarget.style.transform = 'none'
               }}
             >
               <div>
                 <div
                   style={{
                     display: 'flex',
-                    alignItems: 'center',
                     justifyContent: 'space-between',
-                    gap: 12,
+                    alignItems: 'center',
                     marginBottom: 12,
+                    fontSize: '12px',
+                    color: 'var(--text-3)',
                   }}
                 >
                   <span
                     style={{
-                      fontSize: '12px',
-                      fontWeight: 600,
+                      fontWeight: 700,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
                       color: 'var(--accent)',
-                      background: 'var(--accent-dim)',
-                      padding: '4px 10px',
-                      borderRadius: 'var(--radius-pill)',
                     }}
                   >
-                    {art.category}
+                    {article.category}
                   </span>
-                  <span style={{ fontSize: '12px', color: 'var(--text-3)' }}>
-                    {art.readTime}
-                  </span>
+                  <span>{article.readTime}</span>
                 </div>
-
                 <h2
                   style={{
                     fontFamily: 'var(--font-display)',
-                    fontSize: '20px',
-                    lineHeight: 1.35,
+                    fontSize: 'clamp(19px, 2.2vw, 22px)',
+                    fontWeight: 600,
+                    lineHeight: 1.3,
                     color: 'var(--text-1)',
                     margin: '0 0 12px',
                   }}
                 >
                   <Link
-                    to={`/blog/${art.slug}`}
-                    style={{ color: 'inherit', textDecoration: 'none' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--accent)')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = 'inherit')}
+                    to={`/blog/${article.slug}`}
+                    style={{
+                      color: 'inherit',
+                      textDecoration: 'none',
+                    }}
                   >
-                    {art.title}
+                    {article.title}
                   </Link>
                 </h2>
-
                 <p
                   style={{
-                    color: 'var(--text-2)',
                     fontSize: '14px',
+                    color: 'var(--text-2)',
                     lineHeight: 1.6,
-                    margin: '0 0 20px',
+                    margin: 0,
                   }}
                 >
-                  {art.desc}
+                  {article.desc}
                 </p>
               </div>
 
               <div
                 style={{
                   display: 'flex',
-                  alignItems: 'center',
                   justifyContent: 'space-between',
-                  borderTop: '1px solid var(--border-1)',
+                  alignItems: 'center',
+                  marginTop: 20,
                   paddingTop: 16,
+                  borderTop: '1px solid var(--border-1)',
                   fontSize: '13px',
                 }}
               >
-                <span style={{ color: 'var(--text-3)' }}>{art.date}</span>
+                <span style={{ color: 'var(--text-3)' }}>{article.date}</span>
                 <Link
-                  to={`/blog/${art.slug}`}
+                  to={`/blog/${article.slug}`}
                   style={{
                     color: 'var(--accent)',
-                    fontWeight: 600,
                     textDecoration: 'none',
+                    fontWeight: 600,
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: 4,
                   }}
                 >
-                  Read Article →
+                  Read guide →
                 </Link>
               </div>
             </article>
           ))}
         </div>
+        {/* Editorial Standards & Reader Guidance */}
+        <section
+          style={{
+            marginTop: 56,
+            padding: '32px clamp(20px, 4vw, 36px)',
+            background: 'var(--surface-1)',
+            borderRadius: 'var(--radius-xl)',
+            border: '1px solid var(--border-1)',
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '24px',
+              margin: '0 0 16px',
+              color: 'var(--text-1)',
+            }}
+          >
+            Editorial Mission & Community Research
+          </h2>
+          <p style={{ color: 'var(--text-2)', lineHeight: 1.7, margin: '0 0 16px' }}>
+            The Miloo editorial desk publishes independent, practical resources focused on digital privacy, human connection, and harm reduction in unmoderated peer-to-peer web environments. As online communication evolves, maintaining personal autonomy requires both technical awareness and intuitive interpersonal boundaries.
+          </p>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+              gap: 20,
+              marginTop: 20,
+            }}
+          >
+            <div style={{ padding: '16px', background: 'var(--bg-0)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-1)' }}>
+              <h3 style={{ fontSize: '16px', margin: '0 0 8px', color: 'var(--text-1)' }}>🛡️ Harm Reduction</h3>
+              <p style={{ fontSize: '13.5px', color: 'var(--text-2)', lineHeight: 1.6, margin: 0 }}>
+                Practical advice on setting healthy personal boundaries, recognizing digital red flags, and avoiding financial or extortion scams.
+              </p>
+            </div>
+            <div style={{ padding: '16px', background: 'var(--bg-0)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-1)' }}>
+              <h3 style={{ fontSize: '16px', margin: '0 0 8px', color: 'var(--text-1)' }}>🔒 Technical Privacy</h3>
+              <p style={{ fontSize: '13.5px', color: 'var(--text-2)', lineHeight: 1.6, margin: 0 }}>
+                In-depth analysis of peer-to-peer WebRTC streaming, network packet confidentiality, local camera safety, and zero data footprint principles.
+              </p>
+            </div>
+            <div style={{ padding: '16px', background: 'var(--bg-0)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-1)' }}>
+              <h3 style={{ fontSize: '16px', margin: '0 0 8px', color: 'var(--text-1)' }}>🤝 Human Connection</h3>
+              <p style={{ fontSize: '13.5px', color: 'var(--text-2)', lineHeight: 1.6, margin: 0 }}>
+                Creative icebreakers, thoughtful listening prompts, and conversational etiquette designed to replace awkward stranger silences with genuine moments.
+              </p>
+            </div>
+          </div>
+          <p style={{ color: 'var(--text-3)', fontSize: '13px', lineHeight: 1.6, margin: '20px 0 0' }}>
+            Have a safety question or feedback on our guides? Learn more about our team on our <Link to="/about#team" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>About page</Link>, review our public <Link to="/transparency" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Transparency Report</Link>, or contact our safety desk directly at support@miloo.chat.
+          </p>
+        </section>
       </main>
 
       <Footer />

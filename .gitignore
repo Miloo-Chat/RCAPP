@@ -43,3 +43,7 @@ pnpm-debug.log*
 CLAUDE.md
 .redesign/
 server/data/
+lighthouse-reports/
+.unlighthouse/
+.playwright-mcp/
+screenshots/

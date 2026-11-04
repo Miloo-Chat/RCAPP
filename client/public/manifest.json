@@ -1,28 +1,28 @@
 {
-  "name": "Miloo — Real Connections",
-  "short_name": "Miloo",
-  "description": "Same vibe. Real log. Asli connection.",
+  "name": "miloo — Meet a real stranger",
+  "short_name": "miloo",
+  "description": "The modern anonymous video and text chat platform. Free, private, strictly 18+.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a0a0f",
-  "theme_color": "#7c3aed",
-  "orientation": "portrait",
+  "background_color": "#F5F3ED",
+  "theme_color": "#F5F3ED",
   "icons": [
     {
       "src": "/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "maskable any"
     },
     {
       "src": "/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "maskable any"
     },
     {
-      "src": "/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
     }
   ]
 }

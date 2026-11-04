@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import SEOHead from '../components/SEOHead'
+import WatercolorMiniBanner from '../components/watercolor/WatercolorMiniBanner'
 
 export default function CommunityGuidelines({ theme, onToggleTheme }) {
   return (
@@ -9,12 +10,15 @@ export default function CommunityGuidelines({ theme, onToggleTheme }) {
       <SEOHead
         title="Community Guidelines — Miloo"
         description="Our expectations for safe, civil, and enjoyable conversations on Miloo. Review our zero-tolerance policies against harassment, nudity, scams, and abuse."
-        canonicalUrl="https://www.miloo.chat/community-guidelines"
+        canonicalUrl="https://miloo.chat/community-guidelines"
       />
 
       <Navbar theme={theme} onToggleTheme={onToggleTheme} />
 
-      <main className="container" style={{ paddingTop: 'clamp(32px, 5vw, 56px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 880 }}>
+      <main className="container" style={{ paddingTop: 'clamp(20px, 3.5vw, 40px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 880 }}>
+        {/* Subtle watercolor sagging wire & perched ink sparrows */}
+        <WatercolorMiniBanner />
+
         <header style={{ marginBottom: 40, textAlign: 'left' }}>
           <div
             style={{

@@ -13,3 +13,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 )
 window.__milooHideSplash && window.__milooHideSplash()
 
+if (typeof window !== 'undefined' && 'serviceWorker' in navigator && !navigator.webdriver) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {})
+  })
+}
+

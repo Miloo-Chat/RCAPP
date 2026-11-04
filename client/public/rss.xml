@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Miloo Blog — Online Safety, Privacy &amp; Digital Connection</title>
+    <link>https://miloo.chat/blog</link>
+    <description>Expert safety guides, WebRTC privacy checklists, and conversation tips for spontaneous stranger chats.</description>
+    <language>en-US</language>
+    <lastBuildDate>Tue, 03 Nov 2026 12:00:00 GMT</lastBuildDate>
+    <atom:link href="https://miloo.chat/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title><![CDATA[How to Stay Safe Talking to Strangers Online: The Complete Modern Guide]]></title>
+      <link>https://miloo.chat/blog/stay-safe-talking-to-strangers-online</link>
+      <guid isPermaLink="true">https://miloo.chat/blog/stay-safe-talking-to-strangers-online</guid>
+      <pubDate>Sun, 01 Nov 2026 10:00:00 GMT</pubDate>
+      <description><![CDATA[A comprehensive, actionable guide to protecting your identity, privacy, and peace of mind when chatting with strangers online.]]></description>
+      <author>support@miloo.chat (Miloo Safety &amp; Editorial Team)</author>
+    </item>
+    <item>
+      <title><![CDATA[How to Spot Scams and Fake Profiles on Random Chat Sites]]></title>
+      <link>https://miloo.chat/blog/how-to-spot-scams-on-chat-sites</link>
+      <guid isPermaLink="true">https://miloo.chat/blog/how-to-spot-scams-on-chat-sites</guid>
+      <pubDate>Tue, 08 Sep 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[Practical ways to identify financial fraud, phishing bots, and fake camera loops on random chat platforms.]]></description>
+      <author>support@miloo.chat (Miloo Safety &amp; Editorial Team)</author>
+    </item>
+    <item>
+      <title><![CDATA[Protecting Your Privacy in Video Chat: The Essential Checklist]]></title>
+      <link>https://miloo.chat/blog/protecting-privacy-in-video-chat</link>
+      <guid isPermaLink="true">https://miloo.chat/blog/protecting-privacy-in-video-chat</guid>
+      <pubDate>Sat, 12 Sep 2026 14:00:00 GMT</pubDate>
+      <description><![CDATA[Actionable steps to safeguard your personal space, webcam angle, and network details before turning on video.]]></description>
+      <author>support@miloo.chat (Miloo Safety &amp; Editorial Team)</author>
+    </item>
+    <item>
+      <title><![CDATA[How to Report and Block Abusive Users on Miloo]]></title>
+      <link>https://miloo.chat/blog/how-to-report-and-block-abusive-users</link>
+      <guid isPermaLink="true">https://miloo.chat/blog/how-to-report-and-block-abusive-users</guid>
+      <pubDate>Fri, 18 Sep 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[A detailed walkthrough of our instant blocking, moderation reporting desk, and permanent ban enforcement.]]></description>
+      <author>support@miloo.chat (Miloo Safety &amp; Editorial Team)</author>
+    </item>
+    <item>
+      <title><![CDATA[10 Tips for Starting a Great Conversation with a Stranger]]></title>
+      <link>https://miloo.chat/blog/tips-for-starting-good-conversation-with-stranger</link>
+      <guid isPermaLink="true">https://miloo.chat/blog/tips-for-starting-good-conversation-with-stranger</guid>
+      <pubDate>Tue, 22 Sep 2026 11:00:00 GMT</pubDate>
+      <description><![CDATA[Break the ice effortlessly with creative conversation openers, humor, and active listening.]]></description>
+      <author>support@miloo.chat (Miloo Safety &amp; Editorial Team)</author>
+    </item>
+    <item>
+      <title><![CDATA[What to Do If Someone Harasses You Online: Action Steps]]></title>
+      <link>https://miloo.chat/blog/what-to-do-if-someone-harasses-you-online</link>
+      <guid isPermaLink="true">https://miloo.chat/blog/what-to-do-if-someone-harasses-you-online</guid>
+      <pubDate>Sat, 26 Sep 2026 16:00:00 GMT</pubDate>
+      <description><![CDATA[Crucial steps for documenting harassment, reporting offenders, and getting immediate support.]]></description>
+      <author>support@miloo.chat (Miloo Safety &amp; Editorial Team)</author>
+    </item>
+  </channel>
+</rss>

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import SEOHead from '../components/SEOHead'
+import WatercolorMiniBanner from '../components/watercolor/WatercolorMiniBanner'
 
 export default function HowItWorks({ theme, onToggleTheme }) {
   const schemaJson = {
@@ -37,16 +38,19 @@ export default function HowItWorks({ theme, onToggleTheme }) {
     <div className="page page-enter" style={{ background: 'var(--bg-0)' }}>
       <SEOHead
         title="How It Works — Miloo Anonymous Video & Text Chat"
-        description="Discover how Miloo works: anonymous WebRTC chat matching, camera permissions, instant skips, safety reports, and AI companions. No account or sign-up needed."
-        canonicalUrl="https://www.miloo.chat/how-it-works"
+        description="Discover how Miloo works: anonymous WebRTC chat matching, camera permissions, instant skips, and safety reports. No account or sign-up needed."
+        canonicalUrl="https://miloo.chat/how-it-works"
         schemaJson={schemaJson}
       />
 
       <Navbar theme={theme} onToggleTheme={onToggleTheme} />
 
-      <main className="container" style={{ paddingTop: 'clamp(32px, 5vw, 56px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 880 }}>
+      <main className="container" style={{ paddingTop: 'clamp(20px, 3.5vw, 40px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 880 }}>
+        {/* Subtle watercolor sagging wire & perched ink sparrows */}
+        <WatercolorMiniBanner />
+
         {/* Header */}
-        <header style={{ marginBottom: 48, textAlign: 'left' }}>
+        <header style={{ marginBottom: 44, textAlign: 'left' }}>
           <div
             style={{
               display: 'inline-block',
@@ -80,7 +84,7 @@ export default function HowItWorks({ theme, onToggleTheme }) {
               margin: 0,
             }}
           >
-            A deep look under the hood: how anonymous peer-to-peer WebRTC matching, camera controls, user protection, and fallback AI companions operate without user accounts.
+            A deep look under the hood: how anonymous peer-to-peer WebRTC matching, camera controls, and user protection operate without user accounts.
           </p>
         </header>
 
@@ -127,20 +131,7 @@ export default function HowItWorks({ theme, onToggleTheme }) {
             <li>Your client automatically enters the waiting queue and seeks a new partner within seconds.</li>
           </ul>
 
-          <h2>5. Transparent AI Companion Fallback (Milo)</h2>
-          <p>
-            During off-peak hours or in regions with lower active traffic, finding an immediate real-human partner in the text queue can occasionally take time. Rather than leaving users staring at an infinite loading spinner, Miloo introduces <strong>Milo</strong>, an intelligent conversational companion.
-          </p>
-          <p>
-            We take user transparency very seriously:
-          </p>
-          <ul>
-            <li>Whenever you are matched with an AI partner, the interface prominently displays a badge: <code>[🤖 Milo · AI Companion]</code>.</li>
-            <li>We never masquerade artificial intelligence as an unsuspecting real human.</li>
-            <li>You can skip an AI companion at any time just as you would any human participant to continue seeking real human users.</li>
-          </ul>
-
-          <h2>6. Safety Tools Built Into Every Chat</h2>
+          <h2>5. Safety Tools Built Into Every Chat</h2>
           <p>
             Because anonymous chat is open to the public, safety mechanisms must be immediate and accessible:
           </p>
@@ -149,14 +140,24 @@ export default function HowItWorks({ theme, onToggleTheme }) {
             <li><strong>Block User:</strong> Selecting "Block" immediately terminates the chat and stores the partner’s technical identifier in your local blocklist, preventing any re-matching with that user during your session.</li>
           </ul>
 
-          <h2>7. Technical Requirements & Supported Browsers</h2>
+          <h2>6. Technical Requirements & Supported Browsers</h2>
           <p>
             Miloo runs natively inside standard modern web browsers on mobile phones, tablets, laptops, and desktop computers without downloading native apps. Supported platforms include:
           </p>
+          <h2>7. Core Architectural Guarantees for Adult Privacy</h2>
+          <p>
+            To understand why Miloo functions so securely across all device form factors, it helps to review the architectural pillars underpinning our matching framework:
+          </p>
           <ul>
-            <li>Google Chrome & Chromium-based browsers (Edge, Brave, Opera) on Windows, macOS, Android, and Linux.</li>
-            <li>Apple Safari on iOS 14.3+ and macOS.</li>
-            <li>Mozilla Firefox on desktop and Android.</li>
+            <li>
+              <strong>Zero Account Retention:</strong> No phone numbers, emails, passwords, or personal demographic tracking profiles are ever collected or retained. Once your session ends, the connection terminates with no permanent chat logs stored on our servers.
+            </li>
+            <li>
+              <strong>Direct WebRTC Media Pathways:</strong> Audio and video stream directly between browsers using encrypted DTLS/SRTP protocols. Media never routes through central recording or surveillance servers.
+            </li>
+            <li>
+              <strong>Instant Abuse Enforcement:</strong> Every chat screen provides immediate one-tap reporting and blocking. Suspicious actors face immediate device fingerprint and IP suspensions to preserve community safety.
+            </li>
           </ul>
         </article>
 
@@ -185,7 +186,7 @@ export default function HowItWorks({ theme, onToggleTheme }) {
               padding: '12px 28px',
               borderRadius: 'var(--radius-pill)',
               background: 'var(--accent)',
-              color: '#ffffff',
+              color: 'var(--accent-text, #ffffff)',
               fontSize: '15px',
               fontWeight: 600,
               textDecoration: 'none',

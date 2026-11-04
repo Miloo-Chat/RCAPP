@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
-import ChatRoom from './pages/ChatRoom'
 import HowItWorks from './pages/HowItWorks'
 import Safety from './pages/Safety'
 import FAQ from './pages/FAQ'
@@ -10,6 +9,8 @@ import Contact from './pages/Contact'
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
 import CommunityGuidelines from './pages/CommunityGuidelines'
+import CookiePolicy from './pages/CookiePolicy'
+import Transparency from './pages/Transparency'
 import BlogIndex from './pages/blog/BlogIndex'
 import StaySafeOnline from './pages/blog/StaySafeOnline'
 import SpotScams from './pages/blog/SpotScams'
@@ -22,11 +23,16 @@ import RandomVideoChatIndia from './pages/blog/RandomVideoChatIndia'
 import StrangerChatIndia from './pages/blog/StrangerChatIndia'
 import VideoChatNoSignup from './pages/blog/VideoChatNoSignup'
 import NotFound from './pages/NotFound'
-import AdminModeration from './pages/AdminModeration'
 import AdSenseScript from './components/AdSenseScript'
 import CookieBanner from './components/CookieBanner'
 import AgeGateModal from './components/AgeGateModal'
-import { trackEvent } from './utils/analytics'
+import { trackEvent, syncAnalyticsWithRoute, trackPageView, initWebVitals } from './utils/analytics'
+import { AtmosphereProvider, useAtmosphere } from './context/AtmosphereContext'
+import GlobalPaperGrain from './components/watercolor/GlobalPaperGrain'
+
+// Lazy load real-time ChatRoom and AdminModeration to isolate socket.io and WebRTC from public bundle
+const ChatRoom = lazy(() => import('./pages/ChatRoom'))
+const AdminModeration = lazy(() => import('./pages/AdminModeration'))
 
 export function AppRoutes() {
   const navigate = useNavigate()
@@ -35,30 +41,40 @@ export function AppRoutes() {
   const [selectedMood, setSelectedMood] = useState('any')
   const [selectedIntent, setSelectedIntent] = useState('random')
   const [safeMode, setSafeMode] = useState(false)
-  const [chatMode, setChatMode] = useState('video')
+  const [chatMode, setChatMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const modeParam = new URLSearchParams(window.location.search).get('mode')
+      if (modeParam === 'text' || modeParam === 'video') return modeParam
+    }
+    return 'video'
+  })
   const [ageGateOpen, setAgeGateOpen] = useState(false)
 
-  const getInitialTheme = () => {
-    try {
-      const saved = localStorage.getItem('miloo-theme')
-      if (saved) return saved
-    } catch {
-      // ignore
+  useEffect(() => {
+    const modeParam = new URLSearchParams(location.search).get('mode')
+    if (modeParam === 'text' || modeParam === 'video') {
+      setChatMode(modeParam)
     }
-    return 'dark'
+  }, [location.search])
+
+  const { isNight, timeEngine } = useAtmosphere()
+  const theme = isNight ? 'dark' : 'light'
+  const toggleTheme = () => {
+    if (timeEngine.isAuto) {
+      timeEngine.setManualHour(isNight ? 12 : 23)
+    } else {
+      timeEngine.resetToAuto()
+    }
   }
-  const [theme, setTheme] = useState(getInitialTheme)
 
   useEffect(() => {
-    try {
-      document.documentElement.setAttribute('data-theme', theme)
-      localStorage.setItem('miloo-theme', theme)
-    } catch {
-      // ignore
-    }
-  }, [theme])
+    syncAnalyticsWithRoute(location.pathname)
+    trackPageView(location.pathname)
+  }, [location.pathname])
 
-  const toggleTheme = () => setTheme(t => (t === 'dark' ? 'light' : 'dark'))
+  useEffect(() => {
+    initWebVitals()
+  }, [])
 
   useEffect(() => {
     const handleEsc = (event) => {
@@ -71,19 +87,16 @@ export function AppRoutes() {
   }, [location.pathname, navigate])
 
   const startTextChat = () => {
+    trackEvent('click_text_chat')
     goToChat({ mood: 'any', intent: 'random', safeMode: false, chatMode: 'text' })
   }
 
   const startVideoChat = () => {
+    trackEvent('click_video_chat')
     goToChat({ mood: 'any', intent: 'random', safeMode: false, chatMode: 'video' })
   }
 
   const goToChat = ({ mood, intent, safeMode: safe, chatMode: mode }) => {
-    try {
-      trackEvent('go_to_chat', { mood, intent, chatMode: mode || 'video' })
-    } catch {
-      // ignore
-    }
     setSelectedMood(mood || 'any')
     setSelectedIntent(intent || 'random')
     setSafeMode(safe || false)
@@ -96,9 +109,17 @@ export function AppRoutes() {
     navigate('/')
   }
 
-  // Intercept direct navigation to /chat if age not confirmed
-  const isChatRoute = location.pathname === '/chat'
-  const isAgeVerified = typeof window !== 'undefined' && sessionStorage.getItem('miloo_age_confirmed') === 'true'
+  // Verify age confirmation from localStorage or sessionStorage
+  const isAgeVerified = () => {
+    try {
+      return (
+        localStorage.getItem('miloo_age_confirmed') === 'true' ||
+        sessionStorage.getItem('miloo_age_confirmed') === 'true'
+      )
+    } catch {
+      return false
+    }
+  }
 
   return (
     <>
@@ -131,6 +152,10 @@ export function AppRoutes() {
           element={<Safety theme={theme} onToggleTheme={toggleTheme} />}
         />
         <Route
+          path="/safety-center"
+          element={<Navigate to="/safety" replace />}
+        />
+        <Route
           path="/faq"
           element={<FAQ theme={theme} onToggleTheme={toggleTheme} />}
         />
@@ -155,6 +180,18 @@ export function AppRoutes() {
         <Route
           path="/community-guidelines"
           element={<CommunityGuidelines theme={theme} onToggleTheme={toggleTheme} />}
+        />
+        <Route
+          path="/transparency"
+          element={<Transparency theme={theme} onToggleTheme={toggleTheme} />}
+        />
+        <Route
+          path="/cookie-policy"
+          element={<CookiePolicy theme={theme} onToggleTheme={toggleTheme} />}
+        />
+        <Route
+          path="/cookie"
+          element={<Navigate to="/cookie-policy" replace />}
         />
 
         {/* Blog Publication & Original Articles */}
@@ -207,16 +244,18 @@ export function AppRoutes() {
         <Route
           path="/chat"
           element={
-            isAgeVerified ? (
-              <ChatRoom
-                mood={selectedMood || 'any'}
-                intent={selectedIntent || 'random'}
-                safeMode={safeMode}
-                chatMode={chatMode}
-                theme={theme}
-                onToggleTheme={toggleTheme}
-                onExit={goHome}
-              />
+            isAgeVerified() ? (
+              <Suspense fallback={<div className="page" style={{ minHeight: '100dvh', background: 'var(--bg-0)' }} />}>
+                <ChatRoom
+                  mood={selectedMood || 'any'}
+                  intent={selectedIntent || 'random'}
+                  safeMode={safeMode}
+                  chatMode={chatMode}
+                  theme={theme}
+                  onToggleTheme={toggleTheme}
+                  onExit={goHome}
+                />
+              </Suspense>
             ) : (
               <Navigate to="/" replace />
             )
@@ -230,7 +269,17 @@ export function AppRoutes() {
         {/* Admin Moderation Portal */}
         <Route
           path="/admin"
-          element={<AdminModeration theme={theme} onToggleTheme={toggleTheme} />}
+          element={
+            <Suspense fallback={<div className="page" style={{ minHeight: '100dvh', background: 'var(--bg-0)' }} />}>
+              <AdminModeration theme={theme} onToggleTheme={toggleTheme} />
+            </Suspense>
+          }
+        />
+
+        {/* 404 Route */}
+        <Route
+          path="/404"
+          element={<NotFound theme={theme} onToggleTheme={toggleTheme} />}
         />
 
         {/* Catch-all 404 Not Found Page */}
@@ -246,7 +295,10 @@ export function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AppRoutes />
+      <AtmosphereProvider>
+        <GlobalPaperGrain />
+        <AppRoutes />
+      </AtmosphereProvider>
     </BrowserRouter>
   )
 }

@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import SEOHead from '../components/SEOHead'
-
-const SUPPORT_EMAIL = import.meta.env.VITE_SUPPORT_EMAIL || 'support@miloo.chat'
+import WatercolorMiniBanner from '../components/watercolor/WatercolorMiniBanner'
+import { SUPPORT_EMAIL } from '../config/site'
 
 export default function Privacy({ theme, onToggleTheme }) {
   return (
@@ -11,12 +11,15 @@ export default function Privacy({ theme, onToggleTheme }) {
       <SEOHead
         title="Privacy Policy — Miloo Anonymous Chat"
         description="Miloo Privacy Policy: Learn how we protect privacy, manage ephemeral WebRTC streams, disclose Google AdSense and cookies, and respect user privacy rights."
-        canonicalUrl="https://www.miloo.chat/privacy"
+        canonicalUrl="https://miloo.chat/privacy"
       />
 
       <Navbar theme={theme} onToggleTheme={onToggleTheme} />
 
-      <main className="container" style={{ paddingTop: 'clamp(32px, 5vw, 56px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 880 }}>
+      <main className="container" style={{ paddingTop: 'clamp(20px, 3.5vw, 40px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 880 }}>
+        {/* Subtle watercolor sagging wire & perched ink sparrows */}
+        <WatercolorMiniBanner />
+
         <header style={{ marginBottom: 40, textAlign: 'left' }}>
           <div
             style={{
@@ -50,14 +53,14 @@ export default function Privacy({ theme, onToggleTheme }) {
               margin: 0,
             }}
           >
-            Last Updated: November 1, 2026 · Effective Immediately
+            Last Updated: November 4, 2026 · Effective Immediately
           </p>
         </header>
 
         <article className="content-prose">
           <h2>1. Introduction & Our Commitment to Privacy</h2>
           <p>
-            At Miloo (accessible via <a href="https://www.miloo.chat" style={{ color: 'var(--accent)' }}>https://www.miloo.chat</a>), the privacy and confidentiality of our visitors are fundamental to our mission. We believe that spontaneous, serendipitous conversations on the internet should not come at the cost of personal surveillance. This Privacy Policy details the types of information we process, how technical data is handled during peer-to-peer connections, and how we comply with global privacy standards, including the EU General Data Protection Regulation (GDPR), the California Consumer Privacy Act (CCPA/CPRA), and the Indian Digital Personal Data Protection Act (DPDP).
+            At Miloo (accessible via <a href="https://miloo.chat" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>https://miloo.chat</a>), the privacy and confidentiality of our visitors are fundamental to our mission. We believe that spontaneous, serendipitous conversations on the internet should not come at the cost of personal surveillance. This Privacy Policy details the types of information we process, how technical data is handled during peer-to-peer connections, and how we comply with global privacy standards, including the EU General Data Protection Regulation (GDPR), the California Consumer Privacy Act (CCPA/CPRA), and the Indian Digital Personal Data Protection Act (DPDP).
           </p>
 
           <h2>2. Information We Do NOT Collect</h2>
@@ -77,13 +80,13 @@ export default function Privacy({ theme, onToggleTheme }) {
           </p>
           <ul>
             <li>
-              <strong>Ephemeral IP Addresses:</strong> When your device connects to our signaling server, your IP address is processed temporarily in server memory to facilitate WebSockets and ICE candidate routing for WebRTC. IP addresses are never attached to user profiles.
+              <strong>IP Address (Hashed for Ban Enforcement):</strong> When your device connects to our signaling server, your IP address is processed server-side. For the purpose of enforcing suspensions and bans, your IP is immediately hashed using SHA-256 — the raw IP address is never stored in any database or log. The hashed value is retained only for the duration of an active ban (10 minutes, 24 hours, 7 days, or permanent), and is used solely to prevent re-entry after a moderation action.
             </li>
             <li>
               <strong>Device & Browser Metadata:</strong> Information such as browser user-agent, operating system, and viewport dimensions are evaluated client-side to ensure responsive layouts and WebRTC browser compatibility.
             </li>
             <li>
-              <strong>Diagnostic Logs:</strong> Server connection logs (timestamp of connection, connection duration, error codes) are maintained temporarily for system health monitoring and security rate-limiting, and are regularly purged.
+              <strong>Diagnostic Logs:</strong> Server connection logs (timestamp of connection, connection duration, error codes) are maintained temporarily for system health monitoring and security rate-limiting, and are regularly purged. Moderation backend failures are additionally written to <code>server/data/incidents.log</code> on the server.
             </li>
           </ul>
 
@@ -106,35 +109,48 @@ export default function Privacy({ theme, onToggleTheme }) {
               <strong>Essential Storage:</strong> We store your UI theme preference (dark/light), cookie consent choices, and ephemeral session age confirmation. These are strictly functional and do not track you across the web.
             </li>
             <li>
-              <strong>Analytics:</strong> We use Google Analytics 4 to understand macro-level platform usage (aggregate visitor counts, general country distribution, page views). IP anonymization is active.
+              <strong>Analytics (Google Analytics 4 & Consent Mode v2):</strong> When consented to via our cookie banner, we use Google Analytics 4 (GA4) with Google Consent Mode v2 to collect aggregate, anonymous statistics regarding public editorial visits. Consent signals default to <code>denied</code> on page load. GA4 scripts and cookies (<code>_ga</code> and <code>_ga_&lt;container-id&gt;</code>, each with an exact retention period of <strong>2 years</strong>) are loaded <em>only</em> on public informational pages after explicit opt-in and are <strong>strictly excluded</strong> from <code>/chat</code>, <code>/call</code>, <code>/admin</code>, the age gate, and <code>/transparency</code>. Only 5 non-identifying events are permitted: <code>page_view</code>, <code>click_text_chat</code>, <code>click_video_chat</code>, <code>age_gate_result</code>, and <code>share_click</code>. No user IDs, IPs, or chat message content are ever stored or transmitted.
+            </li>
+            <li>
+              <strong>Server-Side Anonymous Counters:</strong> Our backend server tracks aggregate funnel counters (sessions requested per day/mode, % matched within 15/30/60s, median wait, 60s timeouts, chat length buckets, session ended_by reasons, and peak concurrent users). These counters are strictly anonymous with zero IPs, user identifiers, or message text.
+            </li>
+            <li>
+              <strong>Analytics (Umami — Cookieless):</strong> We also support Umami, a privacy-friendly, cookieless analytics tool, to understand aggregate platform usage without fingerprinting or tracking cookies.
             </li>
           </ul>
 
-          <h2>6. Advertising & Google AdSense Disclosure</h2>
+          <h2>6. Advertising (Currently Not Active)</h2>
           <p>
-            Miloo displays third-party advertisements served by Google AdSense solely on our public informational and editorial pages (such as our Homepage, About, Safety Center, FAQ, and Blog).
+            Miloo does not currently run third-party advertisements or ad tracking cookies (<code>ADS_ENABLED=false</code>). If ad networks are integrated in the future on public informational pages:
           </p>
           <ul>
-            <li>
-              <strong>Google AdSense & DoubleClick Cookie:</strong> Google, as a third-party vendor, uses cookies to serve ads on our site. Google's use of advertising cookies enables it and its partners to serve ads to our users based on their visit to our site and other sites on the internet.
-            </li>
-            <li>
-              <strong>Opt-Out Options:</strong> Users may opt out of personalized advertising by visiting <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)' }}>Google Ads Settings</a> or through the Network Advertising Initiative at <a href="https://www.aboutads.info" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)' }}>www.aboutads.info</a>.
-            </li>
-            <li>
-              <strong>Strict Separation of Ads and Chat Rooms:</strong> Advertisements are strictly prohibited and never injected within private text or video chat rooms, protecting your conversational environment from commercial tracking.
-            </li>
+            <li>Third-party ad vendors (such as Google AdSense) may use cookies to serve ads based on visits to this and other websites.</li>
+            <li>Users can opt out of personalized ads via <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Google Ads Settings</a>.</li>
+            <li><strong>Strict Guarantee:</strong> Advertisements will never be injected into active text or video chat rooms.</li>
           </ul>
 
-          <h2>7. Data Retention & Deletion Requests</h2>
+          <h2>7. Bot Prevention & Cloudflare Turnstile</h2>
+          <p>
+            Before entering the matchmaking queue, users complete a privacy-preserving Cloudflare Turnstile check to prevent automated spam bots. Turnstile analyzes browser technical telemetry non-intrusively to verify human presence without using invasive tracking cookies or CAPTCHA puzzles. Verification tokens are checked server-side and immediately discarded.
+          </p>
+
+          <h2>8. Text Chat Moderation</h2>
+          <p>
+            To keep spontaneous chat safe from illegal conduct, hate speech, and harassment:
+          </p>
+          <ul>
+            <li><strong>Automated Text Moderation:</strong> Outgoing chat messages pass through an automated safety evaluation before delivery. If configured, OpenAI's Moderation API is used; otherwise, a local Detoxify machine learning model or rule-based heuristics screen the text. Messages are analyzed strictly in transit and are never permanently stored on servers.</li>
+          </ul>
+
+          <h2>9. Data Retention & Deletion Requests</h2>
           <p>
             Because Miloo does not maintain persistent user accounts, chat logs, or video recordings, there is generally no personally identifiable record to delete once a chat session terminates. Text messages exist only in browser memory and on the peer’s screen during the active socket session and are wiped immediately upon disconnecting or skipping.
           </p>
           <p>
-            If you submitted an abuse report or contacted our support team via email, your correspondence is maintained in our support records for safety verification and legal audit compliance. You have the right to request deletion of any support tickets by emailing <a href={`mailto:${SUPPORT_EMAIL}`} style={{ color: 'var(--accent)' }}>{SUPPORT_EMAIL}</a>.
+            If you submitted an abuse report or contacted our support team via email, your correspondence is maintained in our support records for safety verification and legal audit compliance. Abuse reports (including reported message snippets) are kept for up to 30 days and then permanently purged. You have the right to request deletion of any support tickets by emailing <a href={`mailto:${SUPPORT_EMAIL}`} style={{ color: 'var(--accent)', textDecoration: 'underline' }}>{SUPPORT_EMAIL}</a>.
           </p>
 
-          <h2>8. Your Rights Under GDPR, CCPA, and Global Laws</h2>
+          <h2>10. Your Rights Under GDPR, CCPA, and Global Laws</h2>
           <p>
             Depending on your jurisdiction, you may have statutory privacy rights regarding your personal data:
           </p>
@@ -145,12 +161,12 @@ export default function Privacy({ theme, onToggleTheme }) {
             <li><strong>Non-Discrimination:</strong> We will never discriminate against you for exercising any of your privacy rights.</li>
           </ul>
 
-          <h2>9. Children’s Privacy: Strict 18+ Prohibition</h2>
+          <h2>11. Children’s Privacy: Strict 18+ Prohibition</h2>
           <p>
             Miloo is strictly for adults aged 18 and older. We do not knowingly collect, solicit, or process personal data from anyone under the age of 18. If we discover or are notified that a minor has accessed the chat platform, we take immediate action to terminate the session, blacklist the associated device identifiers, and purge any related records in compliance with COPPA and international child safety laws.
           </p>
 
-          <h2>10. Security Measures & Contact Us</h2>
+          <h2>12. Security Measures & Contact Us</h2>
           <p>
             We deploy strict technical safeguards, including HTTPS transport security with HSTS preload, Content Security Policies, TLS encryption, and automated rate-limiting to protect our infrastructure.
           </p>
@@ -158,8 +174,8 @@ export default function Privacy({ theme, onToggleTheme }) {
             If you have questions, privacy concerns, or data requests, please contact our Data Protection representative at:
           </p>
           <p>
-            <strong>Miloo Privacy Desk:</strong> <a href={`mailto:${SUPPORT_EMAIL}`} style={{ color: 'var(--accent)' }}>{SUPPORT_EMAIL}</a><br />
-            <strong>Contact Desk:</strong> <Link to="/contact" style={{ color: 'var(--accent)' }}>https://www.miloo.chat/contact</Link>
+            <strong>Miloo Privacy Desk:</strong> <a href={`mailto:${SUPPORT_EMAIL}`} style={{ color: 'var(--accent)', textDecoration: 'underline' }}>{SUPPORT_EMAIL}</a><br />
+            <strong>Contact Desk:</strong> <Link to="/contact" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>https://miloo.chat/contact</Link>
           </p>
         </article>
       </main>

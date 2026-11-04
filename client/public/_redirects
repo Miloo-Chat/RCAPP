@@ -1,5 +1,5 @@
-# Redirect non-www to www (primary domain)
-https://miloo.chat/* https://www.miloo.chat/:splat 301!
+# 301 Redirect www to non-www canonical host
+https://www.miloo.chat/* https://miloo.chat/:splat 301!
 
-# SPA fallback — all routes serve index.html
-/*    /index.html   200
+# 301 Redirect /cookie to /cookie-policy
+/cookie /cookie-policy 301!

@@ -1,6 +1,6 @@
 # Miloo Signaling & Moderation Server
 
-This directory contains the Express & Socket.IO signaling server for Miloo.chat, including peer matching, WebRTC signaling, transparent AI companion fallback, safety reporting, and moderation storage.
+This directory contains the Express & Socket.IO signaling server for Miloo.chat, including peer matching, WebRTC signaling, safety reporting, and moderation storage.
 
 ## Moderation & Ban Persistence Setup
 
@@ -42,7 +42,12 @@ Banned users cannot enter the waiting queue or match with anyone.
 
 ## Administrative Portal
 - Accessible at: `https://www.miloo.chat/admin`
-- Authenticated via the `ADMIN_SECRET` environment variable:
+- Authenticated via server-side session cookie (`httpOnly`, `Secure`, `SameSite=Strict`):
+- Requires `ADMIN_PASSWORD_HASH` (bcrypt/argon2 hash) and `SESSION_SECRET` in environment variables:
 ```env
-ADMIN_SECRET=your_secure_admin_token_here
+# Generate hash via: node -e "console.log(require('bcryptjs').hashSync('your_secure_password', 10))"
+ADMIN_PASSWORD_HASH=<your_bcrypt_hash>
+SESSION_SECRET=<random_32_byte_secret>
 ```
+- Includes rate limiting and account lockout after 5 consecutive failed login attempts (15-minute cooldown).
+- Server refuses to start in production if either `ADMIN_PASSWORD_HASH` or `SESSION_SECRET` is missing.

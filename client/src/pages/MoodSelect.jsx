@@ -23,7 +23,7 @@ const CHAT_MODES = [
 ]
 
 export default function MoodSelect({ onContinue, theme, onToggleTheme }) {
-  useCanonical('https://www.miloo.chat/mood')
+  useCanonical('https://miloo.chat/mood')
   const [selectedMood, setSelectedMood] = useState('any')
   const [chatMode, setChatMode] = useState('text')
 

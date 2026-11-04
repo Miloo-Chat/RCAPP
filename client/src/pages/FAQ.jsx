@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import SEOHead from '../components/SEOHead'
+import WatercolorMiniBanner from '../components/watercolor/WatercolorMiniBanner'
 
 const FAQ_DATA = [
   {
@@ -11,7 +12,7 @@ const FAQ_DATA = [
   },
   {
     q: 'Do I need to create an account, register, or download an app?',
-    a: 'No account, sign-up, or mobile app download is required. Miloo is built from the ground up to offer instant, zero-friction anonymous communication directly inside your mobile or desktop web browser. You do not need to link a Google or Apple account, verify an email address, or provide a mobile phone number. You simply open https://www.miloo.chat, verify you are 18 or older, and immediately begin chatting.'
+    a: 'No account, sign-up, or mobile app download is required. Miloo is built from the ground up to offer instant, zero-friction anonymous communication directly inside your mobile or desktop web browser. You do not need to link a Google or Apple account, verify an email address, or provide a mobile phone number. You simply open https://miloo.chat, verify you are 18 or older, and immediately begin chatting.'
   },
   {
     q: 'Who is allowed to use Miloo? What is your age requirement?',
@@ -54,12 +55,8 @@ const FAQ_DATA = [
     a: 'Yes. If you believe your device or IP was suspended in error—such as when sharing a communal university Wi-Fi network, cellular carrier NAT gateway, or dynamic residential IP—you can submit a formal appeal through our Contact page or by emailing support@miloo.chat. Include your approximate access timestamp and network environment details, and our human moderation staff will review your case.'
   },
   {
-    q: 'Why was I matched with an AI companion named Milo?',
-    a: 'During off-peak hours or in queues with temporarily low regional traffic, human matchmaking wait times might otherwise become excessive. To prevent users from waiting indefinitely, Miloo provides Milo, a friendly conversational AI companion. Milo is always clearly labeled with an "AI Companion" badge so you never mistake automated text for a real human, and you can skip Milo at any instant.'
-  },
-  {
-    q: 'Is talking to Milo optional, and how do I know if I am chatting with AI or a human?',
-    a: 'Interacting with Milo is 100% optional. Whenever Milo is matched, a prominent header badge and informational banner appear on your screen declaring the session as an AI conversation. If you only wish to speak with real human strangers, simply click "Skip" to return to the human matching queue, or disable AI companion fallbacks in your settings.'
+    q: 'Does Miloo use AI bots or automated chat partners?',
+    a: 'Miloo does not use AI bots or automated partners. Every stranger you meet is a real person.'
   },
   {
     q: 'What permissions does Miloo request from my browser, and can I use text only?',
@@ -79,7 +76,7 @@ const FAQ_DATA = [
   },
   {
     q: 'Does Miloo use cookies or track my browsing activities?',
-    a: 'Miloo respects user privacy and does not track your online browsing across external websites. We use necessary first-party cookies and local storage tokens solely to maintain your functional UI preferences (such as dark mode selection and age confirmation status). On public content pages, we utilize Google AdSense to serve privacy-compliant advertisements that keep the site free for everyone.'
+    a: 'Miloo respects user privacy and does not track your online browsing across external websites. We use necessary first-party cookies and local storage tokens solely to maintain your functional UI preferences (such as dark mode selection and age confirmation status) and prevent abusive ban evasion. On public pages, privacy-preserving cookieless Umami analytics may collect anonymized page counts and Web Vitals; no personal information or chat content is ever sent.'
   },
   {
     q: 'How does Miloo handle user data deletion and GDPR/CCPA privacy rights?',
@@ -122,14 +119,17 @@ export default function FAQ({ theme, onToggleTheme }) {
       <SEOHead
         title="Frequently Asked Questions (FAQ) — Miloo"
         description="Find clear answers to 20+ questions about Miloo: free random video chat, privacy, WebRTC security, strict 18+ policy, skipping, reporting, and ban appeals."
-        canonicalUrl="https://www.miloo.chat/faq"
+        canonicalUrl="https://miloo.chat/faq"
         schemaJson={schemaJson}
       />
 
       <Navbar theme={theme} onToggleTheme={onToggleTheme} />
 
-      <main className="container" style={{ paddingTop: 'clamp(32px, 5vw, 56px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 880 }}>
-        <header style={{ marginBottom: 48, textAlign: 'left' }}>
+      <main className="container" style={{ paddingTop: 'clamp(20px, 3.5vw, 40px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 880 }}>
+        {/* Subtle watercolor sagging wire & perched ink sparrows */}
+        <WatercolorMiniBanner />
+
+        <header style={{ marginBottom: 44, textAlign: 'left' }}>
           <div
             style={{
               display: 'inline-block',
@@ -255,7 +255,7 @@ export default function FAQ({ theme, onToggleTheme }) {
                 padding: '12px 26px',
                 borderRadius: 'var(--radius-pill)',
                 background: 'var(--accent)',
-                color: '#ffffff',
+                color: 'var(--accent-text, #ffffff)',
                 fontSize: '14px',
                 fontWeight: 600,
                 textDecoration: 'none',

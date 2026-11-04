@@ -1,169 +1,116 @@
 import { Link } from 'react-router-dom'
-import Navbar from '../../components/Navbar'
-import Footer from '../../components/Footer'
-import SEOHead from '../../components/SEOHead'
+import ArticleLayout from '../../components/ArticleLayout'
 
 export default function ReportBlockAbuse({ theme, onToggleTheme }) {
-  const schemaJson = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: 'How to Report and Block Abusive Users: A Guide to Platform Safety',
-    description: 'Understand the difference between skipping, blocking, and reporting abusive users, and learn how moderation protects the Miloo community.',
-    url: 'https://www.miloo.chat/blog/how-to-report-and-block-abusive-users',
-    datePublished: '2026-10-20',
-    dateModified: '2026-10-20',
-    author: { '@type': 'Organization', name: 'Miloo Moderation & Trust Team' },
-    publisher: { '@type': 'Organization', name: 'Miloo', url: 'https://www.miloo.chat' }
-  }
+  const tableOfContents = [
+    { id: 'why-reporting-matters', label: 'Why Reporting Matters in Anonymous P2P Chat' },
+    { id: 'instant-blocking', label: 'How Instant User Blocking Works' },
+    { id: 'reporting-categories', label: 'Safety Categories: What to Report' },
+    { id: 'moderation-process', label: 'Behind the Scenes: How Moderation Works' },
+    { id: 'escalating-penalties', label: 'Penalties & Hardware Level Bans' },
+  ]
+
+  const relatedArticles = [
+    {
+      url: '/blog/stay-safe-talking-to-strangers-online',
+      title: 'How to Stay Safe Talking to Strangers Online: The Complete Modern Guide',
+      blurb: 'Information firewalls, off-platform migration warnings, and setting boundaries.',
+      readTime: '7 min read',
+    },
+    {
+      url: '/blog/what-to-do-if-someone-harasses-you-online',
+      title: 'What to Do If Someone Harasses You Online: Action Steps',
+      blurb: 'Crucial steps for documenting harassment, reporting offenders, and getting support.',
+      readTime: '6 min read',
+    },
+    {
+      url: '/blog/how-to-spot-scams-on-chat-sites',
+      title: 'How to Spot Scams and Fake Profiles on Random Chat Sites',
+      blurb: 'Learn how to detect virtual webcam loops, phishing tricks, and extortion bots.',
+      readTime: '6 min read',
+    },
+  ]
 
   return (
-    <div className="page page-enter" style={{ background: 'var(--bg-0)' }}>
-      <SEOHead
-        title="How to Report & Block Abusive Users — Miloo Blog"
-        description="Learn how reporting and blocking work on Miloo: reporting categories, moderation review, session blacklisting, and community protection."
-        canonicalUrl="https://www.miloo.chat/blog/how-to-report-and-block-abusive-users"
-        schemaJson={schemaJson}
-      />
+    <ArticleLayout
+      title="How to Report and Block Abusive Users on Miloo"
+      description="Learn how reporting and blocking work on Miloo: reporting categories, moderation review, session blacklisting, and community protection."
+      url="https://miloo.chat/blog/how-to-report-and-block-abusive-users"
+      category="Community Safety & Moderation"
+      datePublished="2026-09-18"
+      dateModified="2026-11-03"
+      readTime="6 min read"
+      tableOfContents={tableOfContents}
+      relatedArticles={relatedArticles}
+      ogSlug="blog-how-to-report-and-block-abusive-users"
+      theme={theme}
+      onToggleTheme={onToggleTheme}
+    >
+      <p>
+        An open, anonymous chat network succeeds only when its community members feel protected, respected, and empowered. While the overwhelming majority of people visit Miloo to share genuine conversations, laugh, or practice foreign languages, occasional bad actors attempt to disrupt the experience with inappropriate content, harassment, or scams.
+      </p>
+      <p>
+        We designed Miloo’s safety infrastructure to ensure you have instantaneous control over who you interact with. You never have to tolerate offensive behavior. Here is how our reporting and blocking architecture functions, how our moderation desk processes violation notices, and how you can help keep Miloo safe for everyone. Explore our dedicated <Link to="/safety">Safety Center</Link> and read our <Link to="/community-guidelines">Community Guidelines</Link> for full policy details.
+      </p>
 
-      <Navbar theme={theme} onToggleTheme={onToggleTheme} />
+      <h2 id="why-reporting-matters">1. Why Reporting Matters in Anonymous P2P Chat</h2>
+      <p>
+        Because Miloo operates without persistent profiles, user accounts, or message databases to preserve absolute privacy, real-time reporting is our most vital community defense.
+      </p>
+      <p>
+        When you submit a report, you do more than detach yourself from an unpleasant interaction—you instantly flag the violator’s device signature in our system. Aggregated reports trigger automated circuit breakers, isolating offenders before they can harm others.
+      </p>
 
-      <main className="container" style={{ paddingTop: 'clamp(32px, 5vw, 56px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 840 }}>
-        <div style={{ marginBottom: 24 }}>
-          <Link to="/blog" style={{ color: 'var(--accent)', textDecoration: 'none', fontSize: '14px', fontWeight: 500 }}>
-            ← Back to Blog & Safety Guides
-          </Link>
-        </div>
+      <h2 id="instant-blocking">2. How Instant User Blocking Works</h2>
+      <p>
+        During any active text or video conversation, clicking <strong>Block User</strong> performs two immediate actions:
+      </p>
+      <ol>
+        <li><strong>Connection Severance:</strong> The active WebRTC peer connection is immediately torn down on your browser, instantly detaching audio, video, and text data streams.</li>
+        <li><strong>Session Blacklist:</strong> The offending user’s ephemeral session ID and client signature are placed into your local browser blacklist. Miloo’s matchmaking engine will never pair you with that identifier again during your active browser session.</li>
+      </ol>
+      <p>
+        Blocking is completely invisible to the other party; to them, it simply appears as if a partner pressed Skip. Check our <Link to="/faq">FAQ</Link> for common questions on blocking and skipping.
+      </p>
 
-        <header style={{ marginBottom: 40, textAlign: 'left' }}>
-          <div
-            style={{
-              display: 'inline-block',
-              fontSize: '12px',
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: 'var(--accent)',
-              marginBottom: 12,
-            }}
-          >
-            Trust, Safety & Moderation
-          </div>
-          <h1
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(30px, 4vw, 46px)',
-              fontWeight: 500,
-              lineHeight: 1.18,
-              color: 'var(--text-1)',
-              margin: '0 0 16px',
-            }}
-          >
-            How to Report and Block Abusive Users: A Guide to Platform Safety
-          </h1>
-          <div style={{ display: 'flex', gap: 16, alignItems: 'center', color: 'var(--text-3)', fontSize: '13px' }}>
-            <span>By Miloo Moderation Desk</span>
-            <span>·</span>
-            <span>Published Oct 20, 2026</span>
-            <span>·</span>
-            <span>6 min read</span>
-          </div>
-        </header>
+      <h2 id="reporting-categories">3. Safety Categories: What to Report</h2>
+      <p>
+        When clicking <strong>Report User</strong>, you can select from six standardized violation categories:
+      </p>
+      <ul>
+        <li><strong>Nudity or Sexual Misconduct:</strong> Genital exposure, masturbation, sexual acts, or unsolicited explicit content. Miloo enforces zero tolerance for non-consensual nudity.</li>
+        <li><strong>Harassment or Bullying:</strong> Targeted insults, offensive slurs, hate speech, body shaming, or aggressive verbal abuse. See our guide on <Link to="/blog/what-to-do-if-someone-harasses-you-online">handling online harassment</Link>.</li>
+        <li><strong>Spam, Ads, or Bot Behavior:</strong> Repetitive commercial advertising, automated message scripts, or unsolicited third-party links.</li>
+        <li><strong>Threats or Violence:</strong> Threats of physical harm, extortion, swatting, or non-consensual doxxing.</li>
+        <li><strong>Scam or Fraud:</strong> Solicitations for cryptocurrency transfers, fake investment schemes, or phishing portals. See our guide on <Link to="/blog/how-to-spot-scams-on-chat-sites">spotting scams on chat sites</Link>.</li>
+        <li><strong>Other Violations:</strong> Any other conduct breaching our Community Guidelines or legal terms.</li>
+      </ul>
 
-        <article className="content-prose">
-          <p>
-            An open, anonymous chat network is only as strong as its community moderation and user safety tools. When thousands of people from around the world interact spontaneously, occasional encounters with rude, inappropriate, or malicious individuals are inevitable.
-          </p>
-          <p>
-            On legacy chat platforms, users often felt powerless: abusive participants could simply reload their browsers and terrorize the queue without consequences. At Miloo, we have implemented an active, multi-tiered protection system. Understanding the difference between <strong>Skipping</strong>, <strong>Blocking</strong>, and <strong>Reporting</strong> empowers you to take immediate control of your experience and help keep the platform welcoming for all adults.
-          </p>
+      <h2 id="moderation-process">4. Behind the Scenes: How Moderation Works</h2>
+      <p>
+        When you file a report, our backend creates an encrypted moderation ticket containing:
+      </p>
+      <ul>
+        <li>The reported party’s hashed network signature (SHA-256 hashed IP and device token).</li>
+        <li>Your selected violation category and any optional context you provided.</li>
+        <li>Precise timestamps and connection telemetry.</li>
+      </ul>
+      <p>
+        Our automated systems cross-reference these tickets against concurrent violation reports. High-severity signals (such as multiple nudity or harassment reports in a brief window) trigger automated account bans immediately. Complex cases are reviewed by our safety desk on our internal moderation dashboard. Read our <Link to="/transparency">Transparency Center</Link> to learn more about our data retention and moderation audits.
+      </p>
 
-          <h2>1. The Power of "Skip" vs. "Block" vs. "Report"</h2>
-          <p>
-            Each of the three primary moderation actions in your chat window serves a distinct purpose:
-          </p>
-          <ul>
-            <li>
-              <strong>Skip:</strong> Designed for neutral conversational mismatch. If your match is quiet, speaks a language you do not understand, or shares different interests, hitting <strong>Skip</strong> simply ends the connection and seeks a new partner. It does not penalize either user.
-            </li>
-            <li>
-              <strong>Block User:</strong> Designed for personal protection against annoying or boundary-pushing individuals. When you click <strong>Block</strong>, your client immediately severs the WebRTC stream and saves the partner's technical session token in your local blacklist. You are guaranteed never to match with that individual again during your visit.
-            </li>
-            <li>
-              <strong>Report User:</strong> Designed for actual rule violations (such as nudity, harassment, threats, or scams). Submitting a report dispatches diagnostic telemetry directly to our moderation desk for administrative sanctions, including temporary suspensions and permanent hardware/IP bans.
-            </li>
-          </ul>
-
-          <h2>2. How the Reporting Process Works</h2>
-          <p>
-            When you tap <strong>Report User</strong> in a chat room, a structured dialog appears asking you to specify the violation category. Providing accurate categories allows our automated filters and moderation team to prioritize urgent safety issues:
-          </p>
-          <ul>
-            <li><strong>Harassment / Bullying:</strong> For targeted insults, slurs, doxxing threats, or repeated aggressive behavior.</li>
-            <li><strong>Nudity / Sexual Misconduct:</strong> For exposing private body parts, masturbation, or displaying sexually explicit videos.</li>
-            <li><strong>Spam / Advertising:</strong> For bots posting repetitive text, automated copy-pastes, or commercial links.</li>
-            <li><strong>Threats / Violence:</strong> For threats of bodily harm, extortion, or encouraging violence.</li>
-            <li><strong>Scam / Fraud:</strong> For phishing links, cryptocurrency schemes, or emergency financial appeals.</li>
-          </ul>
-
-          <h2>3. What Happens Behind the Scenes?</h2>
-          <p>
-            Miloo respects user privacy: we do not maintain recordings of private peer-to-peer video streams. How, then, do our moderators investigate reports?
-          </p>
-          <p>
-            When a report is generated, our signaling server logs an encrypted incident record containing:
-          </p>
-          <ul>
-            <li>The reported user’s ephemeral session ID and masked IP subnet.</li>
-            <li>The timestamp and violation category selected by the reporter.</li>
-            <li>Recent text signaling events or system logs associated with the session.</li>
-          </ul>
-          <p>
-            Our moderation system aggregates report velocity. If a session accumulates multiple reports from different independent users in a short window, automated safeguards immediately terminate the user's connection and restrict their ability to re-enter the queue.
-          </p>
-
-          <h2>4. Severe Violations and Legal Escalations</h2>
-          <p>
-            Certain violations go far beyond platform rule breaks—they are serious criminal offenses under national and international law:
-          </p>
-          <ul>
-            <li><strong>Child Sexual Abuse Material (CSAM):</strong> Miloo enforces strict zero tolerance for any exploitation or involvement of minors. We actively cooperate with the National Center for Missing & Exploited Children (NCMEC) and relevant law enforcement cyber bureaus.</li>
-            <li><strong>Sextortion and Cyber-Blackmail:</strong> Any individual attempting to demand money or compromise victims is permanently banned, and digital connection fingerprints are preserved for criminal investigation.</li>
-          </ul>
-
-          <h2>5. Best Practices When Encountering Abusive Users</h2>
-          <ol>
-            <li><strong>Do Not Retaliate:</strong> Do not yell, trade insults, or try to teach an abusive stranger a lesson. Trolls seek emotional reactions.</li>
-            <li><strong>Do Not Click Links:</strong> Never open an external link or download any file sent by an aggressive user.</li>
-            <li><strong>Report and Block Immediately:</strong> Take three seconds to submit a report and click block, then move on with your day.</li>
-          </ol>
-        </article>
-
-        <div className="content-card" style={{ marginTop: 48, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
-          <div>
-            <span style={{ fontSize: '12px', color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Next Article</span>
-            <h4 style={{ margin: '4px 0 0', fontFamily: 'var(--font-display)', fontSize: '18px', color: 'var(--text-1)' }}>
-              10 Tips for Starting a Great Conversation with a Random Stranger
-            </h4>
-          </div>
-          <Link
-            to="/blog/tips-for-starting-good-conversation-with-stranger"
-            style={{
-              padding: '8px 18px',
-              borderRadius: 'var(--radius-pill)',
-              background: 'var(--surface-2)',
-              border: '1px solid var(--border-2)',
-              color: 'var(--accent)',
-              textDecoration: 'none',
-              fontWeight: 600,
-              fontSize: '14px',
-            }}
-          >
-            Read Next →
-          </Link>
-        </div>
-      </main>
-
-      <Footer />
-    </div>
+      <h2 id="escalating-penalties">5. Penalties & Hardware Level Bans</h2>
+      <p>
+        Miloo employs a multi-tiered penalty schedule designed to deter repeat offenses:
+      </p>
+      <ul>
+        <li><strong>First Strike (Warning / 10-Minute Suspension):</strong> Offending client is warned or placed into a mandatory 10-minute cooling-off suspension.</li>
+        <li><strong>Second Strike (24-Hour Ban):</strong> A 24-hour block is applied across both network IP hash and browser fingerprint tokens.</li>
+        <li><strong>Repeated or Severe Violations (7-Day to Permanent Ban):</strong> Severe violations result in indefinite blacklisting from the Miloo matchmaking network. Handshake attempts are rejected at the edge socket level.</li>
+      </ul>
+      <p>
+        By utilizing these tools responsibly, you actively protect the spontaneity, dignity, and warmth of our shared conversational space.
+      </p>
+    </ArticleLayout>
   )
 }

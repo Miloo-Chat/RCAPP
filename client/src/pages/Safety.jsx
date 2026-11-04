@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import SEOHead from '../components/SEOHead'
+import WatercolorMiniBanner from '../components/watercolor/WatercolorMiniBanner'
 
 export default function Safety({ theme, onToggleTheme }) {
   return (
@@ -9,13 +10,16 @@ export default function Safety({ theme, onToggleTheme }) {
       <SEOHead
         title="Safety Center & Online Chat Guidelines — Miloo"
         description="Essential safety tips for chatting with strangers online. Protect your privacy, spot scam red flags, secure video backgrounds, and report abusive conduct."
-        canonicalUrl="https://www.miloo.chat/safety"
+        canonicalUrl="https://miloo.chat/safety"
       />
 
       <Navbar theme={theme} onToggleTheme={onToggleTheme} />
 
-      <main className="container" style={{ paddingTop: 'clamp(32px, 5vw, 56px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 880 }}>
-        <header style={{ marginBottom: 48, textAlign: 'left' }}>
+      <main className="container" style={{ paddingTop: 'clamp(20px, 3.5vw, 40px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 880 }}>
+        {/* Subtle watercolor sagging wire & perched ink sparrows */}
+        <WatercolorMiniBanner />
+
+        <header style={{ marginBottom: 44, textAlign: 'left' }}>
           <div
             style={{
               display: 'inline-block',
@@ -87,7 +91,26 @@ export default function Safety({ theme, onToggleTheme }) {
             <li><strong>External links and downloads:</strong> Never click shortened URLs, file transfer links, or download executable programs sent by a stranger in chat.</li>
           </ul>
 
-          <h2 id="reporting">4. Using Miloo's Built-In Safety Tools</h2>
+          <h2 id="reporting">4. Multi-Layered Moderation & Zero-Tolerance 18+ Enforcement</h2>
+          <p>
+            Miloo is engineered exclusively for mature legal adults aged 18 and older. Minors are strictly prohibited from using the platform under any circumstances. Because stranger interactions are unscripted, users may encounter sensitive conversations or adult topics. We maintain zero tolerance for child sexual abuse material (CSAM), non-consensual sexually explicit content, harassment, stalking, hate speech, and scams. Any detected or reported violations result in immediate device fingerprint and IP bans.
+          </p>
+          <p>
+            To ensure comprehensive community protection across every connection:
+          </p>
+          <ul>
+            <li>
+              <strong>Mandatory Pre-Flight Age Confirmation:</strong> Every visitor must actively affirm that they are 18 or older before any video or text session can be initiated.
+            </li>
+            <li>
+              <strong>Instant User Blacklisting:</strong> Using the "Block" control severs the peer connection and blacklists that partner's session ID, guaranteeing you will not be matched with them again.
+            </li>
+            <li>
+              <strong>Granular Abuse Categorization:</strong> Reports submit diagnostic technical context directly to our review team to identify recurring bad actors and enforce hardware-level bans.
+            </li>
+          </ul>
+
+          <h2>5. Using Miloo's Built-In Safety Tools</h2>
           <p>
             Miloo provides immediate tools inside every chat room to keep you in complete control of your experience:
           </p>
@@ -97,7 +120,7 @@ export default function Safety({ theme, onToggleTheme }) {
             <li><strong>Report User:</strong> Use the Report button to flag violations. Categories include Harassment, Nudity / Explicit Behavior, Spam, Threats, and Scams. Reports are routed to our administrative moderation review queue.</li>
           </ul>
 
-          <h2>5. What to Do If You Experience Extortion or Sextortion</h2>
+          <h2>6. What to Do If You Experience Extortion or Sextortion</h2>
           <p>
             Sextortion occurs when someone threatens to share compromising webcam screenshots or recorded video unless you pay money or provide more images. If you encounter this:
           </p>
@@ -108,15 +131,15 @@ export default function Safety({ theme, onToggleTheme }) {
             <li><strong>Contact specialized support:</strong> Reach out to local law enforcement cybercrime units and dedicated support services such as the FBI's Internet Crime Complaint Center (IC3) or Take It Down (by NCMEC).</li>
           </ul>
 
-          <h2>6. External Support Hotlines & Helplines</h2>
+          <h2>7. External Support Hotlines & Helplines</h2>
           <p>
             If you or someone you know has experienced severe harassment, exploitation, or emotional distress, confidential external resources are available 24/7:
           </p>
           <ul>
             <li><strong>Crisis Text Line:</strong> Text HOME to 741741 (Free, 24/7 crisis support in the US, UK, and Canada).</li>
             <li><strong>Cyber Civil Rights Initiative (CCRI):</strong> Helpline for victims of nonconsensual intimate imagery: 844-878-2274.</li>
-            <li><strong>National Center for Missing & Exploited Children (NCMEC):</strong> CyberTipline at 1-800-843-5678 or report online at <a href="https://report.cybertip.org" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)' }}>report.cybertip.org</a>.</li>
-            <li><strong>International Resources:</strong> Find helplines in your country at <a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)' }}>findahelpline.com</a>.</li>
+            <li><strong>National Center for Missing & Exploited Children (NCMEC):</strong> CyberTipline at 1-800-843-5678 or report online at <a href="https://report.cybertip.org" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>report.cybertip.org</a>.</li>
+            <li><strong>International Resources:</strong> Find helplines in your country at <a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>findahelpline.com</a>.</li>
           </ul>
         </article>
 

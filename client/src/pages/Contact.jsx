@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import SEOHead from '../components/SEOHead'
-
-const SUPPORT_EMAIL = import.meta.env.VITE_SUPPORT_EMAIL || 'support@miloo.chat'
+import WatercolorMiniBanner from '../components/watercolor/WatercolorMiniBanner'
+import { SUPPORT_EMAIL, GRIEVANCE_OFFICER } from '../config/site'
 
 export default function Contact({ theme, onToggleTheme }) {
   const [formData, setFormData] = useState({
@@ -40,12 +40,15 @@ export default function Contact({ theme, onToggleTheme }) {
       <SEOHead
         title="Contact & Support Desk — Miloo"
         description="Get in touch with the Miloo team for technical support, safety reports, business inquiries, and DMCA notices. We respond within 24-48 hours."
-        canonicalUrl="https://www.miloo.chat/contact"
+        canonicalUrl="https://miloo.chat/contact"
       />
 
       <Navbar theme={theme} onToggleTheme={onToggleTheme} />
 
-      <main className="container" style={{ paddingTop: 'clamp(32px, 5vw, 56px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 960 }}>
+      <main className="container" style={{ paddingTop: 'clamp(20px, 3.5vw, 40px)', paddingBottom: 'clamp(48px, 8vw, 80px)', maxWidth: 960 }}>
+        {/* Subtle watercolor sagging wire & perched ink sparrows */}
+        <WatercolorMiniBanner />
+
         <header style={{ marginBottom: 40, textAlign: 'left' }}>
           <div
             style={{
@@ -415,7 +418,7 @@ export default function Contact({ theme, onToggleTheme }) {
                       borderRadius: 'var(--radius-pill)',
                       border: 'none',
                       background: 'var(--accent)',
-                      color: '#ffffff',
+                      color: 'var(--accent-text, #ffffff)',
                       fontSize: '15px',
                       fontWeight: 600,
                       cursor: 'pointer',
@@ -450,6 +453,93 @@ export default function Contact({ theme, onToggleTheme }) {
                   {SUPPORT_EMAIL}
                 </a>
                 .
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* India Compliance — Grievance Officer */}
+        <div
+          className="content-card"
+          style={{
+            marginBottom: 36,
+            padding: '28px 24px',
+            border: '1px solid var(--border-2)',
+            borderRadius: 'var(--radius-lg)',
+          }}
+        >
+          <div
+            style={{
+              display: 'inline-block',
+              fontSize: '12px',
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: 'var(--accent)',
+              marginBottom: 10,
+            }}
+          >
+            India Compliance — IT Rules, 2021
+          </div>
+          <h2
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '22px',
+              color: 'var(--text-1)',
+              margin: '0 0 12px',
+            }}
+          >
+            Grievance Officer
+          </h2>
+          <p style={{ color: 'var(--text-2)', fontSize: '14.5px', lineHeight: 1.6, margin: '0 0 20px' }}>
+            In accordance with Rule 3(2) of the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021, users in India may direct complaints, grievances, or legal inquiries regarding content, safety, or access violations to our designated Grievance Officer.
+          </p>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+              gap: 18,
+            }}
+          >
+            <div>
+              <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-3)', letterSpacing: '0.05em', marginBottom: 4 }}>
+                Officer Name & Designation
+              </div>
+              <div style={{ fontSize: '15px', color: 'var(--text-1)', fontWeight: 500 }}>
+                {GRIEVANCE_OFFICER.name} ({GRIEVANCE_OFFICER.designation})
+              </div>
+            </div>
+
+            <div>
+              <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-3)', letterSpacing: '0.05em', marginBottom: 4 }}>
+                Grievance Email Address
+              </div>
+              <div>
+                <a
+                  href={`mailto:${GRIEVANCE_OFFICER.email}`}
+                  style={{ color: 'var(--accent)', textDecoration: 'underline', fontSize: '15px', fontWeight: 500 }}
+                >
+                  {GRIEVANCE_OFFICER.email}
+                </a>
+              </div>
+            </div>
+
+            <div style={{ gridColumn: '1 / -1' }}>
+              <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-3)', letterSpacing: '0.05em', marginBottom: 4 }}>
+                Postal Address
+              </div>
+              <div style={{ fontSize: '15px', color: 'var(--text-2)', lineHeight: 1.5 }}>
+                {GRIEVANCE_OFFICER.address}
+              </div>
+            </div>
+
+            <div style={{ gridColumn: '1 / -1' }}>
+              <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-3)', letterSpacing: '0.05em', marginBottom: 4 }}>
+                Statutory Timelines
+              </div>
+              <div style={{ fontSize: '14.5px', color: 'var(--text-2)', lineHeight: 1.6 }}>
+                Receipt of user grievances is acknowledged within <strong>{GRIEVANCE_OFFICER.acknowledgementTime}</strong>, and eligible grievances are investigated and resolved within <strong>{GRIEVANCE_OFFICER.resolutionTime}</strong> from the date of receipt.
               </div>
             </div>
           </div>
