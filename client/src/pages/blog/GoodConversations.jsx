@@ -47,7 +47,7 @@ export default function GoodConversations({ theme, onToggleTheme }) {
       onToggleTheme={onToggleTheme}
     >
       <p>
-        The hardest part of any stranger conversation is the first thirty seconds. In random chat, attention spans are fleeting. If the initial exchange is dull, robotic, or awkward, your match will inevitably hit Skip and vanish into the digital ether.
+        The hardest part of any stranger conversation is the first thirty seconds. In random chat, attention spans are fleeting. If the initial exchange is dull, robotic, or awkward, your match will inevitably hit Skip and vanish into the digital ether. On Miloo, every chat is with a real person, so genuine curiosity and warmth always beat tired cliches.
       </p>
       <p>
         For years, legacy platforms trained people to open with uninspiring cliches: <em>"m or f?"</em>, <em>"asl?"</em>, or a lifeless <em>"hey."</em> These low-effort greetings signal disinterest before the dialogue even begins. Great conversations aren't born from extraordinary charisma—they come from genuine curiosity, playful observations, and low-stakes questions that invite a smile. Here are our top tips for igniting memorable conversations while keeping within <Link to="/community-guidelines">Community Guidelines</Link> and staying secure with our <Link to="/safety">Safety Center</Link> advice.

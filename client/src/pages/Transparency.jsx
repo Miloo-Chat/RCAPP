@@ -22,7 +22,7 @@ export default function Transparency({ theme, onToggleTheme }) {
     <div className="page page-enter" style={{ background: 'var(--bg-0)' }}>
       <SEOHead
         title="Transparency & Moderation Policies — Miloo"
-        description="Learn how Miloo moderation operates: automated text checks, client-side video analysis, zero data retention, and ban appeal procedures."
+        description="Learn how Miloo moderation operates: automated safety tools, client-side video analysis, zero data retention, and appeals. Every chat is with a real person."
         canonicalUrl="https://miloo.chat/transparency"
         ogImage="https://miloo.chat/og/transparency.png"
         schemaJson={schemaJson}
@@ -97,7 +97,7 @@ export default function Transparency({ theme, onToggleTheme }) {
           </p>
           <ul>
             <li>
-              <strong>Server-Side Text Screening:</strong> Every text message is processed through an automated content safety check prior to delivery. When configured with an API key, we utilize OpenAI's Moderation API; otherwise, an open-source local Detoxify model or internal rule heuristics evaluate the text. Messages containing hate speech, sexual solicitation, severe harassment, or phishing links are immediately blocked. Senders receive a strike warning; repeated violations result in immediate session detachment and temporary bans. Miloo does not use AI bots or automated partners. Every stranger you meet is a real person.
+              <strong>Server-Side Text Screening:</strong> Every text message is processed through an automated content safety check prior to delivery. When configured with an API key, we utilize OpenAI's Moderation API; otherwise, an open-source local Detoxify model or internal rule heuristics evaluate the text. Messages containing hate speech, sexual solicitation, severe harassment, or phishing links are immediately blocked. Senders receive a strike warning; repeated violations result in immediate session detachment and temporary bans. Miloo does not use AI bots or automated partners. Every chat is with a real person.
             </li>
             <li>
               <strong>On-Device Video Analysis:</strong> Video streams are sampled client-side using TensorFlow.js and self-hosted NSFWJS model weights running locally in your browser (one frame every 3 seconds). If explicit nudity or sexual misconduct is detected, the remote video is immediately blurred with a safety alert, the connection is terminated, and the incident is flagged. <em>Frames never leave the user's browser unless the user chooses to submit a formal report.</em>

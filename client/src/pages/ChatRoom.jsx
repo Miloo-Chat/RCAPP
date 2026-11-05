@@ -1618,7 +1618,7 @@ function MatchingView({
               lineHeight: 1.3,
             }}
           >
-            No one is here right now. Your bird will wait on the wire.
+            No one is here right now. Keep waiting or try again later.
           </h2>
           <p
             style={{
@@ -2368,21 +2368,6 @@ function MessageBubble({ role, time, name, showHeader = true, children }) {
         >
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
             <span>{senderName}</span>
-            {role === 'assistant' && (
-              <span
-                style={{
-                  fontSize: 9.5,
-                  fontWeight: 700,
-                  padding: '1px 4px',
-                  borderRadius: 3,
-                  background: 'var(--accent)',
-                  color: '#ffffff',
-                  letterSpacing: '0.04em',
-                }}
-              >
-                AI
-              </span>
-            )}
           </span>
           {time && (
             <>

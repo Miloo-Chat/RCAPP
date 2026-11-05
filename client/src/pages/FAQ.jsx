@@ -56,7 +56,7 @@ const FAQ_DATA = [
   },
   {
     q: 'Does Miloo use AI bots or automated chat partners?',
-    a: 'Miloo does not use AI bots or automated partners. Every stranger you meet is a real person.'
+    a: 'Miloo does not use AI bots or automated partners. Every chat is with a real person. Every stranger you meet is an actual human user.'
   },
   {
     q: 'What permissions does Miloo request from my browser, and can I use text only?',
@@ -118,7 +118,7 @@ export default function FAQ({ theme, onToggleTheme }) {
     <div className="page page-enter" style={{ background: 'var(--bg-0)' }}>
       <SEOHead
         title="Frequently Asked Questions (FAQ) — Miloo"
-        description="Find clear answers to 20+ questions about Miloo: free random video chat, privacy, WebRTC security, strict 18+ policy, skipping, reporting, and ban appeals."
+        description="Find clear answers to 20+ questions about Miloo. Every chat is with a real person. Free random video chat, privacy, WebRTC security, and safety rules."
         canonicalUrl="https://miloo.chat/faq"
         schemaJson={schemaJson}
       />

@@ -47,7 +47,7 @@ export default function StrangerChatIndia({ theme, onToggleTheme }) {
       onToggleTheme={onToggleTheme}
     >
       <p>
-        Across India’s bustling tech hubs, university campuses, and quiet late-night bedrooms, a quiet cultural shift is underway. Millions of young adults are growing exhausted by traditional social media feeds—endless curated reels, performative status updates, and relentless recommendation algorithms.
+        Across India’s bustling tech hubs, university campuses, and quiet late-night bedrooms, a quiet cultural shift is underway. Millions of young adults are growing exhausted by traditional social media feeds—endless curated reels, performative status updates, and relentless recommendation algorithms. On Miloo, every chat is with a real person, providing an honest sanctuary for genuine human connection.
       </p>
       <p>
         In response, anonymous stranger chat has experienced a massive resurgence. Young people are rediscovering the joy of unscripted 1-on-1 human interaction where there are no follower counts, no algorithmic engagement traps, and no permanent profile histories. Here is an exploration of the stranger chat phenomenon in India and how Miloo provides a secure, dignified space for spontaneous dialogue. Review our <Link to="/safety">Safety Center</Link> and <Link to="/community-guidelines">Community Guidelines</Link> to learn more.

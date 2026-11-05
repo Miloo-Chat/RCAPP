@@ -2,7 +2,7 @@
 
 **Audit by:** Senior Full-Stack / QA
 **Scope:** Signaling server (`server/index.js`), WebRTC client (`client/src/pages/ChatRoom.jsx`), routing & state machine (`App.jsx`).
-**Verdict:** The product has 5 well-engineered pieces (Milo companion, trust scoring, anti-spam, TURN creds, India-friendly friendliness) undermined by **one critical UX bug class and three technical issues** that together produce the symptoms you are seeing:
+**Verdict:** The product has well-engineered pieces (trust scoring, anti-spam, TURN creds, India-friendly friendliness) undermined by **one critical UX bug class and three technical issues** that together produce the symptoms you are seeing:
 
 > *“Users click Start → camera opens → ‘Finding your match…’ → they wait → nothing happens → they leave.”*
 
@@ -663,7 +663,7 @@ grep -n "setTimeout(() => findNext" client/src/pages/ChatRoom.jsx
 
 ## 7. Closing Notes
 
-- The product fundamentals are strong. The Milo AI companion, mood-based UX, and trust scoring are well-designed. The retention problem is **not** "users don't like the product" — it's "users don't reach the product".
+- The product fundamentals are strong. The honest waiting experience, mood-based UX, and trust scoring are well-designed. The retention problem is **not** "users don't like the product" — it's "users don't reach the product".
 - The single biggest fix is **#1: hard filters in `findMatch`**. With 2-3 online users, a Vent user getting matched with a Gaming user feels like a bug even if it's a successful match. The trust score gap penalty then locks them in a loop.
 - The second biggest is **#5: WebRTC connection monitoring**. A user whose partner's network drops will sit on a frozen video for up to 30 minutes (the cleanup interval) before the server notices. That is the most common churn trigger.
 - Apply fixes 1, 2, 3, 5 first. Everything else is incremental improvement.

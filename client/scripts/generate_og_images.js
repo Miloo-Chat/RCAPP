@@ -22,7 +22,7 @@ const PAGES = [
   {
     slug: 'home',
     title: 'Miloo — Meet a Real Stranger',
-    subtitle: 'Free anonymous random video & text chat with zero signup.',
+    subtitle: 'Free anonymous random video & text chat. Every chat is with a real person.',
     badge: 'Anonymous · Instant · Real People',
   },
   {
@@ -349,7 +349,7 @@ export async function generateOGImages() {
                             textTransform: 'uppercase',
                             color: '#5E5850',
                           },
-                          children: 'Meet a real stranger',
+                          children: 'Every chat is with a real person',
                         },
                       },
                     ],
@@ -438,7 +438,7 @@ export async function generateOGImages() {
                       color: '#5E5850',
                       letterSpacing: '0.04em',
                     },
-                    children: 'Free · Anonymous · WebRTC Encrypted · Strictly 18+',
+                    children: 'Every chat is with a real person · Free · WebRTC Encrypted · Strictly 18+',
                   },
                 },
                 {

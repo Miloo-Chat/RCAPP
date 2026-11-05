@@ -21,7 +21,7 @@ This document defines the complete and exclusive list of analytics events permit
 
 ## 2. Permitted Events (Strict Whitelist)
 
-Only the following **5 events** are permitted:
+Only the following human-flow and public interaction events are permitted:
 
 | Event Name | Trigger | Allowed Parameters | Privacy & Compliance Details |
 | :--- | :--- | :--- | :--- |
@@ -30,13 +30,18 @@ Only the following **5 events** are permitted:
 | `click_video_chat` | User clicks the "Video chat" button on Home | *(none)* | Binary interaction counter. No user identification. |
 | `age_gate_result` | User completes the age confirmation modal | `status` (`passed` \| `exited`), `mode` (`text` \| `video`) | Confirms age gate completion. No birthdate or PII. |
 | `share_click` | User clicks the "Send a bird" share button | *(none)* | Viral/share intent counter. No recipient data. |
+| `chat_requested` | User initiates chat connection | `mode` (`text` \| `video`) | Human connection intent. Zero user identifiers or IP. |
+| `waiting_started` | User enters matchmaking queue | `mode` (`text` \| `video`) | Queue entry timestamp. Zero personal identifiers. |
+| `human_matched` | Real human-to-human match established | `mode` (`text` \| `video`) | Match outcome only. No partner ID, socket ID, or IP. |
+| `wait_timeout` | User waits 60s without matching a peer | `mode` (`text` \| `video`) | Queue timeout marker. Zero personal data. |
+| `chat_ended` | Real conversation ended | `mode` (`text` \| `video`), `reason` (`skip` \| `disconnect` \| `exit`) | Session duration bucket / reason. No message text. |
+| `report_clicked` | User opens safety report modal | `category` | Safety moderation intent. Never contains chat messages or user ID. |
 
 ---
 
-## 3. Prohibited & Removed Events
+## 3. Strict Prohibitions: Zero Bot Events & Zero Identifiers
 
-The following event types have been removed from the client analytics whitelist:
-- **Chat & WebRTC events:** `chat_started`, `chat_ended`, `webrtc_ice_state`, `camera_permission_*`, `send_message_*`, `video_nsfw_detected` (funnel stats stay server-side only).
-- **Bot events:** All automated partner and bot events are strictly prohibited and permanently removed. Miloo does not use AI bots or automated partners. Every stranger you meet is a real person.
-- **Redundant / unused events:** `button_click`, `go_to_chat`, `mood_selected`, `chat_mode_selected`, `report_clicked`.
+- **Zero Bot Events:** No bot events exist or may ever exist. Miloo does not use automated bots or simulated partners. Every chat is with a real person.
+- **Zero Content & Identifiers:** No event may ever contain message text, prompts, transcripts, IPs, fingerprints, socket IDs, client IDs, tokens, or personal identifiers. Any parameter matching forbidden keys (`text`, `message`, `content`, `transcript`, `prompt`, `ip`, `clientId`, etc.) is strictly stripped before transmission.
+- **Forbidden Legacy Events:** All automated fallback, bot pairing, and legacy telemetry events are permanently deleted.
 

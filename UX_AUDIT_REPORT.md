@@ -284,14 +284,13 @@ Wire it into Home's `liveStats` by changing the fetch URL from `SERVER` to `SERV
 ## Finding 3 — Feedback Loops: "Am I alone in here?"
 
 ### What's already good
-- Milo AI companion (activates at 15 s) — good fallback, but the **threshold is too long**. Most users decide "is this thing working?" in 5–8 s.
+- Real human matchmaking with honest waiting timeout card.
 - Rotating waiting messages (5s rotation).
 - A "🟢 X online" pill in the navbar — but it's **only rendered if `liveStats` is non-null and `active_pairs > 0 || waiting_users > 0`**. If the server says 0 users, the user sees nothing — the most fragile moment with the least information.
 
 ### What's missing
 - **"You're #X in the queue"** — gives the user a sense of position, not just waiting.
 - **"It usually takes Y seconds"** — sets an expectation.
-- **Milo's invitation copy** — currently "hey! what's up?" is fine, but it appears 15 s in. Should it appear at 8 s?
 - **Match-confirmation sound / haptic** — when a match is found, a subtle vibration or sound (if the user has consented) raises delight.
 - **First-match congratulations** — "🎉 First chat! Say hi to break the ice." — personalises the experience and signals to the user that this is meaningful.
 

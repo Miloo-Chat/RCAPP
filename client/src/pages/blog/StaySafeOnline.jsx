@@ -47,7 +47,7 @@ export default function StaySafeOnline({ theme, onToggleTheme }) {
       onToggleTheme={onToggleTheme}
     >
       <p>
-        The internet has democratized human connection. Within a fraction of a second, you can find yourself face-to-face with a university student in Tokyo, a musician in Berlin, or an engineer in Bangalore. These spontaneous encounters can expand your perspective, break late-night boredom, and offer authentic laughs that social media algorithms rarely deliver.
+        The internet has democratized human connection. Within a fraction of a second, you can find yourself face-to-face with a university student in Tokyo, a musician in Berlin, or an engineer in Bangalore. On Miloo, every chat is with a real person, and these spontaneous encounters can expand your perspective, break late-night boredom, and offer authentic laughs that social media algorithms rarely deliver.
       </p>
       <p>
         However, connecting with unverified strangers carries inherent digital risks. Without thoughtful precautions, innocent conversations can expose your personal life to social engineers, aggressive trolls, or financial scammers. Staying safe does not mean living in fear—it simply means adopting smart, automated habits that keep you firmly in control. Here is our comprehensive guide to navigating random stranger chat securely. For additional guidance, visit our dedicated <Link to="/safety">Safety Center</Link> and read our advice on <Link to="/blog/how-to-spot-scams-on-chat-sites">spotting chat scams</Link>.

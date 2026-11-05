@@ -104,7 +104,7 @@ export default function BlogIndex({ theme, onToggleTheme }) {
     <div className="page page-enter" style={{ background: 'var(--bg-0)' }}>
       <SEOHead
         title="Miloo Blog — Safety Guides, Chat Tips & Online Privacy"
-        description="Explore expert guides on staying safe talking to strangers online, spotting digital scams, protecting webcam privacy, and starting engaging conversations."
+        description="Explore expert guides on staying safe talking to strangers online, spotting scams, and protecting privacy. Every chat is with a real person."
         canonicalUrl="https://miloo.chat/blog"
         ogImage="https://miloo.chat/og/blog.png"
       />
@@ -183,7 +183,7 @@ export default function BlogIndex({ theme, onToggleTheme }) {
               margin: 0,
             }}
           >
-            Insights on staying safe, spotting scams, protecting webcam privacy, and building meaningful conversations with strangers on the modern web.
+            Insights on staying safe, spotting scams, protecting webcam privacy, and building meaningful conversations with strangers on the modern web. On Miloo, every chat is with a real person.
           </p>
           <p
             style={{

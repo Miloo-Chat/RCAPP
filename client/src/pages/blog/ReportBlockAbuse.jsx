@@ -47,7 +47,7 @@ export default function ReportBlockAbuse({ theme, onToggleTheme }) {
       onToggleTheme={onToggleTheme}
     >
       <p>
-        An open, anonymous chat network succeeds only when its community members feel protected, respected, and empowered. While the overwhelming majority of people visit Miloo to share genuine conversations, laugh, or practice foreign languages, occasional bad actors attempt to disrupt the experience with inappropriate content, harassment, or scams.
+        An open, anonymous chat network succeeds only when its community members feel protected, respected, and empowered. On Miloo, every chat is with a real person, and while the vast majority of visitors connect to share genuine conversations, laugh, or practice foreign languages, occasional bad actors attempt to disrupt the experience with inappropriate content, harassment, or scams.
       </p>
       <p>
         We designed Miloo’s safety infrastructure to ensure you have instantaneous control over who you interact with. You never have to tolerate offensive behavior. Here is how our reporting and blocking architecture functions, how our moderation desk processes violation notices, and how you can help keep Miloo safe for everyone. Explore our dedicated <Link to="/safety">Safety Center</Link> and read our <Link to="/community-guidelines">Community Guidelines</Link> for full policy details.

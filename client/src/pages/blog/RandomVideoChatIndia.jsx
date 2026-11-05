@@ -47,7 +47,7 @@ export default function RandomVideoChatIndia({ theme, onToggleTheme }) {
       onToggleTheme={onToggleTheme}
     >
       <p>
-        Over the past decade, India has emerged as one of the most connected digital societies on Earth. With widespread 5G access and affordable fiber broadband across metros and Tier-2/Tier-3 cities, spontaneous video calling with international strangers has become an exciting way to exchange ideas, practice English, and broaden perspectives.
+        Over the past decade, India has emerged as one of the most connected digital societies on Earth. With widespread 5G access and affordable fiber broadband across metros and Tier-2/Tier-3 cities, spontaneous video calling with international strangers has become an exciting way to exchange ideas, practice English, and broaden perspectives. On Miloo, every chat is with a real person, creating authentic cross-cultural moments.
       </p>
       <p>
         However, navigating stranger video chat in India requires mindfulness around mobile network optimization, digital privacy firewalls, and local cybersecurity norms. Here is our comprehensive guide to enjoying low-latency random video chat safely across India. Review our platform <Link to="/safety">Safety Center</Link> and read our <Link to="/community-guidelines">Community Guidelines</Link> before starting.

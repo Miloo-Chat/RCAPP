@@ -10,13 +10,19 @@ import { GA_MEASUREMENT_ID, UMAMI_SCRIPT_URL, UMAMI_WEBSITE_ID } from '../config
 // Routes strictly exempt from all third-party analytics
 const FORBIDDEN_ROUTES = ['/chat', '/call', '/admin', '/transparency']
 
-// Allowed event names whitelist - ONLY these 5 approved events can ever be tracked
+// Allowed event names whitelist - ONLY approved human-flow & public interaction events
 export const ALLOWED_EVENTS = new Set([
   'page_view',
   'click_text_chat',
   'click_video_chat',
   'age_gate_result',
   'share_click',
+  'chat_requested',
+  'waiting_started',
+  'human_matched',
+  'wait_timeout',
+  'chat_ended',
+  'report_clicked',
 ])
 
 export function isPublicPage(pathname) {
@@ -158,9 +164,10 @@ export const trackEvent = (eventName, params = {}) => {
   // 4. Sanitize parameters: strictly remove user IDs, IPs, message content, tokens
   const sanitized = {}
   const FORBIDDEN_PARAM_KEYS = new Set([
-    'text', 'message', 'content', 'transcript', 'ip', 'ipHash',
-    'clientId', 'userId', 'fingerprint', 'user_id', 'client_id',
-    'token', 'turnstileToken', 'socketId',
+    'text', 'message', 'content', 'transcript', 'prompt', 'history',
+    'ip', 'ipHash', 'clientId', 'userId', 'fingerprint', 'user_id', 'client_id',
+    'token', 'turnstileToken', 'socketId', 'partnerId', 'userName', 'name',
+    'email', 'phone',
   ])
 
   for (const [key, val] of Object.entries(params)) {

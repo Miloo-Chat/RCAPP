@@ -34,7 +34,7 @@ echo "==========================================================================
 # "AI companion"
 # LLM chat SDK imports (groq-sdk, @anthropic-ai, langchain, @google/generative-ai, openai sdk for chat)
 
-PATTERN='\b(milo|mira|jax|persona|personas|bot_session|bot_sessions|canned|chatbot|chatbots|request_milo|handoff)\b|AI companion|groq-sdk|@anthropic-ai|langchain|@google/generative-ai'
+PATTERN='\b(milo|mira|jax|persona|personas|groq|botSession|bot_session|bot_sessions|ai_offered|ai_accepted|ai_declined|canned|chatbot|chatbots|request_milo|handoff)\b|AI companion|groq|@anthropic-ai|langchain|@google/generative-ai'
 
 # Run grep across target directories, excluding node_modules, build outputs, and git
 MATCHES=$(grep -rInE "$PATTERN" \

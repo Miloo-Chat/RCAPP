@@ -16,7 +16,7 @@ export default function CookiePolicy({ theme, onToggleTheme }) {
     <div className="page page-enter" style={{ background: 'var(--bg-0)' }}>
       <SEOHead
         title="Cookie Policy — Miloo Anonymous Chat"
-        description="Miloo Cookie Policy: Learn how we use essential cookies, browser local storage, Google Analytics, and Google-certified CMP for advertising consent."
+        description="Miloo Cookie Policy. Every chat is with a real person. Transparent disclosure of essential functional storage, analytics, and consent settings."
         canonicalUrl="https://miloo.chat/cookie-policy"
       />
 
@@ -80,7 +80,7 @@ export default function CookiePolicy({ theme, onToggleTheme }) {
 
           <h2>2. How Miloo Uses Cookies and Local Storage</h2>
           <p>
-            Miloo does not require registration, login credentials, or persistent user profiles. Therefore, our use of cookies and local storage is strictly compartmentalized into three clear categories:
+            Miloo does not require registration, login credentials, or persistent user profiles, and every chat is with a real person. Therefore, our use of cookies and local storage is strictly compartmentalized into three clear categories:
           </p>
 
           <h3>A. Strictly Necessary & Essential Storage (Always Active)</h3>

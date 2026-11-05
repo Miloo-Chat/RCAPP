@@ -47,7 +47,7 @@ export default function OmegleAlternative({ theme, onToggleTheme }) {
       onToggleTheme={onToggleTheme}
     >
       <p>
-        When Omegle permanently shut down in late 2023 after fourteen years of pioneering random stranger chat, millions of adult users worldwide were left without a spontaneous gathering place. For users across India, the search for a trustworthy, safe, and modern alternative has been fraught with cluttered knock-offs, predatory paywalls, and invasive app permissions.
+        When Omegle permanently shut down in late 2023 after fourteen years of pioneering random stranger chat, millions of adult users worldwide were left without a spontaneous gathering place. For users across India, the search for a trustworthy, safe, and modern alternative has been fraught with cluttered knock-offs, predatory paywalls, and invasive app permissions. On Miloo, every chat is with a real person, providing a clean sanctuary for authentic human conversation.
       </p>
       <p>
         Miloo was specifically engineered to fill this void with a contemporary, privacy-conscious philosophy. Here is our comprehensive guide to finding the best Omegle alternative in 2026 and why modern WebRTC architectures are revolutionizing spontaneous connection. Before diving in, explore our <Link to="/safety">Safety Center</Link> and read our <Link to="/community-guidelines">Community Guidelines</Link>.

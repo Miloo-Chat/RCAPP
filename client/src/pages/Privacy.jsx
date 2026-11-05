@@ -10,7 +10,7 @@ export default function Privacy({ theme, onToggleTheme }) {
     <div className="page page-enter" style={{ background: 'var(--bg-0)' }}>
       <SEOHead
         title="Privacy Policy — Miloo Anonymous Chat"
-        description="Miloo Privacy Policy: Learn how we protect privacy, manage ephemeral WebRTC streams, disclose Google AdSense and cookies, and respect user privacy rights."
+        description="Miloo Privacy Policy. Every chat is with a real person. Learn how we protect privacy, manage ephemeral WebRTC streams, disclose cookies, and respect privacy rights."
         canonicalUrl="https://miloo.chat/privacy"
       />
 
@@ -60,7 +60,7 @@ export default function Privacy({ theme, onToggleTheme }) {
         <article className="content-prose">
           <h2>1. Introduction & Our Commitment to Privacy</h2>
           <p>
-            At Miloo (accessible via <a href="https://miloo.chat" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>https://miloo.chat</a>), the privacy and confidentiality of our visitors are fundamental to our mission. We believe that spontaneous, serendipitous conversations on the internet should not come at the cost of personal surveillance. This Privacy Policy details the types of information we process, how technical data is handled during peer-to-peer connections, and how we comply with global privacy standards, including the EU General Data Protection Regulation (GDPR), the California Consumer Privacy Act (CCPA/CPRA), and the Indian Digital Personal Data Protection Act (DPDP).
+            At Miloo (accessible via <a href="https://miloo.chat" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>https://miloo.chat</a>), the privacy and confidentiality of our visitors are fundamental to our mission. On Miloo, every chat is with a real person — we never employ automated bots or simulated partners. We believe that spontaneous, serendipitous conversations on the internet should not come at the cost of personal surveillance. This Privacy Policy details the types of information we process, how technical data is handled during peer-to-peer connections, and how we comply with global privacy standards, including the EU General Data Protection Regulation (GDPR), the California Consumer Privacy Act (CCPA/CPRA), and the Indian Digital Personal Data Protection Act (DPDP).
           </p>
 
           <h2>2. Information We Do NOT Collect</h2>

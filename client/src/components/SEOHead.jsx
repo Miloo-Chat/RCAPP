@@ -8,7 +8,7 @@ import { ADSENSE_PUB_ID } from '../config/site'
  */
 export default function SEOHead({
   title,
-  description,
+  description = 'Every chat is with a real person. Free, anonymous random video and text chat for adults on Miloo.',
   canonicalUrl,
   ogType = 'website',
   ogImage = 'https://miloo.chat/og-image.png',

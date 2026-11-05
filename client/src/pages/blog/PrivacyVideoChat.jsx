@@ -47,7 +47,7 @@ export default function PrivacyVideoChat({ theme, onToggleTheme }) {
       onToggleTheme={onToggleTheme}
     >
       <p>
-        Live video chat offers an immediacy and warmth that text messages cannot replicate. Seeing a smile, hearing a spontaneous laugh, and exchanging facial expressions creates an instant human bond. However, turning on your webcam opens a literal visual window into your private sanctuary.
+        Live video chat offers an immediacy and warmth that text messages cannot replicate. Seeing a smile, hearing a spontaneous laugh, and exchanging facial expressions creates an instant human bond. On Miloo, every chat is with a real person, which is why turning on your webcam opens a literal visual window into your personal space that deserves careful privacy hygiene.
       </p>
       <p>
         Without mindful setup, your video feed can unintentionally broadcast confidential details about your living space, family, daily routines, and geographic location. Protecting your webcam privacy requires zero technical expertise—just a thoughtful, repeatable environmental routine. Before your next session, review our <Link to="/safety">Safety Center</Link> and follow this essential safety checklist.

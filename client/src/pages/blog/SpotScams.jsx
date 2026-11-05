@@ -47,7 +47,7 @@ export default function SpotScams({ theme, onToggleTheme }) {
       onToggleTheme={onToggleTheme}
     >
       <p>
-        Random video and text chat platforms are designed to foster spontaneous human interaction. Unfortunately, because these platforms are free and open to anyone without prior registration, they also attract bad actors looking to capitalize on unsuspecting visitors.
+        Random video and text chat platforms are designed to foster spontaneous human interaction. On Miloo, every chat is with a real person, but across the wider web, free open platforms often attract bad actors looking to capitalize on unsuspecting visitors.
       </p>
       <p>
         Scammers rely on a combination of psychological manipulation, automated bots, and deceptive video tools to trick targets into handing over money, personal credentials, or sensitive media. Recognizing these tricks early allows you to disconnect safely before falling victim. Review our <Link to="/safety">Safety Center</Link> and learn how to build <Link to="/blog/stay-safe-talking-to-strangers-online">digital information firewalls</Link>.

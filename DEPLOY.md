@@ -124,7 +124,7 @@ Miloo exposes two lightweight health check endpoints for container orchestrators
 2. **`GET /api/health`**
    - Detailed platform status and presence metrics.
    - Returns `{ status: 'ok', onlineUsers: 42, waitingUsers: 8, activePairs: 17, uptimeSec: 1234 }`.
-   - AI companion sessions are strictly excluded from presence counts.
+   - Real human participants only; Miloo strictly features zero bots or automated companions.
 
 ---
 

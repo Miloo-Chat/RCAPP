@@ -47,7 +47,7 @@ export default function OnlineHarassment({ theme, onToggleTheme }) {
       onToggleTheme={onToggleTheme}
     >
       <p>
-        Encountering harassment, predatory intimidation, or aggressive conduct online can be startling and emotionally taxing. When an anonymous stranger turns toxic or threatens extortion, knowing exactly what steps to take transforms panic into calm, methodical control.
+        Encountering harassment, predatory intimidation, or aggressive conduct online can be startling and emotionally taxing. When an anonymous stranger turns toxic or threatens extortion, knowing exactly what steps to take transforms panic into calm, methodical control. On Miloo, every chat is with a real person, which means human accountability and respectful behavior are required at all times.
       </p>
       <p>
         At Miloo, we maintain an uncompromising zero-tolerance policy against cyber harassment, hate speech, sexual exploitation, and blackmail. While our automated filters block most toxic signals before delivery, bad actors occasionally attempt aggressive tactics. Here is your definitive action plan if someone attempts to harass or extort you online. For platform safety policies, review our <Link to="/safety">Safety Center</Link> and read our <Link to="/community-guidelines">Community Guidelines</Link>.

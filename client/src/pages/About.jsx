@@ -10,7 +10,7 @@ export default function About({ theme, onToggleTheme }) {
     <div className="page page-enter" style={{ background: 'var(--bg-0)' }}>
       <SEOHead
         title="About Miloo — Our Story & Vision for Modern Anonymous Chat"
-        description="Learn why Miloo was built: reviving spontaneous human connection online with modern WebRTC peer privacy, zero profiling, and uncompromising safety standards."
+        description="Learn why Miloo was built: reviving spontaneous human connection online where every chat is with a real person, with zero profiling and uncompromising safety."
         canonicalUrl="https://miloo.chat/about"
         ogImage="https://miloo.chat/og/about.png"
       />
@@ -86,6 +86,7 @@ export default function About({ theme, onToggleTheme }) {
           <ul>
             <li><strong>Frictionless:</strong> No registration forms, password resets, email verifications, or phone number demands. Anyone aged 18 or older can start chatting in seconds.</li>
             <li><strong>Privacy-Conscious:</strong> No personal profile creation, no contact lists, and zero interest in tracking who you are or what you do outside our platform.</li>
+            <li><strong>Real Human Connection:</strong> Every chat is with a real person. Miloo has zero bots or simulated chat partners. If no real partner is online, we wait honestly.</li>
             <li><strong>Peer-to-Peer by Default:</strong> Built on cutting-edge WebRTC standards, routing audio and video directly between browsers with end-to-end encryption.</li>
             <li><strong>Aesthetically Thoughtful:</strong> Designed with clean, elegant typography, warm terracotta accents, and responsive layouts that look stunning on any screen.</li>
           </ul>

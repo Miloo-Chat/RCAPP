@@ -9,7 +9,7 @@ export default function Safety({ theme, onToggleTheme }) {
     <div className="page page-enter" style={{ background: 'var(--bg-0)' }}>
       <SEOHead
         title="Safety Center & Online Chat Guidelines — Miloo"
-        description="Essential safety tips for chatting with strangers online. Protect your privacy, spot scam red flags, secure video backgrounds, and report abusive conduct."
+        description="Essential safety tips for chatting with strangers online. Every chat is with a real person. Protect your privacy, spot scam red flags, and report abusive conduct."
         canonicalUrl="https://miloo.chat/safety"
       />
 
@@ -53,7 +53,7 @@ export default function Safety({ theme, onToggleTheme }) {
               margin: 0,
             }}
           >
-            Connecting with strangers across the globe can be inspiring and fun, but your personal security and peace of mind must always come first.
+            Connecting with strangers across the globe can be inspiring and fun. On Miloo, every chat is with a real person, which is why your personal security and peace of mind must always come first.
           </p>
         </header>
 

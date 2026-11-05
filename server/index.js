@@ -324,6 +324,23 @@ const metrics = require('./metrics');
 const waitingQueue = [];
 const activePairs = new Map();
 const pairStartTimes = new Map(); // socketId -> startTime
+const waitTimeoutTimers = new Map(); // socketId -> timer
+
+function clearWaitTimeout(socketId) {
+  const timer = waitTimeoutTimers.get(socketId);
+  if (timer) {
+    clearTimeout(timer);
+    waitTimeoutTimers.delete(socketId);
+  }
+}
+
+function removeFromWaitingQueue(socketId) {
+  for (let i = waitingQueue.length - 1; i >= 0; i--) {
+    if (waitingQueue[i].id === socketId) {
+      waitingQueue.splice(i, 1);
+    }
+  }
+}
 
 function findMatch(socketId, mediaMode) {
   const candidates = waitingQueue.filter(u => u.id !== socketId && u.mediaMode === mediaMode);
@@ -617,7 +634,6 @@ io.on('connection', async (socket) => {
     return;
   }
 
-  let waitTimeoutTimer = null;
   let lastFindMatchTime = 0;
   const messageTimestamps = [];
 
@@ -669,11 +685,9 @@ io.on('connection', async (socket) => {
       activePairs.delete(socket.id);
     }
 
-    // Remove from queue if already there
-    const idx = waitingQueue.findIndex(u => u.id === socket.id);
-    if (idx !== -1) waitingQueue.splice(idx, 1);
-
-    if (waitTimeoutTimer) clearTimeout(waitTimeoutTimer);
+    // Always clear waitTimeoutTimer and ensure socket is removed from waitingQueue
+    clearWaitTimeout(socket.id);
+    removeFromWaitingQueue(socket.id);
 
     // Record session request metric (no IP, no ID)
     metrics.recordSessionRequested(mediaMode);
@@ -683,8 +697,11 @@ io.on('connection', async (socket) => {
     const match = findMatch(socket.id, mediaMode);
 
     if (match) {
-      const matchIdx = waitingQueue.findIndex(u => u.id === match.id);
-      if (matchIdx !== -1) waitingQueue.splice(matchIdx, 1);
+      // Clear timers and remove both from waitingQueue
+      clearWaitTimeout(socket.id);
+      clearWaitTimeout(match.id);
+      removeFromWaitingQueue(socket.id);
+      removeFromWaitingQueue(match.id);
 
       activePairs.set(socket.id, match.id);
       activePairs.set(match.id, socket.id);
@@ -698,14 +715,40 @@ io.on('connection', async (socket) => {
       io.to(socket.id).emit('match_found', { partnerId: match.id, initiator: true });
       io.to(match.id).emit('match_found', { partnerId: socket.id, initiator: false });
     } else {
-      waitingQueue.push({ id: socket.id, mood, mediaMode, joinedAt: Date.now() });
+      // Ensure socket cannot be in waitingQueue twice
+      removeFromWaitingQueue(socket.id);
+      if (!waitingQueue.some(u => u.id === socket.id)) {
+        waitingQueue.push({ id: socket.id, mood, mediaMode, joinedAt: Date.now() });
+      }
       metrics.updateConcurrentUsers(waitingQueue.length + activePairs.size);
 
       // Honest waiting: timeout recorded after 60s (pure human matching only)
-      waitTimeoutTimer = setTimeout(() => {
+      clearWaitTimeout(socket.id);
+      const timer = setTimeout(() => {
         metrics.recordWaitTimeout();
+        waitTimeoutTimers.delete(socket.id);
       }, 60000);
+      waitTimeoutTimers.set(socket.id, timer);
     }
+  });
+
+  socket.on('leave_chat', () => {
+    clearWaitTimeout(socket.id);
+    removeFromWaitingQueue(socket.id);
+
+    const partnerId = activePairs.get(socket.id);
+    if (partnerId) {
+      const startedAt = pairStartTimes.get(socket.id) || Date.now();
+      const dur = Math.round((Date.now() - startedAt) / 1000);
+      metrics.recordChatEnded(dur, 'user');
+      pairStartTimes.delete(socket.id);
+      pairStartTimes.delete(partnerId);
+
+      io.to(partnerId).emit('partner_left');
+      activePairs.delete(partnerId);
+      activePairs.delete(socket.id);
+    }
+    metrics.updateConcurrentUsers(waitingQueue.length + activePairs.size);
   });
 
   socket.on('send_message', async (data) => {
@@ -775,10 +818,8 @@ io.on('connection', async (socket) => {
   });
 
   socket.on('disconnect', () => {
-    if (waitTimeoutTimer) clearTimeout(waitTimeoutTimer);
-
-    const qIdx = waitingQueue.findIndex(u => u.id === socket.id);
-    if (qIdx !== -1) waitingQueue.splice(qIdx, 1);
+    clearWaitTimeout(socket.id);
+    removeFromWaitingQueue(socket.id);
 
     const partnerId = activePairs.get(socket.id);
     if (partnerId) {
@@ -802,4 +843,4 @@ server.listen(PORT, () => {
   console.log(`Miloo Server running with safety & moderation on port ${PORT}`);
 });
 
-module.exports = { app, server, io };
+module.exports = { app, server, io, waitingQueue, activePairs, waitTimeoutTimers, clearWaitTimeout, removeFromWaitingQueue };

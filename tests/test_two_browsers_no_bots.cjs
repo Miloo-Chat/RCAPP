@@ -184,7 +184,7 @@ async function run() {
     const cardDetails = await lonePage.evaluate(() => {
       const text = document.body.innerText;
       return {
-        hasTitle: text.includes('No one is here right now. Your bird will wait on the wire.'),
+        hasTitle: text.includes('No one is here right now. Keep waiting or try again later.'),
         hasDesc: text.includes('The wire is quiet right now. You can keep waiting, or try again later.'),
         hasKeepWaitingBtn: Array.from(document.querySelectorAll('button')).some(b => b.textContent.includes('Keep waiting')),
         hasTryAgainBtn: Array.from(document.querySelectorAll('button')).some(b => b.textContent.includes('Try again later')),

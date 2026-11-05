@@ -10,7 +10,7 @@ export default function Terms({ theme, onToggleTheme }) {
     <div className="page page-enter" style={{ background: 'var(--bg-0)' }}>
       <SEOHead
         title="Terms of Service — Miloo (18+ Adults Only)"
-        description="Miloo Terms of Service: Platform rules, strict 18+ eligibility requirement, acceptable use policies, and user agreements."
+        description="Miloo Terms of Service. Every chat is with a real person. Platform rules, strict 18+ eligibility requirement, acceptable use policies, and user agreements."
         canonicalUrl="https://miloo.chat/terms"
       />
 
@@ -81,7 +81,7 @@ export default function Terms({ theme, onToggleTheme }) {
 
           <h2>2. Description of the Service</h2>
           <p>
-            Miloo provides an unauthenticated, anonymous peer-to-peer text and video chat service. The service allows two users to be paired randomly based on mutual availability. Miloo does not require user accounts, passwords, or personal credentials. Users understand that conversations occur in real time and are unscripted.
+            Miloo provides an unauthenticated, anonymous peer-to-peer text and video chat service. Every chat is with a real person. The service pairs real users randomly based on mutual availability, with zero automated bots or simulated partners. Miloo does not require user accounts, passwords, or personal credentials. Users understand that conversations occur in real time and are unscripted.
           </p>
 
           <h2>3. Prohibited Conduct & Acceptable Use Policy</h2>

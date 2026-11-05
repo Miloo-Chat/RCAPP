@@ -47,7 +47,7 @@ export default function VideoChatNoSignup({ theme, onToggleTheme }) {
       onToggleTheme={onToggleTheme}
     >
       <p>
-        In an era where virtually every digital service demands your email, phone number, Google authentication, or credit card, having to register just to have a casual conversation feels intrusive and unnecessary. Worse, downloading native apps often grants third-party developers access to device contacts, location tracking, and background sensors.
+        In an era where virtually every digital service demands your email, phone number, Google authentication, or credit card, having to register just to have a casual conversation feels intrusive and unnecessary. On Miloo, no registration is ever required, yet every chat is with a real person connecting peer-to-peer via secure browser WebRTC.
       </p>
       <p>
         Browser-based WebRTC video chat completely flips this paradigm. By operating entirely within modern web standards with zero account creation, platforms like Miloo offer the fastest, safest, and most privacy-respecting way to connect with strangers online. Here is why browser-based peer-to-peer communication is the future of digital serendipity. Review our <Link to="/safety">Safety Center</Link> and <Link to="/about">About page</Link> to learn more about our architectural philosophy.

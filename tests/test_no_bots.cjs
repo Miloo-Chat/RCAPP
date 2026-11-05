@@ -167,8 +167,100 @@ async function runNoBotsTestSuite() {
   assert.strictEqual(csv.includes('AI Offered'), false, 'CSV export must NOT contain AI Offered');
   console.log('✓ PASS: Server metrics strictly track human wait times and zero bot metrics.');
 
+  // Clean up sockets from Tests 1-3
   socket1.disconnect();
   socket2.disconnect();
+  await new Promise(r => setTimeout(r, 100));
+
+  // ---------------------------------------------------------------------------
+  // Test 4: Verify User Matched at 20s Does NOT Record a Wait Timeout
+  // ---------------------------------------------------------------------------
+  console.log('\n--- Test 4: Verify User Matched at 20s Does NOT Record a Wait Timeout ---');
+
+  const initialTimeouts = metrics.getSummary().waitTimeouts;
+
+  const socketA = ioClient(SERVER_URL, { transports: ['websocket'], forceNew: true });
+  const socketB = ioClient(SERVER_URL, { transports: ['websocket'], forceNew: true });
+
+  await Promise.all([
+    new Promise(res => socketA.on('connect', res)),
+    new Promise(res => socketB.on('connect', res)),
+  ]);
+
+  let matchedA = false;
+  let matchedB = false;
+  socketA.on('match_found', () => { matchedA = true; });
+  socketB.on('match_found', () => { matchedB = true; });
+
+  const clock2 = FakeTimers.install({ toFake: ['setTimeout', 'clearTimeout'] });
+
+  // Socket A joins queue at t=0
+  socketA.emit('find_match', { mood: 'any', mediaMode: 'text', turnstileToken: validTurnstileToken });
+  await new Promise(r => setImmediate(r));
+  await clock2.tickAsync(100);
+  await new Promise(r => setImmediate(r));
+
+  // Advance clock by 20 seconds
+  console.log('- Socket A waiting for 20 seconds...');
+  await clock2.tickAsync(20000);
+
+  // At t=20s, Socket B joins with same mediaMode ('text') and matches Socket A
+  console.log('- Socket B joins text queue at 20s and matches Socket A...');
+  socketB.emit('find_match', { mood: 'any', mediaMode: 'text', turnstileToken: validTurnstileToken });
+  await new Promise(r => setImmediate(r));
+  await clock2.tickAsync(100);
+  await new Promise(r => setImmediate(r));
+
+  assert.strictEqual(matchedA, true, 'Socket A must receive match_found');
+  assert.strictEqual(matchedB, true, 'Socket B must receive match_found');
+
+  // Advance clock past the 60s mark (advance another 50s so t=70s total)
+  console.log('- Advancing clock by another 50s (t=70s total, past 60s mark)...');
+  await clock2.tickAsync(50000);
+
+  clock2.uninstall();
+  await new Promise(r => setTimeout(r, 100));
+
+  const afterTimeouts = metrics.getSummary().waitTimeouts;
+  assert.strictEqual(
+    afterTimeouts,
+    initialTimeouts,
+    `Wait timeouts must NOT increase for users matched at 20s. Initial: ${initialTimeouts}, After: ${afterTimeouts}`
+  );
+  console.log('✓ PASS: User matched at 20s had waitTimeoutTimer cleared; 0 wait timeouts recorded at 60s.');
+
+  // ---------------------------------------------------------------------------
+  // Test 5: Verify Socket Can Never Be in waitingQueue Twice
+  // ---------------------------------------------------------------------------
+  console.log('\n--- Test 5: Verify Socket Can Never Be in waitingQueue Twice ---');
+  const { waitingQueue } = require('../server/index.js');
+  const socketC = ioClient(SERVER_URL, { transports: ['websocket'], forceNew: true });
+  await new Promise(res => socketC.on('connect', res));
+
+  socketC.emit('find_match', { mood: 'any', mediaMode: 'video', turnstileToken: validTurnstileToken });
+  await new Promise(r => setTimeout(r, 1050));
+  socketC.emit('find_match', { mood: 'any', mediaMode: 'video', turnstileToken: validTurnstileToken });
+  await new Promise(r => setTimeout(r, 1050));
+
+  const socketCOccurrences = waitingQueue.filter(u => u.id === socketC.id).length;
+  assert.strictEqual(socketCOccurrences, 1, `Socket C must appear exactly once in waitingQueue, found: ${socketCOccurrences}`);
+  console.log('✓ PASS: Socket cannot appear in waitingQueue twice.');
+
+  // ---------------------------------------------------------------------------
+  // Test 6: Verify leave_chat Clears Waiting Queue & Timer
+  // ---------------------------------------------------------------------------
+  console.log('\n--- Test 6: Verify leave_chat Clears Waiting Queue & Timer ---');
+  socketC.emit('leave_chat');
+  await new Promise(r => setTimeout(r, 150));
+  const socketCAfterLeave = waitingQueue.filter(u => u.id === socketC.id).length;
+  assert.strictEqual(socketCAfterLeave, 0, `Socket C must be completely removed from waitingQueue after leave_chat`);
+  console.log('✓ PASS: leave_chat successfully cleared socket from waitingQueue and cancelled timer.');
+
+  socket1.disconnect();
+  socket2.disconnect();
+  socketA.disconnect();
+  socketB.disconnect();
+  socketC.disconnect();
   server.close();
 
   console.log('\n================================================================');
