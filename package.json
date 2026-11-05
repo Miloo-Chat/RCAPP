@@ -21,8 +21,5 @@
   "devDependencies": {
     "@sinonjs/fake-timers": "^15.4.0",
     "puppeteer": "^25.16.0"
-  },
-  "dependencies": {
-    "vercel": "^65.11.0"
   }
 }
