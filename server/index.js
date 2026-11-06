@@ -593,7 +593,13 @@ const connectionAttemptsByIpHash = new Map();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: (origin, callback) => callback(null, true),
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: ["GET", "POST"],
     credentials: true,
   }
@@ -843,4 +849,4 @@ server.listen(PORT, () => {
   console.log(`Miloo Server running with safety & moderation on port ${PORT}`);
 });
 
-module.exports = { app, server, io, waitingQueue, activePairs, waitTimeoutTimers, clearWaitTimeout, removeFromWaitingQueue };
+module.exports = { app, server, io, waitingQueue, activePairs, waitTimeoutTimers, clearWaitTimeout, removeFromWaitingQueue, findMatch };
