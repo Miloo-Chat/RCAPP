@@ -22,6 +22,8 @@ import OmegleAlternative from './pages/blog/OmegleAlternative'
 import RandomVideoChatIndia from './pages/blog/RandomVideoChatIndia'
 import StrangerChatIndia from './pages/blog/StrangerChatIndia'
 import VideoChatNoSignup from './pages/blog/VideoChatNoSignup'
+import HowWebRTCWorks from './pages/blog/HowWebRTCWorks'
+import HowMilooModerationWorks from './pages/blog/HowMilooModerationWorks'
 import NotFound from './pages/NotFound'
 import AdSenseScript from './components/AdSenseScript'
 import CookieBanner from './components/CookieBanner'
@@ -238,6 +240,15 @@ export function AppRoutes() {
         <Route
           path="/blog/video-chat-no-signup"
           element={<VideoChatNoSignup theme={theme} onToggleTheme={toggleTheme} />}
+        />
+
+        <Route
+          path="/blog/how-webrtc-video-chat-works"
+          element={<HowWebRTCWorks theme={theme} onToggleTheme={toggleTheme} />}
+        />
+        <Route
+          path="/blog/how-miloo-moderation-works"
+          element={<HowMilooModerationWorks theme={theme} onToggleTheme={toggleTheme} />}
         />
 
         {/* Private Real-Time Chat Room (Strictly 18+ Gate) */}

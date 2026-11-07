@@ -14,6 +14,22 @@ const RISKY_SLUGS = [
 
 const ALL_ARTICLES = [
   {
+    slug: 'how-webrtc-video-chat-works',
+    title: 'How WebRTC Works: Peer-to-Peer Video Chat Explained Simply',
+    desc: 'A plain-language guide to signaling, STUN, TURN relays and encryption, and what direct browser video calls mean for your privacy.',
+    date: 'Nov 7, 2026',
+    readTime: '6 min read',
+    category: 'Technology',
+  },
+  {
+    slug: 'how-miloo-moderation-works',
+    title: 'How Moderation Works on Miloo: Reports, Blocks and Automated Detection',
+    desc: 'A transparent look at verification, rate limits, automated detection, reporting and enforcement, and what you can do to stay safe.',
+    date: 'Nov 7, 2026',
+    readTime: '6 min read',
+    category: 'Platform Trust',
+  },
+  {
     slug: 'stay-safe-talking-to-strangers-online',
     title: 'How to Stay Safe Talking to Strangers Online: The Complete Modern Guide',
     desc: 'Actionable strategies to protect your digital identity, avoid social engineering traps, and maintain healthy boundaries during spontaneous online conversations.',
