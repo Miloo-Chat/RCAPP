@@ -8,6 +8,22 @@
     <lastBuildDate>Tue, 03 Nov 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://miloo.chat/rss.xml" rel="self" type="application/rss+xml"/>
     <item>
+      <title><![CDATA[How WebRTC Works: Peer-to-Peer Video Chat Explained Simply]]></title>
+      <link>https://miloo.chat/blog/how-webrtc-video-chat-works</link>
+      <guid isPermaLink="true">https://miloo.chat/blog/how-webrtc-video-chat-works</guid>
+      <pubDate>Sat, 07 Nov 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[A plain-language guide to signaling, STUN, TURN relays and encryption, and what direct browser video calls mean for your privacy.]]></description>
+      <author>support@miloo.chat (Miloo Safety &amp; Editorial Team)</author>
+    </item>
+    <item>
+      <title><![CDATA[How Moderation Works on Miloo: Reports, Blocks and Automated Detection]]></title>
+      <link>https://miloo.chat/blog/how-miloo-moderation-works</link>
+      <guid isPermaLink="true">https://miloo.chat/blog/how-miloo-moderation-works</guid>
+      <pubDate>Sat, 07 Nov 2026 10:00:00 GMT</pubDate>
+      <description><![CDATA[A transparent look at verification, rate limits, automated detection, reporting and enforcement, and what you can do to stay safe.]]></description>
+      <author>support@miloo.chat (Miloo Safety &amp; Editorial Team)</author>
+    </item>
+    <item>
       <title><![CDATA[How to Stay Safe Talking to Strangers Online: The Complete Modern Guide]]></title>
       <link>https://miloo.chat/blog/stay-safe-talking-to-strangers-online</link>
       <guid isPermaLink="true">https://miloo.chat/blog/stay-safe-talking-to-strangers-online</guid>

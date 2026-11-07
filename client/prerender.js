@@ -348,6 +348,28 @@ const ROUTES_META = {
       '2026-09-22'
     )
   },
+  '/blog/how-webrtc-video-chat-works': {
+    title: 'How WebRTC Works: Peer-to-Peer Video Chat Explained Simply — Miloo Blog',
+    description: 'A plain-language guide to signaling, STUN, TURN relays and encryption, and what direct browser video calls mean for your privacy.',
+    canonical: 'https://miloo.chat/blog/how-webrtc-video-chat-works',
+    schema: makeArticleSchema(
+      'How WebRTC Works: Peer-to-Peer Video Chat Explained Simply',
+      'A plain-language guide to signaling, STUN, TURN relays and encryption, and what direct browser video calls mean for your privacy.',
+      'https://miloo.chat/blog/how-webrtc-video-chat-works',
+      '2026-11-07'
+    )
+  },
+  '/blog/how-miloo-moderation-works': {
+    title: 'How Moderation Works on Miloo: Reports, Blocks and Automated Detection — Miloo Blog',
+    description: 'A transparent look at verification, rate limits, automated detection, reporting and enforcement, and what you can do to stay safe.',
+    canonical: 'https://miloo.chat/blog/how-miloo-moderation-works',
+    schema: makeArticleSchema(
+      'How Moderation Works on Miloo: Reports, Blocks and Automated Detection',
+      'A transparent look at verification, rate limits, automated detection, reporting and enforcement, and what you can do to stay safe.',
+      'https://miloo.chat/blog/how-miloo-moderation-works',
+      '2026-11-07'
+    )
+  },
   '/blog/what-to-do-if-someone-harasses-you-online': {
     title: 'What to Do If Someone Harasses You Online — Miloo Blog',
     description: 'Action plan for handling cyber harassment, threats, or extortion. Learn evidence preservation, platform reporting, and international legal support hotlines.',

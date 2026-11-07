@@ -29,6 +29,24 @@ const CORE_PAGES = [
 
 const BLOG_POSTS = [
   {
+    url: '/blog/how-webrtc-video-chat-works',
+    title: 'How WebRTC Works: Peer-to-Peer Video Chat Explained Simply',
+    description: 'A plain-language guide to signaling, STUN, TURN relays and encryption, and what direct browser video calls mean for your privacy.',
+    pubDate: 'Sat, 07 Nov 2026 09:00:00 GMT',
+    lastmod: '2026-11-07',
+    priority: '0.7',
+    isRisky: false,
+  },
+  {
+    url: '/blog/how-miloo-moderation-works',
+    title: 'How Moderation Works on Miloo: Reports, Blocks and Automated Detection',
+    description: 'A transparent look at verification, rate limits, automated detection, reporting and enforcement, and what you can do to stay safe.',
+    pubDate: 'Sat, 07 Nov 2026 10:00:00 GMT',
+    lastmod: '2026-11-07',
+    priority: '0.7',
+    isRisky: false,
+  },
+  {
     url: '/blog/stay-safe-talking-to-strangers-online',
     title: 'How to Stay Safe Talking to Strangers Online: The Complete Modern Guide',
     description: 'A comprehensive, actionable guide to protecting your identity, privacy, and peace of mind when chatting with strangers online.',

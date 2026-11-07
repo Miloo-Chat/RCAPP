@@ -33,6 +33,8 @@ export const INDEXABLE_CORE_URLS = [
   'https://miloo.chat/blog/how-to-report-and-block-abusive-users',
   'https://miloo.chat/blog/tips-for-starting-good-conversation-with-stranger',
   'https://miloo.chat/blog/what-to-do-if-someone-harasses-you-online',
+  'https://miloo.chat/blog/how-webrtc-video-chat-works',
+  'https://miloo.chat/blog/how-miloo-moderation-works',
 ]
 
 // Optional SEO posts (strictly excluded when SHOW_SEO_POSTS is false)
