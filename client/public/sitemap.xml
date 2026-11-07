@@ -73,6 +73,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://miloo.chat/blog/social-anxiety-and-anonymous-conversation</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://miloo.chat/blog/healthy-limits-for-late-night-chatting</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://miloo.chat/blog/how-webrtc-video-chat-works</loc>
     <lastmod>2026-11-07</lastmod>
     <changefreq>weekly</changefreq>

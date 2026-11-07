@@ -14,6 +14,22 @@ const RISKY_SLUGS = [
 
 const ALL_ARTICLES = [
   {
+    slug: 'social-anxiety-and-anonymous-conversation',
+    title: 'Social Anxiety and Anonymous Conversation: When It Helps and When It Does Not',
+    desc: 'A balanced look at how anonymous chat can feel easier for shy or anxious people, where it helps, where it falls short, and how to practice gently.',
+    date: 'Nov 7, 2026',
+    readTime: '6 min read',
+    category: 'Wellbeing',
+  },
+  {
+    slug: 'healthy-limits-for-late-night-chatting',
+    title: 'Healthy Limits for Late-Night Chatting: A Practical Digital Wellbeing Guide',
+    desc: 'Practical ways to keep late-night conversations enjoyable without hurting your sleep, focus or mood: warning signs, simple limits and wind-down habits.',
+    date: 'Nov 7, 2026',
+    readTime: '6 min read',
+    category: 'Wellbeing',
+  },
+  {
     slug: 'how-webrtc-video-chat-works',
     title: 'How WebRTC Works: Peer-to-Peer Video Chat Explained Simply',
     desc: 'A plain-language guide to signaling, STUN, TURN relays and encryption, and what direct browser video calls mean for your privacy.',

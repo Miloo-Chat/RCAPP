@@ -370,6 +370,28 @@ const ROUTES_META = {
       '2026-11-07'
     )
   },
+  '/blog/social-anxiety-and-anonymous-conversation': {
+    title: 'Social Anxiety and Anonymous Conversation: When It Helps and When It Does Not — Miloo Blog',
+    description: 'A balanced look at how anonymous chat can feel easier for shy or anxious people, where it helps, where it falls short, and how to practice gently.',
+    canonical: 'https://miloo.chat/blog/social-anxiety-and-anonymous-conversation',
+    schema: makeArticleSchema(
+      'Social Anxiety and Anonymous Conversation: When It Helps and When It Does Not',
+      'A balanced look at how anonymous chat can feel easier for shy or anxious people, where it helps, where it falls short, and how to practice gently.',
+      'https://miloo.chat/blog/social-anxiety-and-anonymous-conversation',
+      '2026-11-07'
+    )
+  },
+  '/blog/healthy-limits-for-late-night-chatting': {
+    title: 'Healthy Limits for Late-Night Chatting: A Practical Digital Wellbeing Guide — Miloo Blog',
+    description: 'Practical ways to keep late-night conversations enjoyable without hurting your sleep, focus or mood: warning signs, simple limits and wind-down habits.',
+    canonical: 'https://miloo.chat/blog/healthy-limits-for-late-night-chatting',
+    schema: makeArticleSchema(
+      'Healthy Limits for Late-Night Chatting: A Practical Digital Wellbeing Guide',
+      'Practical ways to keep late-night conversations enjoyable without hurting your sleep, focus or mood: warning signs, simple limits and wind-down habits.',
+      'https://miloo.chat/blog/healthy-limits-for-late-night-chatting',
+      '2026-11-07'
+    )
+  },
   '/blog/what-to-do-if-someone-harasses-you-online': {
     title: 'What to Do If Someone Harasses You Online — Miloo Blog',
     description: 'Action plan for handling cyber harassment, threats, or extortion. Learn evidence preservation, platform reporting, and international legal support hotlines.',
