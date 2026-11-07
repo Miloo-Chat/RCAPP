@@ -105,7 +105,7 @@ export function AppRoutes() {
     setSelectedIntent(intent || 'random')
     setSafeMode(safe || false)
     setChatMode(mode || 'video')
-    navigate('/chat')
+    navigate('/chat?mode=' + (mode || 'video')) // miloo-mode-url
   }
 
   const goHome = () => {

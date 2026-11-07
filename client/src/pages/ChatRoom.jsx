@@ -2540,7 +2540,21 @@ function VideoStage({ iceState, localStream, remoteStream, onFindNext, onNSFWTri
 
   const connState = (iceState || '').toLowerCase()
   const isLive = connState === 'connected' || connState === 'completed'
-  const isDropped = connState === 'disconnected' || connState === 'failed'
+  // miloo-drop-grace: 'disconnected' aksar temporary hota hai, 8s ruko
+  const [graceDropped, setGraceDropped] = React.useState(false)
+  React.useEffect(() => {
+    if (connState === 'failed') {
+      setGraceDropped(true)
+      return undefined
+    }
+    if (connState === 'disconnected') {
+      const t = setTimeout(() => setGraceDropped(true), 8000)
+      return () => clearTimeout(t)
+    }
+    setGraceDropped(false)
+    return undefined
+  }, [connState])
+  const isDropped = graceDropped
 
   return (
     <div
