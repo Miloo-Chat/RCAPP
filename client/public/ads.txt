@@ -1,3 +1,1 @@
-# Google AdSense Authorized Digital Sellers (ads.txt) for Miloo (miloo.chat)
-# Replace with your approved publisher ID upon AdSense account approval.
-# Example format: google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+google.com, pub-4205636224784725, DIRECT, f08c47fec0942fa0

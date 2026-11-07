@@ -11,7 +11,7 @@ export const SITE_CONFIG = {
   supportEmail: (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SUPPORT_EMAIL) || 'support@miloo.chat',
   privacyEmail: (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_PRIVACY_EMAIL) || 'support@miloo.chat',
   dmcaEmail: (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_DMCA_EMAIL) || 'support@miloo.chat',
-  adsensePublisherId: (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_ADSENSE_PUB_ID) || 'ca-pub-XXXXXXXXXXXXXXXX',
+  adsensePublisherId: (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_ADSENSE_PUB_ID) || 'ca-pub-4205636224784725',
   twitterHandle: '@miloochat',
 
   // Privacy-friendly Umami Analytics (cookieless, self-hostable or cloud.umami.is)
