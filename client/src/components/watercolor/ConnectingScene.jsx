@@ -7,7 +7,7 @@
 // 3. Skip / Next stranger: sends the other bird flying away and resumes searching.
 // 4. Smooth paper-wipe transition to the active chat session.
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { playBirdChirp, playWaterDrop } from './soundEngine'
 import Bird, { BIRD_POSES } from './Bird'
 
@@ -95,6 +95,17 @@ export default function ConnectingScene({
   const subInk = isNight ? '#a8b9ce' : '#6b6055'
   const cardBg = isNight ? 'rgba(23, 30, 44, 0.94)' : 'rgba(252, 249, 242, 0.96)'
   const cardBorder = isNight ? 'rgba(140, 160, 190, 0.28)' : 'rgba(50, 40, 30, 0.22)'
+
+
+  // miloo-auto-enter: match milte hi seedha chat mein, card ke bina
+  const autoEnteredRef = useRef(false)
+  useEffect(() => {
+    if (stage === 'matched' && !autoEnteredRef.current) {
+      autoEnteredRef.current = true
+      const t = setTimeout(() => handleEnterChat(), 350)
+      return () => clearTimeout(t)
+    }
+  }, [stage, handleEnterChat])
 
   return (
     <div
@@ -235,7 +246,7 @@ export default function ConnectingScene({
           </>
         )}
 
-        {(stage === 'meeting' || stage === 'matched') && (
+        {false && (
           <>
             <span
               style={{
