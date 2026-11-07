@@ -2,7 +2,7 @@
 // Miloo Service Worker — Caches ONLY static assets.
 // Strictly NEVER intercepts or caches /api/ endpoints, socket.io, or WebRTC streams.
 
-const CACHE_NAME = 'miloo-static-v1';
+const CACHE_NAME = 'miloo-static-v2';
 
 const STATIC_ASSET_EXTENSIONS = [
   '.css',
@@ -50,6 +50,23 @@ self.addEventListener('fetch', (event) => {
     url.hostname.includes('metered.live') ||
     url.hostname.includes('metered.ca')
   ) {
+    return;
+  }
+
+  // miloo-sw-v2: bina hash wali files (icons, manifest, og) network-first
+  const isHashedAsset = url.pathname.startsWith('/assets/');
+  if (!isHashedAsset && STATIC_ASSET_EXTENSIONS.some((ext) => url.pathname.endsWith(ext))) {
+    event.respondWith(
+      fetch(event.request)
+        .then((res) => {
+          if (res && res.status === 200 && res.type === 'basic') {
+            const copy = res.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
+          return res;
+        })
+        .catch(() => caches.match(event.request))
+    );
     return;
   }
 
