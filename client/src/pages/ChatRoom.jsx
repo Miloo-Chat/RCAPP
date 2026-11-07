@@ -2712,6 +2712,15 @@ function ChatInput({ value, onChange, onSend, placeholder, inputRef }) {
     }
   }
 
+  // miloo-autofocus: chat shuru hote hi cursor input mein
+  React.useEffect(() => {
+    const t = setTimeout(() => {
+      const el = textareaRef.current
+      if (el && el.offsetParent !== null) el.focus({ preventScroll: true })
+    }, 80)
+    return () => clearTimeout(t)
+  }, [])
+
   return (
     <div
       style={{
