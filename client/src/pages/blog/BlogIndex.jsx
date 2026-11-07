@@ -14,6 +14,46 @@ const RISKY_SLUGS = [
 
 const ALL_ARTICLES = [
   {
+    slug: 'parent-guide-to-teens-and-online-chat',
+    title: 'A Parent Guide to Teens and Online Chat Platforms',
+    desc: 'Practical advice for parents on how anonymous chat platforms work, why age limits matter, and how to talk with teenagers about online conversations.',
+    date: 'Nov 7, 2026',
+    readTime: '6 min read',
+    category: 'Family & Safety',
+  },
+  {
+    slug: 'staying-safe-on-public-wifi-video-chat',
+    title: 'Staying Safe on Public Wi-Fi While Video Chatting',
+    desc: 'How to protect your privacy and your connection when you use video chat on cafe, campus or airport wi-fi, including VPN, browser and surroundings tips.',
+    date: 'Nov 7, 2026',
+    readTime: '5 min read',
+    category: 'Privacy',
+  },
+  {
+    slug: 'video-call-etiquette-and-body-language',
+    title: 'Video Call Etiquette and Body Language Basics',
+    desc: 'Simple, friendly habits for video conversations with new people: framing, lighting, eye contact, listening and how to leave a call politely.',
+    date: 'Nov 7, 2026',
+    readTime: '5 min read',
+    category: 'Conversations',
+  },
+  {
+    slug: 'why-anonymity-matters-online',
+    title: 'Why Anonymity Matters: Privacy, Accountability and Trust Online',
+    desc: 'A balanced look at the value of anonymity on the internet, the problems it can cause, and how platforms try to keep anonymous spaces safe.',
+    date: 'Nov 7, 2026',
+    readTime: '6 min read',
+    category: 'Privacy',
+  },
+  {
+    slug: 'practicing-a-new-language-with-strangers',
+    title: 'Practicing a New Language With Strangers Online',
+    desc: 'How to use spontaneous conversations to practice speaking a new language: preparation, simple goals, handling mistakes and staying safe.',
+    date: 'Nov 7, 2026',
+    readTime: '5 min read',
+    category: 'Conversations',
+  },
+  {
     slug: 'social-anxiety-and-anonymous-conversation',
     title: 'Social Anxiety and Anonymous Conversation: When It Helps and When It Does Not',
     desc: 'A balanced look at how anonymous chat can feel easier for shy or anxious people, where it helps, where it falls short, and how to practice gently.',

@@ -37,6 +37,11 @@ export const INDEXABLE_CORE_URLS = [
   'https://miloo.chat/blog/how-miloo-moderation-works',
   'https://miloo.chat/blog/social-anxiety-and-anonymous-conversation',
   'https://miloo.chat/blog/healthy-limits-for-late-night-chatting',
+  'https://miloo.chat/blog/parent-guide-to-teens-and-online-chat',
+  'https://miloo.chat/blog/staying-safe-on-public-wifi-video-chat',
+  'https://miloo.chat/blog/video-call-etiquette-and-body-language',
+  'https://miloo.chat/blog/why-anonymity-matters-online',
+  'https://miloo.chat/blog/practicing-a-new-language-with-strangers',
 ]
 
 // Optional SEO posts (strictly excluded when SHOW_SEO_POSTS is false)

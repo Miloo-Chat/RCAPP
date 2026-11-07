@@ -392,6 +392,61 @@ const ROUTES_META = {
       '2026-11-07'
     )
   },
+  '/blog/parent-guide-to-teens-and-online-chat': {
+    title: 'A Parent Guide to Teens and Online Chat Platforms — Miloo Blog',
+    description: 'Practical advice for parents on how anonymous chat platforms work, why age limits matter, and how to talk with teenagers about online conversations.',
+    canonical: 'https://miloo.chat/blog/parent-guide-to-teens-and-online-chat',
+    schema: makeArticleSchema(
+      'A Parent Guide to Teens and Online Chat Platforms',
+      'Practical advice for parents on how anonymous chat platforms work, why age limits matter, and how to talk with teenagers about online conversations.',
+      'https://miloo.chat/blog/parent-guide-to-teens-and-online-chat',
+      '2026-11-07'
+    )
+  },
+  '/blog/staying-safe-on-public-wifi-video-chat': {
+    title: 'Staying Safe on Public Wi-Fi While Video Chatting — Miloo Blog',
+    description: 'How to protect your privacy and your connection when you use video chat on cafe, campus or airport wi-fi, including VPN, browser and surroundings tips.',
+    canonical: 'https://miloo.chat/blog/staying-safe-on-public-wifi-video-chat',
+    schema: makeArticleSchema(
+      'Staying Safe on Public Wi-Fi While Video Chatting',
+      'How to protect your privacy and your connection when you use video chat on cafe, campus or airport wi-fi, including VPN, browser and surroundings tips.',
+      'https://miloo.chat/blog/staying-safe-on-public-wifi-video-chat',
+      '2026-11-07'
+    )
+  },
+  '/blog/video-call-etiquette-and-body-language': {
+    title: 'Video Call Etiquette and Body Language Basics — Miloo Blog',
+    description: 'Simple, friendly habits for video conversations with new people: framing, lighting, eye contact, listening and how to leave a call politely.',
+    canonical: 'https://miloo.chat/blog/video-call-etiquette-and-body-language',
+    schema: makeArticleSchema(
+      'Video Call Etiquette and Body Language Basics',
+      'Simple, friendly habits for video conversations with new people: framing, lighting, eye contact, listening and how to leave a call politely.',
+      'https://miloo.chat/blog/video-call-etiquette-and-body-language',
+      '2026-11-07'
+    )
+  },
+  '/blog/why-anonymity-matters-online': {
+    title: 'Why Anonymity Matters: Privacy, Accountability and Trust Online — Miloo Blog',
+    description: 'A balanced look at the value of anonymity on the internet, the problems it can cause, and how platforms try to keep anonymous spaces safe.',
+    canonical: 'https://miloo.chat/blog/why-anonymity-matters-online',
+    schema: makeArticleSchema(
+      'Why Anonymity Matters: Privacy, Accountability and Trust Online',
+      'A balanced look at the value of anonymity on the internet, the problems it can cause, and how platforms try to keep anonymous spaces safe.',
+      'https://miloo.chat/blog/why-anonymity-matters-online',
+      '2026-11-07'
+    )
+  },
+  '/blog/practicing-a-new-language-with-strangers': {
+    title: 'Practicing a New Language With Strangers Online — Miloo Blog',
+    description: 'How to use spontaneous conversations to practice speaking a new language: preparation, simple goals, handling mistakes and staying safe.',
+    canonical: 'https://miloo.chat/blog/practicing-a-new-language-with-strangers',
+    schema: makeArticleSchema(
+      'Practicing a New Language With Strangers Online',
+      'How to use spontaneous conversations to practice speaking a new language: preparation, simple goals, handling mistakes and staying safe.',
+      'https://miloo.chat/blog/practicing-a-new-language-with-strangers',
+      '2026-11-07'
+    )
+  },
   '/blog/what-to-do-if-someone-harasses-you-online': {
     title: 'What to Do If Someone Harasses You Online — Miloo Blog',
     description: 'Action plan for handling cyber harassment, threats, or extortion. Learn evidence preservation, platform reporting, and international legal support hotlines.',

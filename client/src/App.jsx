@@ -26,6 +26,11 @@ import HowWebRTCWorks from './pages/blog/HowWebRTCWorks'
 import HowMilooModerationWorks from './pages/blog/HowMilooModerationWorks'
 import SocialAnxietyAnonymousChat from './pages/blog/SocialAnxietyAnonymousChat'
 import LateNightChatLimits from './pages/blog/LateNightChatLimits'
+import ParentGuideTeensChat from './pages/blog/ParentGuideTeensChat'
+import PublicWifiVideoChat from './pages/blog/PublicWifiVideoChat'
+import VideoCallEtiquette from './pages/blog/VideoCallEtiquette'
+import WhyAnonymityMatters from './pages/blog/WhyAnonymityMatters'
+import PracticeLanguageStrangers from './pages/blog/PracticeLanguageStrangers'
 import NotFound from './pages/NotFound'
 import AdSenseScript from './components/AdSenseScript'
 import CookieBanner from './components/CookieBanner'
@@ -260,6 +265,27 @@ export function AppRoutes() {
         <Route
           path="/blog/healthy-limits-for-late-night-chatting"
           element={<LateNightChatLimits theme={theme} onToggleTheme={toggleTheme} />}
+        />
+
+        <Route
+          path="/blog/parent-guide-to-teens-and-online-chat"
+          element={<ParentGuideTeensChat theme={theme} onToggleTheme={toggleTheme} />}
+        />
+        <Route
+          path="/blog/staying-safe-on-public-wifi-video-chat"
+          element={<PublicWifiVideoChat theme={theme} onToggleTheme={toggleTheme} />}
+        />
+        <Route
+          path="/blog/video-call-etiquette-and-body-language"
+          element={<VideoCallEtiquette theme={theme} onToggleTheme={toggleTheme} />}
+        />
+        <Route
+          path="/blog/why-anonymity-matters-online"
+          element={<WhyAnonymityMatters theme={theme} onToggleTheme={toggleTheme} />}
+        />
+        <Route
+          path="/blog/practicing-a-new-language-with-strangers"
+          element={<PracticeLanguageStrangers theme={theme} onToggleTheme={toggleTheme} />}
         />
 
         {/* Private Real-Time Chat Room (Strictly 18+ Gate) */}

@@ -566,6 +566,17 @@ export default function Home({
               </Link>
             </div>
 
+            {/* miloo-about-text */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 600, margin: 0, color: bodyTextColor }}>What is Miloo?</h2>
+              <p style={{ margin: 0, fontSize: '14.5px', lineHeight: 1.65, color: bodyTextColor }}>
+                Miloo is a free, browser-based place to have one-to-one text or video conversations with a real person you have not met. There is nothing to install and no account to create. It is intended for adults aged 18 and over.
+              </p>
+              <p style={{ margin: 0, fontSize: '14.5px', lineHeight: 1.65, color: bodyTextColor }}>
+                Safety is built into every chat: a human-verification step before matching, limits on rapid reconnecting, automated detection on video, and Report and Block buttons that are always one tap away. You can skip or leave a conversation at any time. Read how it works on our moderation guide, and visit the Safety Center for tips on protecting your privacy.
+              </p>
+            </div>
+
             <div>
               <span style={{ fontSize: '13px', fontWeight: 600, color: mutedTextColor, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '8px' }}>
                 Featured Safety & Conversation Guides:
