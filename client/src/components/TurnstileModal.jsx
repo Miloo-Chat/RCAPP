@@ -3,6 +3,21 @@ import { TURNSTILE_SITE_KEY } from '../config/site'
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL || ''
 
+// miloo-turnstile-preload: page khulte hi script load, modal khulte hi ready
+if (typeof window !== 'undefined') {
+  try {
+    const alreadyVerified = sessionStorage.getItem('miloo_turnstile_verified') === 'true'
+    if (!alreadyVerified && !document.getElementById('cloudflare-turnstile-script')) {
+      const pre = document.createElement('script')
+      pre.id = 'cloudflare-turnstile-script'
+      pre.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
+      pre.async = true
+      pre.defer = true
+      document.head.appendChild(pre)
+    }
+  } catch (_) {}
+}
+
 /**
  * TurnstileModal
  * 
