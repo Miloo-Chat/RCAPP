@@ -589,6 +589,23 @@ export default function Home({
                   </Link>{' '}
                   — Easy environmental sweep to ensure webcam privacy.
                 </li>
+                <li>
+                  <Link to="/blog/how-webrtc-video-chat-works" style={ color: accentLinkColor, textDecoration: 'underline', textUnderlineOffset: '2px' }>
+                    How WebRTC Works: Peer-to-Peer Video Chat Explained
+                  </Link>{' '}
+                  — A plain-language look at how browser video calls connect.
+                </li>
+                <li>
+                  <Link to="/blog/how-miloo-moderation-works" style={ color: accentLinkColor, textDecoration: 'underline', textUnderlineOffset: '2px' }>
+                    How Moderation Works on Miloo
+                  </Link>{' '}
+                  — Verification, reports, blocks and automated detection explained.
+                </li>
+                <li>
+                  <Link to="/blog" style={ color: accentLinkColor, textDecoration: 'underline', textUnderlineOffset: '2px' }>
+                    Browse all articles
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
