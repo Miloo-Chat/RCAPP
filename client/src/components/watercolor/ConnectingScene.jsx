@@ -89,6 +89,21 @@ export default function ConnectingScene({
     }, 450)
   }, [mode, onConfirmConnect])
 
+  // miloo-skip-fake-match: nakli match wait/card chhodkar seedha chat kholo
+  const enterRef = useRef(handleEnterChat)
+  enterRef.current = handleEnterChat
+  const enteredRef = useRef(false)
+  useEffect(() => {
+    if (!active) {
+      enteredRef.current = false
+      return
+    }
+    if (enteredRef.current) return
+    enteredRef.current = true
+    const t = setTimeout(() => enterRef.current(), 350)
+    return () => clearTimeout(t)
+  }, [active])
+
   if (!active) return null
 
   const inkColor = isNight ? '#f0f4fa' : '#1c1815'
@@ -96,16 +111,6 @@ export default function ConnectingScene({
   const cardBg = isNight ? 'rgba(23, 30, 44, 0.94)' : 'rgba(252, 249, 242, 0.96)'
   const cardBorder = isNight ? 'rgba(140, 160, 190, 0.28)' : 'rgba(50, 40, 30, 0.22)'
 
-
-  // miloo-auto-enter: match milte hi seedha chat mein, card ke bina
-  const autoEnteredRef = useRef(false)
-  useEffect(() => {
-    if (stage === 'matched' && !autoEnteredRef.current) {
-      autoEnteredRef.current = true
-      const t = setTimeout(() => handleEnterChat(), 350)
-      return () => clearTimeout(t)
-    }
-  }, [stage, handleEnterChat])
 
   return (
     <div
