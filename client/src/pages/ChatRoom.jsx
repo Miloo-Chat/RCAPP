@@ -2250,9 +2250,8 @@ function ChatView({
             )}
           </div>
 
-          <div style={{ flexShrink: 0, paddingTop: 8 }}>
-            <ChatInput onSend={sendText} placeholder="Say something…" />
-            <OmeControlBar onNext={onFindNext} onStop={onStop} />
+          <div style={{ flexShrink: 0, paddingTop: 8, paddingBottom: 'max(10px, env(safe-area-inset-bottom))' }}>
+            <ChatInput onSend={sendText} placeholder="Say something…" onNext={onFindNext} />
           </div>
         </div>
       )}
@@ -2671,7 +2670,7 @@ function VideoStage({ iceState, localStream, remoteStream, onFindNext, onNSFWTri
   )
 }
 
-function ChatInput({ value, onChange, onSend, placeholder, inputRef }) {
+function ChatInput({ value, onChange, onSend, placeholder, inputRef, onNext }) {
   const [internalValue, setInternalValue] = useState('')
   const [isFocused, setIsFocused] = useState(false)
   const isControlled = value !== undefined
@@ -2721,7 +2720,23 @@ function ChatInput({ value, onChange, onSend, placeholder, inputRef }) {
     return () => clearTimeout(t)
   }, [])
 
-  return (
+  // miloo-next-inline: Esc = Next (sirf jab input khaali ho)
+  React.useEffect(() => {
+    if (!onNext) return undefined
+    const h = (ev) => {
+      if (ev.key !== 'Escape') return
+      if (document.querySelector('[role="dialog"],[aria-modal="true"]')) return
+      ev.preventDefault()
+      ev.stopImmediatePropagation()
+      const el = textareaRef.current
+      if (el && el.value.trim()) return
+      onNext()
+    }
+    window.addEventListener('keydown', h, true)
+    return () => window.removeEventListener('keydown', h, true)
+  }, [onNext])
+
+  const pill = (
     <div
       style={{
         display: 'flex',
@@ -2787,6 +2802,57 @@ function ChatInput({ value, onChange, onSend, placeholder, inputRef }) {
       >
         ↑
       </button>
+    </div>
+  )
+
+  if (!onNext) return pill
+
+  const showEsc =
+    typeof window !== 'undefined' &&
+    window.matchMedia &&
+    window.matchMedia('(hover: hover) and (pointer: fine)').matches
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8, width: '100%' }}>
+      <button
+        onClick={onNext}
+        aria-label="Next partner"
+        className="compact tactile-btn"
+        style={{
+          flexShrink: 0,
+          minHeight: 48,
+          padding: '10px 16px',
+          borderRadius: 'var(--radius-md)',
+          background: 'var(--rd-accent)',
+          border: '1px solid var(--rd-accent)',
+          color: '#ffffff',
+          fontFamily: 'var(--font-body)',
+          fontSize: 14,
+          fontWeight: 600,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          cursor: 'pointer',
+          transition: 'all 180ms ease-out',
+        }}
+      >
+        Next
+        {showEsc && (
+          <span
+            aria-hidden="true"
+            style={{
+              fontSize: 11,
+              fontWeight: 600,
+              padding: '2px 6px',
+              borderRadius: 6,
+              background: 'rgba(255,255,255,0.22)',
+            }}
+          >
+            Esc
+          </span>
+        )}
+      </button>
+      <div style={{ flex: 1, minWidth: 0 }}>{pill}</div>
     </div>
   )
 }
