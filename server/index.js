@@ -608,7 +608,7 @@ const io = new Server(server, {
 io.on('connection', async (socket) => {
   const ids = getSocketIdentifiers(socket);
 
-  // Connection Rate Limiting: max 20 connections per minute per IP hash
+  // Connection Rate Limiting: max 60 connections per minute per IP hash
   const connectNow = Date.now();
   if (ids.ipHash) {
     if (!connectionAttemptsByIpHash.has(ids.ipHash)) {
@@ -618,7 +618,7 @@ io.on('connection', async (socket) => {
     while (attempts.length > 0 && connectNow - attempts[0] > 60000) {
       attempts.shift();
     }
-    if (attempts.length >= 20) {
+    if (attempts.length >= 60) {
       console.log(`[Rate Limit] Rejected connection burst from IP hash: ${ids.ipHash}`);
       socket.emit('slow_down', { message: 'Too many connection attempts. Please wait a moment.' });
       setTimeout(() => {
