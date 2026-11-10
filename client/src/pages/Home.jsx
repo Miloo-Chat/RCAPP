@@ -573,6 +573,15 @@ export default function Home({
                 Miloo is a free, browser-based place to have a one-to-one text or video conversation with a real person you have not met. There is nothing to install and no account to create. You press start, get matched with someone, and talk for as long as you both want. When you are done, you can skip to someone new or simply leave.
               </p>
 
+              {/* miloo-name-story */}
+              <h3 style={{ fontSize: '16px', fontWeight: 600, margin: '6px 0 0', color: bodyTextColor }}>Why we call it Miloo</h3>
+              <p style={{ margin: 0, fontSize: '14.5px', lineHeight: 1.65, color: bodyTextColor }}>
+                Miloo comes from the Hindi word &ldquo;milo&rdquo;, which means &ldquo;meet&rdquo; or &ldquo;come together&rdquo;. The idea behind it is simple: people should be able to get together, talk, and enjoy each other&apos;s company without barriers.
+              </p>
+              <p style={{ margin: 0, fontSize: '14.5px', lineHeight: 1.65, color: bodyTextColor }}>
+                Think of birds in the sky. They move freely, cross paths in the open air, fly together for a while, and then continue on their own way. Miloo is meant to feel the same: light, free and unforced. A place where people can connect, have a good conversation, and leave whenever they like.
+              </p>
+
               <h3 style={{ fontSize: '16px', fontWeight: 600, margin: '6px 0 0', color: bodyTextColor }}>Who it is for</h3>
               <p style={{ margin: 0, fontSize: '14.5px', lineHeight: 1.65, color: bodyTextColor }}>
                 Miloo is intended for adults aged 18 and over. People use it to practice a language, to talk through an idea with someone neutral, to meet people from other places, or just to have a relaxed conversation late in the evening. Text chat is there for those who prefer to think before they reply, and video is there for those who want a more personal conversation.
