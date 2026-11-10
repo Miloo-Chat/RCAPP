@@ -566,14 +566,29 @@ export default function Home({
               </Link>
             </div>
 
-            {/* miloo-about-text */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {/* miloo-about-v2 */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <h2 style={{ fontSize: '20px', fontWeight: 600, margin: 0, color: bodyTextColor }}>What is Miloo?</h2>
               <p style={{ margin: 0, fontSize: '14.5px', lineHeight: 1.65, color: bodyTextColor }}>
-                Miloo is a free, browser-based place to have one-to-one text or video conversations with a real person you have not met. There is nothing to install and no account to create. It is intended for adults aged 18 and over.
+                Miloo is a free, browser-based place to have a one-to-one text or video conversation with a real person you have not met. There is nothing to install and no account to create. You press start, get matched with someone, and talk for as long as you both want. When you are done, you can skip to someone new or simply leave.
+              </p>
+
+              <h3 style={{ fontSize: '16px', fontWeight: 600, margin: '6px 0 0', color: bodyTextColor }}>Who it is for</h3>
+              <p style={{ margin: 0, fontSize: '14.5px', lineHeight: 1.65, color: bodyTextColor }}>
+                Miloo is intended for adults aged 18 and over. People use it to practice a language, to talk through an idea with someone neutral, to meet people from other places, or just to have a relaxed conversation late in the evening. Text chat is there for those who prefer to think before they reply, and video is there for those who want a more personal conversation.
+              </p>
+
+              <h3 style={{ fontSize: '16px', fontWeight: 600, margin: '6px 0 0', color: bodyTextColor }}>How safety works</h3>
+              <p style={{ margin: 0, fontSize: '14.5px', lineHeight: 1.65, color: bodyTextColor }}>
+                Anonymous chat only works when people feel safe, so safety is part of the product and not an add-on. Before you are matched, a human-verification step helps keep automated bots out. Limits on rapid reconnecting make it harder to spam or harass people by skipping and returning. On video, automated detection looks for explicit content. Report and Block buttons are always within reach, and you can end any conversation instantly without explaining why.
               </p>
               <p style={{ margin: 0, fontSize: '14.5px', lineHeight: 1.65, color: bodyTextColor }}>
-                Safety is built into every chat: a human-verification step before matching, limits on rapid reconnecting, automated detection on video, and Report and Block buttons that are always one tap away. You can skip or leave a conversation at any time. Read how it works on our moderation guide, and visit the Safety Center for tips on protecting your privacy.
+                No system is perfect, so we also encourage a few habits: keep personal details private, never move to another app because a stranger insists, and leave any conversation that feels wrong. You can read the details in our <a href="/safety" style={{ color: accentLinkColor, textDecoration: 'underline', textUnderlineOffset: '2px' }}>Safety Center</a>, see how it works step by step on the <a href="/how-it-works" style={{ color: accentLinkColor, textDecoration: 'underline', textUnderlineOffset: '2px' }}>How it works</a> page, or read our <a href="/privacy" style={{ color: accentLinkColor, textDecoration: 'underline', textUnderlineOffset: '2px' }}>Privacy Policy</a>.
+              </p>
+
+              <h3 style={{ fontSize: '16px', fontWeight: 600, margin: '6px 0 0', color: bodyTextColor }}>Guides and articles</h3>
+              <p style={{ margin: 0, fontSize: '14.5px', lineHeight: 1.65, color: bodyTextColor }}>
+                Alongside the chat, we publish practical guides on staying safe online, starting conversations, protecting your privacy, and keeping late-night chatting healthy. You can find them all on the <a href="/blog" style={{ color: accentLinkColor, textDecoration: 'underline', textUnderlineOffset: '2px' }}>Miloo blog</a>.
               </p>
             </div>
 
