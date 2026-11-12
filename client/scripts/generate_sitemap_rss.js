@@ -13,7 +13,7 @@ const rootDir = path.resolve(__dirname, '..')
 const DOMAIN = 'https://miloo.chat'
 
 const CORE_PAGES = [
-  { url: '/', priority: '1.0', changefreq: 'daily', lastmod: '2026-11-03' },
+  { url: '/', priority: '1.0', changefreq: 'daily', lastmod: '2026-11-10' },
   { url: '/how-it-works', priority: '0.8', changefreq: 'weekly', lastmod: '2026-11-02' },
   { url: '/safety', priority: '0.9', changefreq: 'weekly', lastmod: '2026-11-02' },
   { url: '/faq', priority: '0.8', changefreq: 'weekly', lastmod: '2026-11-02' },
