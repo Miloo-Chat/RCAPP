@@ -5,8 +5,8 @@ export default function StaySafeOnline({ theme, onToggleTheme }) {
   const tableOfContents = [
     { id: 'firewalls', label: 'What Should You Never Share With a Stranger?' },
     { id: 'migration-push', label: 'Should You Move to WhatsApp or Snapchat?' },
-    { id: 'webcam-awareness', label: 'Maintain Webcam & Environmental Awareness' },
-    { id: 'coercion-tactics', label: 'Recognizing Coercion & Manipulation' },
+    { id: 'webcam-awareness', label: 'What Can Your Webcam Give Away?' },
+    { id: 'coercion-tactics', label: 'How Do You Recognize Manipulation?' },
     { id: 'moderation-tools', label: 'Use Built-in Moderation & Reporting' },
   ]
 
@@ -88,7 +88,7 @@ export default function StaySafeOnline({ theme, onToggleTheme }) {
         No system catches everything, so your habits still matter. Also keep in mind that, as with most video chat tools built on WebRTC, a direct connection between devices can expose network details such as an IP address to the other person. If that worries you, prefer text chat or use a trusted VPN. Read more about how it works in our <Link to="/how-it-works">How it works</Link> guide.
       </p>
 
-      <h2 id="webcam-awareness">3. Maintain Webcam and Environmental Awareness</h2>
+      <h2 id="webcam-awareness">3. What Can Your Webcam Give Away?</h2>
       <p>
         When utilizing live video chat, remember that your camera reveals your surroundings. A quick environmental audit before starting can prevent unintended disclosures:
       </p>
@@ -98,7 +98,7 @@ export default function StaySafeOnline({ theme, onToggleTheme }) {
         <li><strong>Attire and Decorum:</strong> Treat video chat as you would standing in a public coffee shop. Never undress, reveal intimate areas, or allow anyone to pressure you into private performances.</li>
       </ul>
 
-      <h2 id="coercion-tactics">4. Recognizing Coercion and Manipulation Tactics</h2>
+      <h2 id="coercion-tactics">4. How Do You Recognize Manipulation and Coercion?</h2>
       <p>
         Manipulative users often deploy psychological pressure to test your boundaries. Common tactics include:
       </p>
@@ -116,12 +116,12 @@ export default function StaySafeOnline({ theme, onToggleTheme }) {
         Platforms rely on active community participation to maintain safe spaces. On Miloo, every chat includes prominent <strong>Report User</strong> and <strong>Block User</strong> buttons.
       </p>
       <p>
-        When you report a user for harassment, inappropriate nudity, or scams, you not only protect yourself—you also trigger reviews that protect the next visitor who might be less experienced with online safety. Read our deep dive on <Link to="/blog/how-to-report-and-block-abusive-users">how reporting and blocking works</Link>.
+        Report and Block are there for harassment, inappropriate nudity and scams. Using them protects you right away, and reports help us act on abuse so other people are less likely to run into it. Read our deep dive on <Link to="/blog/how-to-report-and-block-abusive-users">how reporting and blocking works</Link>.
       </p>
 
       <h2>Conclusion</h2>
       <p>
-        Serendipitous online conversations can be wonderful, entertaining, and educational. By keeping your personal information confidential, watching for off-platform red flags, securing your webcam space, and utilizing safety tools, you can enjoy the spontaneity of Miloo with complete peace of mind.
+        Serendipitous online conversations can be wonderful, entertaining, and educational. By keeping your personal information confidential, watching for off-platform red flags, securing your webcam space, and utilizing safety tools, you can enjoy the spontaneity of Miloo with far more confidence. No tool makes any stranger chat risk-free, so trust your instincts and leave any conversation that feels wrong.
       </p>
     </ArticleLayout>
   )
