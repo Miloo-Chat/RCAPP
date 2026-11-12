@@ -72,10 +72,10 @@ export const ARTICLE_AUTHOR = {
 
 // Grievance Officer (India IT Rules, 2021) single-source placeholders
 export const GRIEVANCE_OFFICER = {
-  name: '[Grievance Officer Name]',
+  name: 'Akhil Sharma',
   designation: 'Grievance Officer',
-  email: '[grievance-officer@miloo.chat]',
-  address: '[Postal Address / Registered Office Address, City, State, PIN, Country]',
+  email: 'support@miloo.chat',
+  address: 'Delhi, India',
   acknowledgementTime: '24 hours',
   resolutionTime: '15 days',
 }
