@@ -32,7 +32,8 @@ export default function ArticleLayout({
     datePublished: withTz(datePublished),
     dateModified: withTz(dateModified),
     author: {
-      '@type': 'Organization',
+      '@type': 'Person',
+      jobTitle: 'Founder, Miloo',
       name: ARTICLE_AUTHOR.name,
       url: 'https://miloo.chat/about#team',
     },

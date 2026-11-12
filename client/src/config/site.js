@@ -64,9 +64,9 @@ export const ENABLE_GOLDEN_HOUR_NOTIFICATIONS =
 
 // Author information constant for all editorial safety and blog articles
 export const ARTICLE_AUTHOR = {
-  name: 'Miloo Safety & Editorial Team',
-  role: 'Editorial & Safety Desk',
-  bio: 'The Miloo Safety and Editorial Desk researches digital communication, WebRTC privacy, and online user safety to keep spontaneous conversations respectful, authentic, and secure.',
+  name: 'Akhil Sharma',
+  role: 'Founder, Miloo',
+  bio: 'Akhil Sharma is the founder and developer of Miloo. Based in India, he built Miloo to bring back the feeling of spontaneous, one-to-one conversation online, with real people and with safety built in from the start. The name comes from the Hindi word "milo", meaning "meet" or "come together".',
   teamAnchor: '/about#team',
 }
 

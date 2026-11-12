@@ -130,12 +130,12 @@ export default function About({ theme, onToggleTheme }) {
 
           {/* Section 7 with #team anchor */}
           <section id="team" style={{ marginTop: 44, paddingTop: 28, borderTop: '1px solid var(--border-1)' }}>
-            <h2>7. Editorial & Safety Team</h2>
+            <h2>7. About the Author</h2>
             <p>
-              The <strong>{ARTICLE_AUTHOR.name}</strong> comprises experienced privacy researchers, communication designers, and safety engineers dedicated to open-web security and digital civil rights.
+              Miloo is built and run by <strong>{ARTICLE_AUTHOR.name}</strong>, an independent developer based in India. He writes and edits the guides on this site.
             </p>
             <p>
-              Our editorial mission is to author rigorous, practical, and candid guides on personal privacy, WebRTC hygiene, cyberstalking prevention, and anti-fraud awareness. Every safety article published in the <Link to="/blog">Miloo Blog</Link> is reviewed against current threat intelligence and vetted for practical clarity before publication.
+              The guides on the <Link to="/blog">Miloo Blog</Link> cover personal privacy, video chat safety, and how to handle harassment and scams, based on how Miloo itself is built and moderated.
             </p>
             <div
               className="content-card"

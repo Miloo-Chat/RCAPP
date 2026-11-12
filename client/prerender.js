@@ -119,8 +119,9 @@ function makeArticleSchema(headline, description, url, datePublished = '2026-09-
         datePublished: withTz(datePublished),
         dateModified: withTz(dateModified),
         author: {
-          '@type': 'Organization',
-          name: 'Miloo Safety & Editorial Team',
+          '@type': 'Person',
+          jobTitle: 'Founder, Miloo',
+          name: 'Akhil Sharma',
           url: 'https://miloo.chat/about#team'
         },
         publisher: {
