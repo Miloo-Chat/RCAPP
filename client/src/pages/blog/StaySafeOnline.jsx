@@ -3,8 +3,8 @@ import ArticleLayout from '../../components/ArticleLayout'
 
 export default function StaySafeOnline({ theme, onToggleTheme }) {
   const tableOfContents = [
-    { id: 'firewalls', label: 'Define Your Information Firewalls' },
-    { id: 'migration-push', label: 'Beware the "Switch Apps" Push' },
+    { id: 'firewalls', label: 'What Should You Never Share With a Stranger?' },
+    { id: 'migration-push', label: 'Should You Move to WhatsApp or Snapchat?' },
     { id: 'webcam-awareness', label: 'Maintain Webcam & Environmental Awareness' },
     { id: 'coercion-tactics', label: 'Recognizing Coercion & Manipulation' },
     { id: 'moderation-tools', label: 'Use Built-in Moderation & Reporting' },
@@ -38,7 +38,7 @@ export default function StaySafeOnline({ theme, onToggleTheme }) {
       url="https://miloo.chat/blog/stay-safe-talking-to-strangers-online"
       category="Digital Safety & Privacy"
       datePublished="2026-09-01"
-      dateModified="2026-11-03"
+      dateModified="2026-11-12"
       readTime="7 min read"
       tableOfContents={tableOfContents}
       relatedArticles={relatedArticles}
@@ -46,6 +46,9 @@ export default function StaySafeOnline({ theme, onToggleTheme }) {
       theme={theme}
       onToggleTheme={onToggleTheme}
     >
+      <p id="short-answer">
+        <strong>Short answer:</strong> To stay safe talking to strangers online, never share identifying details such as your real name, exact location, school or workplace. Keep the conversation on the platform instead of moving to another app, check what your webcam shows behind you, and skip, report or block anyone who pressures you. You can end any Miloo chat instantly.
+      </p>
       <p>
         The internet has democratized human connection. Within a fraction of a second, you can find yourself face-to-face with a university student in Tokyo, a musician in Berlin, or an engineer in Bangalore. On Miloo, every chat is with a real person, and these spontaneous encounters can expand your perspective, break late-night boredom, and offer authentic laughs that social media algorithms rarely deliver.
       </p>
@@ -53,7 +56,7 @@ export default function StaySafeOnline({ theme, onToggleTheme }) {
         However, connecting with unverified strangers carries inherent digital risks. Without thoughtful precautions, innocent conversations can expose your personal life to social engineers, aggressive trolls, or financial scammers. Staying safe does not mean living in fear—it simply means adopting smart, automated habits that keep you firmly in control. Here is our comprehensive guide to navigating random stranger chat securely. For additional guidance, visit our dedicated <Link to="/safety">Safety Center</Link> and read our advice on <Link to="/blog/how-to-spot-scams-on-chat-sites">spotting chat scams</Link>.
       </p>
 
-      <h2 id="firewalls">1. Define Your Information Firewalls</h2>
+      <h2 id="firewalls">1. What Should You Never Share With a Stranger?</h2>
       <p>
         The single most effective defense against online exploitation is strict compartmentalization. Before opening a chat tab, decide in advance what information is strictly off-limits.
       </p>
@@ -66,15 +69,23 @@ export default function StaySafeOnline({ theme, onToggleTheme }) {
         <li><strong>Keep Your Routine Private:</strong> Avoid describing your exact daily schedule, such as when you commute, where your gym is located, or when you are home alone.</li>
       </ul>
 
-      <h2 id="migration-push">2. Beware the "Let's Switch to Another App" Push</h2>
+      <h2 id="migration-push">2. Should You Move to WhatsApp or Snapchat? Not Early On</h2>
       <p>
         One of the most predictable patterns on random chat networks is the immediate attempt to migrate you to a third-party messenger: <em>"Hey, this site is laggy, add me on Snapchat/Telegram/WhatsApp."</em>
       </p>
       <p>
-        Why do malicious actors do this? Because on platforms like Miloo, your identity remains completely anonymous and protected by our signaling server. Third-party messaging apps, however, often reveal phone numbers, profile photos, usernames, and mutual contacts. Once you move to another platform, you lose the safety features of Miloo’s instant skip and abuse reporting tools.
+        Why do malicious actors do this? Because on Miloo you chat without an account, a name or a phone number. Third-party messaging apps, however, often reveal phone numbers, profile photos, usernames, and mutual contacts. Once you move to another platform, you lose the safety features of Miloo’s instant skip and abuse reporting tools.
       </p>
       <p>
         <strong>Our Rule of Thumb:</strong> Keep stranger conversations on-platform. If a connection is truly worthwhile, it will remain enjoyable without needing personal contact credentials. If someone insists on switching apps within the first five minutes, consider it an immediate red flag and skip. Learn more in our <Link to="/faq">Frequently Asked Questions</Link>.
+      </p>
+
+      <h3>How Miloo helps, and where your own judgment matters</h3>
+      <p>
+        Miloo is for adults aged 18 and over. Before you are matched, a human-verification step helps keep automated bots out, and limits on rapid reconnecting make it harder to harass people by skipping and returning. On video, automated detection looks for explicit content, and the Report and Block buttons are always within reach. You can also skip or leave any conversation at any time without explaining why.
+      </p>
+      <p>
+        No system catches everything, so your habits still matter. Also keep in mind that, as with most video chat tools built on WebRTC, a direct connection between devices can expose network details such as an IP address to the other person. If that worries you, prefer text chat or use a trusted VPN. Read more about how it works in our <Link to="/how-it-works">How it works</Link> guide.
       </p>
 
       <h2 id="webcam-awareness">3. Maintain Webcam and Environmental Awareness</h2>

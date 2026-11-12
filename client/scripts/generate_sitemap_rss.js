@@ -114,7 +114,7 @@ const BLOG_POSTS = [
     title: 'How to Stay Safe Talking to Strangers Online: The Complete Modern Guide',
     description: 'A comprehensive, actionable guide to protecting your identity, privacy, and peace of mind when chatting with strangers online.',
     pubDate: 'Sun, 01 Nov 2026 10:00:00 GMT',
-    lastmod: '2026-11-03',
+    lastmod: '2026-11-12',
     priority: '0.7',
     isRisky: false,
   },
