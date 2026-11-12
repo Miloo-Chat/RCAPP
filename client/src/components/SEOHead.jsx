@@ -78,7 +78,16 @@ export default function SEOHead({
 
     // Inject JSON-LD schema if provided
     let scriptTag = null
-    if (schemaJson) {
+    const hasPrerenderedArticle = Array.from(
+      document.querySelectorAll('script[type="application/ld+json"]')
+    ).some(
+      (el) =>
+        el.id !== 'page-schema-jsonld' &&
+        el.text.includes('"Article"') &&
+        canonicalUrl &&
+        el.text.includes(canonicalUrl)
+    )
+    if (schemaJson && !hasPrerenderedArticle) {
       scriptTag = document.createElement('script')
       scriptTag.type = 'application/ld+json'
       scriptTag.id = 'page-schema-jsonld'
