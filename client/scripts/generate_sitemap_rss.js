@@ -123,7 +123,7 @@ const BLOG_POSTS = [
     title: 'How to Spot Scams and Fake Profiles on Random Chat Sites',
     description: 'Practical ways to identify financial fraud, phishing bots, and fake camera loops on random chat platforms.',
     pubDate: 'Tue, 08 Sep 2026 12:00:00 GMT',
-    lastmod: '2026-11-03',
+    lastmod: '2026-11-12',
     priority: '0.7',
     isRisky: false,
   },
