@@ -102,8 +102,10 @@ const FAQ_ITEMS = [
   }
 ]
 
+const withTz = (d) => (/T/.test(d) ? d : `${d}T00:00:00+05:30`)
+
 function makeArticleSchema(headline, description, url, datePublished = '2026-09-01', dateModified = '2026-11-03') {
-  const slug = url.slice(1).replace(/\//g, '-')
+  const slug = new URL(url).pathname.slice(1).replace(/\//g, '-')
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -114,8 +116,8 @@ function makeArticleSchema(headline, description, url, datePublished = '2026-09-
         description,
         url,
         image: `https://miloo.chat/og/${slug}.png`,
-        datePublished,
-        dateModified,
+        datePublished: withTz(datePublished),
+        dateModified: withTz(dateModified),
         author: {
           '@type': 'Organization',
           name: 'Miloo Safety & Editorial Team',

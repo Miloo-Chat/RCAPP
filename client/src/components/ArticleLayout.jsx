@@ -5,6 +5,8 @@ import SEOHead from './SEOHead'
 import WatercolorMiniBanner from './watercolor/WatercolorMiniBanner'
 import { ARTICLE_AUTHOR } from '../config/site'
 
+const withTz = (d) => (/T/.test(d) ? d : `${d}T00:00:00+05:30`)
+
 export default function ArticleLayout({
   title,
   description,
@@ -27,8 +29,8 @@ export default function ArticleLayout({
     description: description,
     url: url,
     image: `https://miloo.chat/og/${ogSlug || 'blog'}.png`,
-    datePublished: datePublished,
-    dateModified: dateModified,
+    datePublished: withTz(datePublished),
+    dateModified: withTz(dateModified),
     author: {
       '@type': 'Organization',
       name: ARTICLE_AUTHOR.name,
