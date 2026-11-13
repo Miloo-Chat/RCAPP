@@ -1151,7 +1151,7 @@ export default function ChatRoom({
               }}
               aria-hidden="true"
             />
-            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{statusLabel(status, iceState, isVideo, mood)}</span>
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{isVoice ? (voiceStatusLabel(status, iceState) || statusLabel(status, iceState, isVideo, mood)) : statusLabel(status, iceState, isVideo, mood)}</span>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -1476,6 +1476,19 @@ export default function ChatRoom({
 }
 
 // ── Helper: status display ──
+function voiceStatusLabel(status, iceState) {
+  switch (status) {
+    case 'pre_permission': return 'Ready to call'
+    case 'connecting': return 'Mic check'
+    case 'cam_error': return 'Microphone blocked'
+    case 'waiting': return 'Finding someone…'
+    case 'connected':
+      return iceState === 'disconnected' || iceState === 'failed' ? 'Connection unstable' : 'Voice connected'
+    case 'partner_left': return 'Stranger left'
+    default: return null
+  }
+}
+
 function statusLabel(status, iceState, isVideo, mood) {
   if (status === 'pre_permission') return 'Camera check'
   if (status === 'cam_error') return 'Camera blocked'
