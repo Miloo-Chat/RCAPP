@@ -100,7 +100,7 @@ export default function Safety({ theme, onToggleTheme }) {
           </p>
           <ul>
             <li>
-              <strong>Mandatory Pre-Flight Age Confirmation:</strong> Every visitor must actively affirm that they are 18 or older before any video or text session can be initiated.
+              <strong>Mandatory Pre-Flight Age Confirmation:</strong> Every visitor must actively affirm that they are 18 or older before any video, voice or text session can be initiated.
             </li>
             <li>
               <strong>Instant User Blacklisting:</strong> Using the "Block" control severs the peer connection and blacklists that partner's session ID, guaranteeing you will not be matched with them again.
@@ -118,6 +118,7 @@ export default function Safety({ theme, onToggleTheme }) {
             <li><strong>Instant Skip:</strong> You never owe a stranger your time or attention. If a conversation feels awkward, pushy, or uncomfortable, press <strong>Skip</strong> (or the ESC key) immediately to move to a new match.</li>
             <li><strong>Block User:</strong> If a user is hostile or creepy, tap <strong>Block</strong>. This severs the connection and blacklists their session ID so you are never matched with them again.</li>
             <li><strong>Report User:</strong> Use the Report button to flag violations. Categories include Harassment, Nudity / Explicit Behavior, Spam, Threats, and Scams. Reports are routed to our administrative moderation review queue.</li>
+            <li><strong>Voice chat:</strong> Voice calls have the same Skip, Block and Report controls. Audio is not monitored automatically, so if someone is abusive, skip or block right away. As with video, the other person’s device may see basic network information such as your IP address.</li>
           </ul>
 
           <h2>6. What to Do If You Experience Extortion or Sextortion</h2>
