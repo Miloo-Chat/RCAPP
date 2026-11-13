@@ -72,7 +72,7 @@ export default function PrivacyVideoChat({ theme, onToggleTheme }) {
         Modern video chat platforms like Miloo utilize WebRTC (Web Real-Time Communication) to deliver low-latency audio and video directly between web browsers.
       </p>
       <p>
-        Under WebRTC, media packets travel directly between you and your partner peer-to-peer using encrypted DTLS/SRTP protocols. Miloo’s central signaling server brokers the initial handshake and never records, stores, or inspects your video stream. For maximum IP address confidentiality on communal Wi-Fi or dorm networks, using a reputable VPN or privacy-focused browser provides an extra layer of routing obfuscation. Review our <Link to="/faq">FAQ</Link> for detailed technical specifications on our WebRTC encryption architecture.
+        Under WebRTC, media packets normally travel directly between you and your partner peer-to-peer using encrypted DTLS/SRTP protocols. Miloo’s central signaling server brokers the initial handshake and never records, stores, or inspects your video stream. If a direct path is not possible, an encrypted relay only forwards packets it cannot decrypt. For maximum IP address confidentiality on communal Wi-Fi or dorm networks, using a reputable VPN or privacy-focused browser provides an extra layer of routing obfuscation. Review our <Link to="/faq">FAQ</Link> for detailed technical specifications on our WebRTC encryption architecture.
       </p>
 
       <h2 id="audio-hygiene">3. Audio Hygiene & Microphone Management</h2>

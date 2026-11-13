@@ -24,7 +24,7 @@ const FAQ_DATA = [
   },
   {
     q: 'Does Miloo record, intercept, or store my video and audio calls?',
-    a: 'No. Miloo never records, monitors, intercepts, or stores your live video or audio conversations. All media streams travel directly between you and your matched partner using peer-to-peer WebRTC connections protected by industry-standard DTLS (Datagram Transport Layer Security) and SRTP (Secure Real-time Transport Protocol) encryption. Our central signaling servers merely broker the initial connection handshake and never touch your decrypted video or microphone data.'
+    a: 'No. Miloo never records, monitors, intercepts, or stores your live video or audio conversations. Media streams normally travel directly between you and your matched partner using peer-to-peer WebRTC connections protected by industry-standard DTLS (Datagram Transport Layer Security) and SRTP (Secure Real-time Transport Protocol) encryption. Our central signaling servers merely broker the initial connection handshake and never touch your decrypted video or microphone data. If a direct connection is not possible, an encrypted relay only forwards packets and cannot decrypt them.'
   },
   {
     q: 'Can another user record my video feed or take screenshots?',
