@@ -121,8 +121,8 @@ export default function Home({
       }}
     >
       <SEOHead
-        title="Miloo — Meet a real stranger. Instant, anonymous, no algorithm."
-        description="Instant anonymous connection with random real strangers. Every chat is with a real person. No signup, no profiles, no algorithm. Peaceful watercolor canvas with real-time video and text chat."
+        title="Miloo – Free Random Video & Voice Chat | Omegle Alternative"
+        description="Talk to real people instantly on Miloo. Free random video, voice and text chat with no login. Anonymous, peer-to-peer and strictly 18+."
         canonicalUrl="https://miloo.chat/"
         schemaJson={schemaJson}
       />
