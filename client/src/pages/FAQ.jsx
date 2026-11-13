@@ -35,7 +35,11 @@ const FAQ_DATA = [
     a: 'Clicking the "Skip" button (or pressing the Escape key on your physical keyboard) immediately and cleanly tears down your active WebRTC peer connection. The server instantly detaches you from your previous partner and enters you into the matchmaking queue to pair with a new stranger. Skipping is instantaneous, and all active conversation history is completely wiped from local browser memory the moment you disconnect.'
   },
   {
-    q: 'How does the "Block User" feature work?',
+    q: 'Is voice chat moderated, and what can the other person see?',
+    a: 'Short answer: voice chat has Report and Block, but your audio is not monitored automatically. Miloo does not record voice calls and does not run automatic moderation on audio, so the Report and Block buttons on the voice screen are your main protection. If someone is abusive, tap Skip, Block, or Report right away. Voice calls are peer-to-peer like video calls, so the other person’s device may be able to see basic network information such as your IP address. Voice chat is for adults aged 18 and over only.',
+  },
+  {
+  q: 'How does the "Block User" feature work?',
     a: 'When you click "Block User" during or immediately following a conversation, Miloo severs the connection and places that user’s ephemeral session ID into your local browser blacklist. Our matchmaking engine cross-references this blacklist to ensure you are never paired with that individual again during your active browser session, giving you absolute control over your conversational environment.'
   },
   {
@@ -60,7 +64,7 @@ const FAQ_DATA = [
   },
   {
     q: 'What permissions does Miloo request from my browser, and can I use text only?',
-    a: 'If you select Text Chat mode, Miloo requests zero hardware permissions from your device. If you select Video Chat mode, your browser will prompt you for permission to access your Camera and Microphone. These permissions are strictly utilized client-side by WebRTC to transmit real-time video frames and audio packets to your peer. You can revoke permissions at any time via your browser settings.'
+    a: 'If you select Text Chat mode, Miloo requests zero hardware permissions from your device. If you select Video Chat mode, your browser will prompt you for permission to access your Camera and Microphone. If you select Voice Chat mode, your browser will ask for Microphone access only; no camera is used. These permissions are strictly utilized client-side by WebRTC to transmit real-time video frames and audio packets to your peer. You can revoke permissions at any time via your browser settings.'
   },
   {
     q: 'What should I do if my camera or microphone fails to connect or shows a black screen?',
