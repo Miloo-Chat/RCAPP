@@ -1155,7 +1155,7 @@ export default function ChatRoom({
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            {status !== 'banned' && (
+            {status !== 'banned' && !isVoice && (
               <button
                 type="button"
                 onClick={() => setReportModalOpen(true)}
