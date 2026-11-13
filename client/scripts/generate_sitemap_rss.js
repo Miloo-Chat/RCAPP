@@ -110,6 +110,15 @@ const BLOG_POSTS = [
     isRisky: false,
   },
   {
+    url: '/blog/voice-chat-with-strangers',
+    title: 'Voice Chat with Strangers: How to Stay Safe and Have Better Conversations',
+    description: 'How to use free random voice chat safely: what the other person can see, how to skip, block and report, and how to keep conversations friendly. 18+ only.',
+    pubDate: 'Fri, 13 Nov 2026 10:00:00 GMT',
+    lastmod: '2026-11-13',
+    priority: '0.7',
+    isRisky: false,
+  },
+  {
     url: '/blog/stay-safe-talking-to-strangers-online',
     title: 'How to Stay Safe Talking to Strangers Online: The Complete Modern Guide',
     description: 'A comprehensive, actionable guide to protecting your identity, privacy, and peace of mind when chatting with strangers online.',

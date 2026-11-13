@@ -27,6 +27,7 @@ export const INDEXABLE_CORE_URLS = [
   'https://miloo.chat/community-guidelines',
   'https://miloo.chat/cookie-policy',
   'https://miloo.chat/blog',
+  'https://miloo.chat/blog/voice-chat-with-strangers',
   'https://miloo.chat/blog/stay-safe-talking-to-strangers-online',
   'https://miloo.chat/blog/how-to-spot-scams-on-chat-sites',
   'https://miloo.chat/blog/protecting-privacy-in-video-chat',

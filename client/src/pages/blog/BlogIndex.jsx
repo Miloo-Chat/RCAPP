@@ -86,6 +86,14 @@ const ALL_ARTICLES = [
     category: 'Platform Trust',
   },
   {
+    slug: 'voice-chat-with-strangers',
+    title: 'Voice Chat with Strangers: How to Stay Safe and Have Better Conversations',
+    desc: 'How to use free random voice chat safely: what the other person can see, how to skip, block and report, and how to keep conversations friendly. 18+ only.',
+    date: 'Nov 13, 2026',
+    readTime: '5 min read',
+    category: 'Product Guide',
+  },
+  {
     slug: 'stay-safe-talking-to-strangers-online',
     title: 'How to Stay Safe Talking to Strangers Online: The Complete Modern Guide',
     desc: 'Actionable strategies to protect your digital identity, avoid social engineering traps, and maintain healthy boundaries during spontaneous online conversations.',

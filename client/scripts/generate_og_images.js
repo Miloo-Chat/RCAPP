@@ -92,6 +92,12 @@ const PAGES = [
     badge: 'Editorial & Research',
   },
   {
+    slug: 'blog-voice-chat-with-strangers',
+    title: 'Voice Chat with Strangers',
+    subtitle: 'Stay safe, skip freely, and talk better.',
+    badge: 'Voice Chat Guide',
+  },
+  {
     slug: 'blog-stay-safe-talking-to-strangers-online',
     title: 'How to Stay Safe Talking to Strangers Online',
     subtitle: 'Protect your identity, set boundaries, and avoid manipulation.',

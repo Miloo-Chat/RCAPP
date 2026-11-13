@@ -31,6 +31,7 @@ import PublicWifiVideoChat from './pages/blog/PublicWifiVideoChat'
 import VideoCallEtiquette from './pages/blog/VideoCallEtiquette'
 import WhyAnonymityMatters from './pages/blog/WhyAnonymityMatters'
 import PracticeLanguageStrangers from './pages/blog/PracticeLanguageStrangers'
+import VoiceChatWithStrangers from './pages/blog/VoiceChatWithStrangers'
 import NotFound from './pages/NotFound'
 import AdSenseScript from './components/AdSenseScript'
 import CookieBanner from './components/CookieBanner'
@@ -213,6 +214,10 @@ export function AppRoutes() {
         <Route
           path="/blog"
           element={<BlogIndex theme={theme} onToggleTheme={toggleTheme} />}
+        />
+        <Route
+          path="/blog/voice-chat-with-strangers"
+          element={<VoiceChatWithStrangers theme={theme} onToggleTheme={toggleTheme} />}
         />
         <Route
           path="/blog/stay-safe-talking-to-strangers-online"

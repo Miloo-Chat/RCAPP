@@ -296,6 +296,17 @@ const ROUTES_META = {
     canonical: 'https://miloo.chat/blog',
     schema: makePageSchema('Blog', 'https://miloo.chat/blog')
   },
+  '/blog/voice-chat-with-strangers': {
+    title: 'Voice Chat with Strangers: Stay Safe and Talk Better — Miloo Blog',
+    description: 'How to use free random voice chat safely: what the other person can see, how to skip, block and report, and how to keep conversations friendly. 18+ only.',
+    canonical: 'https://miloo.chat/blog/voice-chat-with-strangers',
+    schema: makeArticleSchema(
+      'Voice Chat with Strangers: Stay Safe and Talk Better',
+      'How to use free random voice chat safely: what the other person can see, how to skip, block and report, and how to keep conversations friendly. 18+ only.',
+      'https://miloo.chat/blog/voice-chat-with-strangers',
+      '2026-11-13'
+    )
+  },
   '/blog/stay-safe-talking-to-strangers-online': {
     title: 'How to Stay Safe Talking to Strangers Online — Miloo Blog',
     description: 'Practical ways to protect your personal identity, identify manipulation, set firm boundaries, and stay safe when chatting with strangers on video and text.',
