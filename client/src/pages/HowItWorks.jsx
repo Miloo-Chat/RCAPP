@@ -8,13 +8,13 @@ export default function HowItWorks({ theme, onToggleTheme }) {
   const schemaJson = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
-    name: 'How Miloo Anonymous Random Video and Text Chat Works',
-    description: 'Learn how Miloo securely connects users for anonymous random video and text chats using WebRTC technology without requiring an account.',
+    name: 'How Miloo Anonymous Random Video, Voice and Text Chat Works',
+    description: 'Learn how Miloo securely connects users for anonymous random video, voice and text chats using WebRTC technology without requiring an account.',
     step: [
       {
         '@type': 'HowToStep',
         name: 'Select your conversation mode',
-        text: 'Choose between Video Chat (camera and microphone) or Text Chat (instant messaging).'
+        text: 'Choose Video Chat (camera and microphone), Voice Chat (microphone only), or Text Chat (instant messaging).'
       },
       {
         '@type': 'HowToStep',
@@ -37,7 +37,7 @@ export default function HowItWorks({ theme, onToggleTheme }) {
   return (
     <div className="page page-enter" style={{ background: 'var(--bg-0)' }}>
       <SEOHead
-        title="How It Works — Miloo Anonymous Video & Text Chat"
+        title="How It Works — Miloo Anonymous Video, Voice & Text Chat"
         description="Discover how Miloo works: anonymous WebRTC chat matching, camera permissions, instant skips, and safety reports. No account or sign-up needed."
         canonicalUrl="https://miloo.chat/how-it-works"
         schemaJson={schemaJson}
@@ -95,7 +95,7 @@ export default function HowItWorks({ theme, onToggleTheme }) {
             Traditional social applications rely heavily on centralized user directories, persistent profile databases, and contact graphs. Miloo deliberately rejects this paradigm. When you arrive on Miloo, you enter as an anonymous visitor identified solely by an ephemeral, random session token generated inside your browser.
           </p>
           <p>
-            When you tap <strong>Text Chat</strong> or <strong>Video Chat</strong>, your client connects to our lightweight signaling gateway over secure WebSockets (WSS). The signaling server checks the waiting pool for an available partner who selected the same communication format. As soon as a compatible peer is identified, the server facilitates an initial handshake—transmitting Session Description Protocol (SDP) offers and ICE candidates—and then steps out of the media pathway.
+            When you tap <strong>Text Chat</strong>, <strong>Voice Chat</strong> or <strong>Video Chat</strong>, your client connects to our lightweight signaling gateway over secure WebSockets (WSS). The signaling server checks the waiting pool for an available partner who selected the same communication format. As soon as a compatible peer is identified, the server facilitates an initial handshake—transmitting Session Description Protocol (SDP) offers and ICE candidates—and then steps out of the media pathway.
           </p>
 
           <h2>2. Direct Peer-to-Peer WebRTC Streaming</h2>
@@ -177,7 +177,7 @@ export default function HowItWorks({ theme, onToggleTheme }) {
             Experience it for yourself
           </h3>
           <p style={{ margin: 0, color: 'var(--text-2)', maxWidth: 460, fontSize: '15px' }}>
-            Jump into a text or video conversation right now. Free, private, and no signup needed.
+            Jump into a text, voice or video conversation right now. Free, private, and no signup needed.
           </p>
           <Link
             to="/"

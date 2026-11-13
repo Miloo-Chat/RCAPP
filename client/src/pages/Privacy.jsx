@@ -92,11 +92,12 @@ export default function Privacy({ theme, onToggleTheme }) {
 
           <h2>4. WebRTC Audio & Video Streams: End-to-End Peer-to-Peer</h2>
           <p>
-            Miloo’s video chat functions via WebRTC (Web Real-Time Communication). When two users are matched:
+            Miloo’s video and voice chat function via WebRTC (Web Real-Time Communication). When two users are matched:
           </p>
           <ul>
             <li>Media packets (audio and video) travel directly between the two users’ web browsers using DTLS (Datagram Transport Layer Security) and SRTP (Secure Real-Time Transport Protocol) encryption.</li>
             <li><strong>Miloo servers never receive, record, mirror, decode, or store your live audio or video streams.</strong></li>
+            <li>In Voice Chat mode your browser asks for microphone access only. No camera is used.</li>
             <li>In the rare event that a direct peer-to-peer connection cannot be established due to symmetric NAT firewalls, an encrypted TURN relay transmits packets without decrypting or saving content.</li>
           </ul>
 
@@ -126,7 +127,7 @@ export default function Privacy({ theme, onToggleTheme }) {
           <ul>
             <li>Third-party ad vendors (such as Google AdSense) may use cookies to serve ads based on visits to this and other websites.</li>
             <li>Users can opt out of personalized ads via <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Google Ads Settings</a>.</li>
-            <li><strong>Strict Guarantee:</strong> Advertisements will never be injected into active text or video chat rooms.</li>
+            <li><strong>Strict Guarantee:</strong> Advertisements will never be injected into active text, voice or video chat rooms.</li>
           </ul>
 
           <h2>7. Bot Prevention & Cloudflare Turnstile</h2>
@@ -144,7 +145,7 @@ export default function Privacy({ theme, onToggleTheme }) {
 
           <h2>9. Data Retention & Deletion Requests</h2>
           <p>
-            Because Miloo does not maintain persistent user accounts, chat logs, or video recordings, there is generally no personally identifiable record to delete once a chat session terminates. Text messages exist only in browser memory and on the peer’s screen during the active socket session and are wiped immediately upon disconnecting or skipping.
+            Because Miloo does not maintain persistent user accounts, chat logs, or video or voice recordings, there is generally no personally identifiable record to delete once a chat session terminates. Text messages exist only in browser memory and on the peer’s screen during the active socket session and are wiped immediately upon disconnecting or skipping.
           </p>
           <p>
             If you submitted an abuse report or contacted our support team via email, your correspondence is maintained in our support records for safety verification and legal audit compliance. Abuse reports (including reported message snippets) are kept for up to 30 days and then permanently purged. You have the right to request deletion of any support tickets by emailing <a href={`mailto:${SUPPORT_EMAIL}`} style={{ color: 'var(--accent)', textDecoration: 'underline' }}>{SUPPORT_EMAIL}</a>.
