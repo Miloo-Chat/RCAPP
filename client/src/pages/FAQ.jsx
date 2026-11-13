@@ -91,8 +91,8 @@ const FAQ_DATA = [
     a: 'Miloo enforces a strict zero-tolerance code of conduct. Nudity, sexually explicit acts, vulgar gestures, harassment, hate speech, racial slurs, threats of violence, cyberbullying, financial scamming, and commercial advertising are strictly banned. Users engaging in prohibited behavior are subject to immediate session termination, automated blacklisting, and permanent device/network bans.'
   },
   {
-    q: 'How much internet bandwidth and mobile data does video chat consume?',
-    a: 'Text chat consumes virtually zero data (a few kilobytes per minute). Video chat utilizes dynamic WebRTC bandwidth adaptation, typically consuming between 0.5 Mbps and 1.5 Mbps (roughly 250 MB to 600 MB per hour) depending on your resolution and network stability. For the smoothest video calling experience on mobile devices, we recommend connecting via high-speed Wi-Fi or 4G/5G mobile data.'
+    q: 'How much internet bandwidth and mobile data does video or voice chat consume?',
+    a: 'Text chat consumes virtually zero data (a few kilobytes per minute). Video chat utilizes dynamic WebRTC bandwidth adaptation, typically consuming between 0.5 Mbps and 1.5 Mbps (roughly 250 MB to 600 MB per hour) depending on your resolution and network stability. Voice chat uses far less data than video, typically around 15 to 30 MB per hour. For the smoothest calling experience on mobile devices, we recommend connecting via high-speed Wi-Fi or 4G/5G mobile data.'
   }
 ]
 
@@ -167,7 +167,7 @@ export default function FAQ({ theme, onToggleTheme }) {
               margin: 0,
             }}
           >
-            Find detailed answers to 22 common questions about using Miloo, peer-to-peer WebRTC privacy, reporting abusive behavior, camera troubleshooting, and our strict adult safety standards.
+            Find detailed answers to 22 common questions about using Miloo, peer-to-peer WebRTC privacy, reporting abusive behavior, camera and microphone troubleshooting, and our strict adult safety standards.
           </p>
         </header>
 
