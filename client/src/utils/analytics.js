@@ -15,6 +15,7 @@ export const ALLOWED_EVENTS = new Set([
   'page_view',
   'click_text_chat',
   'click_video_chat',
+  'click_voice_chat',
   'age_gate_result',
   'share_click',
   'chat_requested',

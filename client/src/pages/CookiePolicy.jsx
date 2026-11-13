@@ -124,7 +124,7 @@ export default function CookiePolicy({ theme, onToggleTheme }) {
               </ul>
             </li>
             <li>
-              <strong>Permitted Event Whitelist:</strong> Only five non-identifying interaction events are tracked: <code>page_view</code>, <code>click_text_chat</code>, <code>click_video_chat</code>, <code>age_gate_result</code>, and <code>share_click</code>. No message text, prompts, usernames, or IPs are collected.
+              <strong>Permitted Event Whitelist:</strong> Only six non-identifying interaction events are tracked: <code>page_view</code>, <code>click_text_chat</code>, <code>click_video_chat</code>, <code>click_voice_chat</code>, <code>age_gate_result</code>, and <code>share_click</code>. No message text, prompts, usernames, or IPs are collected.
             </li>
           </ul>
 
