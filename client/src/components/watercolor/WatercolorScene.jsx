@@ -121,7 +121,9 @@ export default function WatercolorScene({
     try {
       const verified = sessionStorage.getItem('miloo_turnstile_verified') === 'true'
       const token = sessionStorage.getItem('miloo_turnstile_token')
-      return verified && !!token
+      if (!(verified && !!token)) return false
+      const ts = Number(String(token).split(':')[0])
+      return !!ts && Date.now() - ts < 110 * 60 * 1000
     } catch {
       return false
     }

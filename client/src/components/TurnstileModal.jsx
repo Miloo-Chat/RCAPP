@@ -25,6 +25,87 @@ if (typeof window !== 'undefined') {
  * Verifies the token on the server with TURNSTILE_SECRET_KEY before allowing a chat session.
  * Fails closed on any error or blocked network.
  */
+// miloo-turnstile-prewarm
+// Runs the Turnstile check quietly in the background shortly after the page opens,
+// so the token is usually ready by the time the user presses a chat button.
+// If it cannot finish silently, nothing happens and the normal modal is used.
+function hasFreshVerification() {
+  try {
+    if (sessionStorage.getItem('miloo_turnstile_verified') !== 'true') return false
+    const token = sessionStorage.getItem('miloo_turnstile_token')
+    const ts = Number(String(token || '').split(':')[0])
+    return !!ts && Date.now() - ts < 110 * 60 * 1000
+  } catch (_) {
+    return false
+  }
+}
+
+let prewarmStarted = false
+
+function prewarmTurnstile() {
+  if (prewarmStarted || typeof window === 'undefined') return
+  if (hasFreshVerification()) return
+  if (navigator.webdriver || /bot|crawl|spider|lighthouse|headless/i.test(navigator.userAgent)) return
+  prewarmStarted = true
+  let tries = 0
+  const start = () => {
+    if (!window.turnstile) {
+      if (++tries > 100) return
+      setTimeout(start, 100)
+      return
+    }
+    const host = document.createElement('div')
+    host.id = 'miloo-turnstile-prewarm'
+    host.style.cssText = 'position:fixed;right:12px;bottom:12px;z-index:10000'
+    document.body.appendChild(host)
+    let widgetId = null
+    const cleanup = () => {
+      try { if (widgetId !== null) window.turnstile.remove(widgetId) } catch (_) {}
+      host.remove()
+    }
+    try {
+      widgetId = window.turnstile.render(host, {
+        sitekey: TURNSTILE_SITE_KEY,
+        appearance: 'interaction-only',
+        callback: async (token) => {
+          try {
+            const res = await fetch(`${SERVER_URL}/api/verify-turnstile`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ token }),
+            })
+            const data = await res.json()
+            if (res.ok && data.verified && data.verificationToken) {
+              sessionStorage.setItem('miloo_turnstile_verified', 'true')
+              sessionStorage.setItem('miloo_turnstile_token', data.verificationToken)
+            }
+          } catch (_) {
+            /* the normal modal is the fallback */
+          }
+          cleanup()
+        },
+        'error-callback': cleanup,
+        'timeout-callback': cleanup,
+      })
+    } catch (_) {
+      host.remove()
+    }
+  }
+  start()
+}
+
+if (typeof window !== 'undefined') {
+  const events = ['pointerdown', 'mousemove', 'touchstart', 'scroll', 'keydown']
+  let timer = null
+  const kick = () => {
+    events.forEach((e) => window.removeEventListener(e, kick))
+    if (timer) clearTimeout(timer)
+    prewarmTurnstile()
+  }
+  events.forEach((e) => window.addEventListener(e, kick, { once: true, passive: true }))
+  timer = setTimeout(kick, 2500)
+}
+
 export default function TurnstileModal({ isOpen, onSuccess, onCancel }) {
   const containerRef = useRef(null)
   const widgetIdRef = useRef(null)
