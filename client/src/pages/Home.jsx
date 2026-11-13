@@ -16,6 +16,7 @@
 import { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
+import LiveCount from '../components/LiveCount'
 import AgeGateModal from '../components/AgeGateModal'
 import { useAtmosphere } from '../context/AtmosphereContext'
 import WatercolorLogo from '../components/watercolor/WatercolorLogo'
@@ -276,6 +277,7 @@ export default function Home({
             >
               No algorithm. No signup. Every chat is with a real person.
             </p>
+            <LiveCount color={subTextColor} />
           </div>
 
           {/* Hero Artwork & Centered Main Buttons (Unchanged) */}
