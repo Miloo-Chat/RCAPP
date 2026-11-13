@@ -17,6 +17,7 @@ import { playBirdChirp, playWaterDrop } from './soundEngine'
 export default function ChatButtons({
   onStartText,
   onStartVideo,
+  onStartVoice,
   atmosphere,
 }) {
   const isNight = atmosphere?.isNight ?? false
@@ -50,6 +51,15 @@ export default function ChatButtons({
     }, 280)
   }, [onStartVideo])
 
+  const handleClickVoice = useCallback(() => {
+    setClickedBtn('voice')
+    playWaterDrop()
+    setTimeout(() => {
+      onStartVoice?.()
+      setClickedBtn(null)
+    }, 280)
+  }, [onStartVoice])
+
   // ── Palette Tokens per Theme ──
   // 1) Text Chat Button: SOLID fill with theme's sun color, 2.5px solid border, ink text
   const textBtnBg = isNight
@@ -82,6 +92,7 @@ export default function ChatButtons({
         alignItems: 'flex-start',
         justifyContent: 'center',
         gap: '20px',
+        flexWrap: 'wrap',
         width: '100%',
         margin: '0 auto',
         zIndex: 25,
@@ -306,6 +317,115 @@ export default function ChatButtons({
           }}
         >
           see a face
+        </div>
+      </div>
+
+      {/* ── BUTTON 3: VOICE CHAT ── */}
+      <div
+        className="btn-column-wrapper"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <div className="btn-perch-wrapper" style={{ position: 'relative' }}>
+          <div
+            className={`btn-perched-bird ${hoveredBtn === 'voice' ? 'visible' : ''} ${clickedBtn === 'voice' ? 'flying' : ''}`}
+            aria-hidden="true"
+          >
+            <svg
+              width="30"
+              height="28"
+              viewBox="0 0 28 26"
+              fill={videoBtnBorder}
+              filter="url(#ink-nib-tooth)"
+            >
+              <path d="M 6 18 C 3 12 5 6 11 5 C 14 4 18 6 17 10 C 16 13 13 16 9 18 Z" />
+              <circle cx="13" cy="6.5" r="3.2" />
+              <path d="M 15 5.5 L 21 6.5 L 15 8 Z" />
+              <path d="M 5 17 C 3 20 2 23 1 25 C 3 24 5 21 7 18 Z" />
+              <path
+                d="M 7 19 L 6 24 M 11 19 L 10 24"
+                stroke={videoBtnBorder}
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
+              <circle cx="14" cy="6" r="0.6" fill={isNight ? '#0B1226' : '#ffffff'} />
+            </svg>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleClickVoice}
+            onMouseEnter={() => handleMouseEnter('voice')}
+            onMouseLeave={() => handleMouseLeave('voice')}
+            aria-label="Start Voice Chat with a real stranger"
+            className="miloo-chat-btn voice-chat-btn"
+            style={{
+              position: 'relative',
+              minWidth: '260px',
+              height: '72px',
+              padding: '0 32px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '14px',
+              backgroundColor: 'transparent',
+              color: isNight ? '#F3EFE6' : '#1A1A1A',
+              fontFamily: 'var(--font-serif)',
+              fontSize: '22px',
+              fontWeight: 500,
+              letterSpacing: '0.01em',
+              cursor: 'pointer',
+              border: `2.5px solid ${videoBtnBorder}`,
+              borderRadius: '36px',
+              outline: 'none',
+              boxShadow: `5px 5px 0 ${shadowColor}`,
+              userSelect: 'none',
+            }}
+          >
+            <span
+              className="btn-ink-icon"
+              style={{
+                display: 'inline-flex',
+                color: 'inherit',
+                width: '26px',
+                height: '26px',
+              }}
+            >
+              <svg
+                width="26"
+                height="26"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="9" y="2" width="6" height="12" rx="3" />
+                <path d="M5 11a7 7 0 0 0 14 0" />
+                <path d="M12 18v4" />
+              </svg>
+            </span>
+
+            <span className="btn-label-text">Voice chat</span>
+          </button>
+        </div>
+
+        <div
+          className="btn-handwritten-caption"
+          style={{
+            fontFamily: "var(--font-hand), 'Caveat', cursive, sans-serif",
+            fontSize: '18px',
+            color: captionColor,
+            marginTop: '8px',
+            textAlign: 'center',
+            letterSpacing: '0.02em',
+          }}
+        >
+          just your voice
         </div>
       </div>
 

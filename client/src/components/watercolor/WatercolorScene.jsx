@@ -29,6 +29,7 @@ export default function WatercolorScene({
   timeEngine,
   onStartText,
   onStartVideo,
+  onStartVoice,
   isAgeVerified,
   onRequestAgeModal,
 }) {
@@ -166,11 +167,20 @@ export default function WatercolorScene({
     }
   }, [isAgeVerified, onRequestAgeModal, startConnectFlow])
 
+  const handleInitiateVoice = useCallback(() => {
+    if (isAgeVerified?.()) {
+      startConnectFlow('voice')
+    } else {
+      onRequestAgeModal?.('voice', () => startConnectFlow('voice'))
+    }
+  }, [isAgeVerified, onRequestAgeModal, startConnectFlow])
+
   const handleConfirmConnect = useCallback((mode) => {
     setConnectingMode(null)
     if (mode === 'text') onStartText?.()
+    else if (mode === 'voice') onStartVoice?.()
     else onStartVideo?.()
-  }, [onStartText, onStartVideo])
+  }, [onStartText, onStartVideo, onStartVoice])
 
   // ── 9 Ink Birds Exactly Matching Reference Painting Arrangement ──
   // Sun is centered at cx = 720, cy = 225, r = 210 (sun spans x: 510 to 930)
@@ -336,6 +346,7 @@ export default function WatercolorScene({
         <ChatButtons
           onStartText={handleInitiateText}
           onStartVideo={handleInitiateVideo}
+          onStartVoice={handleInitiateVoice}
           atmosphere={atmosphere}
         />
         <GoldenHours isNight={atmosphere.isNight} />

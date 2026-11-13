@@ -36,6 +36,8 @@ const STRIKE_LIMIT = 3
 // TURN is required for mobile data / NAT / college-WiFi style networks
 // where direct peer-to-peer connections get blocked.
 // Fetches from the backend /api/ice-servers endpoint (or falls back to public STUN).
+import VoiceScreen from '../components/VoiceScreen'
+
 async function fetchIceServers() {
   try {
     const res = await fetch(`${SERVER}/api/ice-servers`, {
@@ -343,6 +345,21 @@ function trackEvent(name, params = {}) {
   }
 }
 
+// Voice mode asks for the microphone only, with the settings that matter for call quality.
+function mediaConstraintsFor(mode) {
+  if (mode === 'voice') {
+    return {
+      video: false,
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true,
+      },
+    }
+  }
+  return { video: true, audio: true }
+}
+
 function nowTime() {
   return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }
@@ -398,8 +415,9 @@ export default function ChatRoom({
   onExit,
 }) {
   const isVideo = chatMode === 'video'
+  const isVoice = chatMode === 'voice'
 
-  const [status, setStatus] = useState(isVideo ? 'pre_permission' : 'text_connecting')
+  const [status, setStatus] = useState((isVideo || isVoice) ? 'pre_permission' : 'text_connecting')
   const [matchSeconds, setMatchSeconds] = useState(0)
   const [iceState, setIceState] = useState('new')
   const [isStrangerTyping, setIsStrangerTyping] = useState(false)
@@ -412,6 +430,11 @@ export default function ChatRoom({
 
   const [waitingTimedOut, setWaitingTimedOut] = useState(false)
   const [pushOptedIn, setPushOptedIn] = useState(false)
+  const [isMuted, setIsMuted] = useState(false)
+  const [autoCall, setAutoCall] = useState(() => {
+    try { return localStorage.getItem('miloo_voice_auto') === '1' } catch { return false }
+  })
+  const autoCallRef = useRef(autoCall)
 
   const socketRef = useRef(null)
   const pcRef = useRef(null)
@@ -626,7 +649,7 @@ export default function ChatRoom({
       if (endedTracks.length > 0) {
         console.log('[WebRTC] restarting ended tracks, count:', endedTracks.length)
         try {
-          const freshStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+          const freshStream = await navigator.mediaDevices.getUserMedia(mediaConstraintsFor(chatModeRef.current))
           localStreamRef.current.getTracks().forEach(t => t.stop())
           localStreamRef.current = freshStream
           setLocalStreamReady(false)
@@ -779,12 +802,12 @@ export default function ChatRoom({
       partnerIdRef.current = pid
       if (chatModeRef.current === 'text') setStatus('text_chat')
 
-      if (chatModeRef.current === 'video' && pid && typeof pid === 'string') {
+      if ((chatModeRef.current === 'video' || chatModeRef.current === 'voice') && pid && typeof pid === 'string') {
         // If localStream was lost (e.g. after skip), re-request camera before WebRTC
         const startWebRTC = async () => {
           try {
             if (!localStreamRef.current) {
-              const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+              const stream = await navigator.mediaDevices.getUserMedia(mediaConstraintsFor(chatModeRef.current))
               localStreamRef.current = stream
               setLocalStreamReady(true)
             }
@@ -817,8 +840,16 @@ export default function ChatRoom({
       }
       if (autoNextTimerRef.current) clearTimeout(autoNextTimerRef.current)
       autoNextTimerRef.current = setTimeout(() => {
+        if (chatModeRef.current === 'voice' && !autoCallRef.current) {
+          setStatus('pre_permission')
+          return
+        }
         setStatus('waiting')
         setMatchSeconds(0)
+        if (chatModeRef.current === 'voice') {
+          setPartnerId(null)
+          partnerIdRef.current = null
+        }
         if (socketRef.current) {
           const turnstileToken = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('miloo_turnstile_token') || '' : ''
           socketRef.current.emit('find_match', {
@@ -892,7 +923,7 @@ export default function ChatRoom({
     trackEvent('camera_permission_requested')
     try {
       setStatus('connecting')
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      const stream = await navigator.mediaDevices.getUserMedia(mediaConstraintsFor(chatModeRef.current))
       localStreamRef.current = stream
       setLocalStreamReady(true)
       setStatus('waiting')
@@ -952,6 +983,10 @@ export default function ChatRoom({
       } catch (_) {}
     }
     teardownWebRTC(false)
+    if (chatModeRef.current === 'voice') {
+      setPartnerId(null)
+      partnerIdRef.current = null
+    }
     setStatus('waiting')
     setIsStrangerTyping(false)
     setMatchSeconds(0)
@@ -985,6 +1020,63 @@ export default function ChatRoom({
     }
     findNext()
   }, [findNext])
+
+  // ── Voice mode ──
+  useEffect(() => {
+    autoCallRef.current = autoCall
+    try { localStorage.setItem('miloo_voice_auto', autoCall ? '1' : '0') } catch { /* no-op */ }
+  }, [autoCall])
+
+  // Apply the mute toggle to the live microphone track
+  useEffect(() => {
+    if (!isVoice) return
+    const s = localStreamRef.current
+    if (s) s.getAudioTracks().forEach((t) => { t.enabled = !isMuted })
+  }, [isMuted, status, localStreamReady, isVoice])
+
+  useEffect(() => {
+    if (status !== 'connected') setIsMuted(false)
+  }, [status])
+
+  // Self-heal: a dead or stuck audio link should not trap the user
+  useEffect(() => {
+    if (!isVoice || status !== 'connected') return undefined
+    if (iceState !== 'failed' && iceState !== 'disconnected') return undefined
+    const t = setTimeout(() => findNext(), iceState === 'failed' ? 3000 : 10000)
+    return () => clearTimeout(t)
+  }, [isVoice, status, iceState, findNext])
+
+  useEffect(() => {
+    if (!isVoice || status !== 'waiting' || !partnerId) return undefined
+    const t = setTimeout(() => findNext(), 15000)
+    return () => clearTimeout(t)
+  }, [isVoice, status, partnerId, findNext])
+
+  const voiceCall = useCallback(() => {
+    if (autoNextTimerRef.current) clearTimeout(autoNextTimerRef.current)
+    trackEvent('voice_call_clicked')
+    requestCamera()
+  }, [requestCamera])
+
+  const voiceEnd = useCallback(() => {
+    if (autoNextTimerRef.current) clearTimeout(autoNextTimerRef.current)
+    if (chatStartTimeRef.current) {
+      const durationSec = Math.round((Date.now() - chatStartTimeRef.current) / 1000)
+      chatStartTimeRef.current = null
+      trackEvent('chat_ended', { durationSec })
+    }
+    try {
+      if (socketRef.current) socketRef.current.emit('leave_chat')
+    } catch { /* no-op */ }
+    teardownWebRTC(true)
+    setPartnerId(null)
+    partnerIdRef.current = null
+    setMessages([])
+    setIsStrangerTyping(false)
+    setMatchSeconds(0)
+    setWaitingTimedOut(false)
+    setStatus('pre_permission')
+  }, [teardownWebRTC])
 
   // ── Render ──
   return (
@@ -1165,15 +1257,37 @@ export default function ChatRoom({
             minHeight: 0,
           }}
         >
-          {(status === 'pre_permission' || status === 'connecting') && (
+          {isVoice && ['pre_permission', 'connecting', 'cam_error', 'waiting', 'connected', 'partner_left'].includes(status) && (
+            <VoiceScreen
+              status={status}
+              hasPartner={!!partnerId}
+              matchSeconds={matchSeconds}
+              iceState={iceState}
+              remoteStream={remoteStreamVersion > 0 ? remoteStreamRef.current : null}
+              remoteStreamVersion={remoteStreamVersion}
+              messages={messages}
+              sendText={sendText}
+              scrollRef={msgScrollRef}
+              isStrangerTyping={isStrangerTyping}
+              isMuted={isMuted}
+              onToggleMute={() => setIsMuted((m) => !m)}
+              autoCall={autoCall}
+              onToggleAuto={() => setAutoCall((a) => !a)}
+              onCall={voiceCall}
+              onEnd={voiceEnd}
+              onSkip={findNext}
+              onReport={() => setReportModalOpen(true)}
+            />
+          )}
+          {!isVoice && (status === 'pre_permission' || status === 'connecting') && (
             <PrePermissionView
               onAllow={requestCamera}
               onExit={() => { trackEvent('pre_permission_exited'); onExit() }}
               disabled={status === 'connecting'}
             />
           )}
-          {status === 'cam_error' && <ErrorView title="Camera access denied" onRetry={requestCamera} onExit={() => { trackEvent('cam_error_exited'); onExit() }} />}
-          {(status === 'waiting' || status === 'text_connecting') && (
+          {!isVoice && status === 'cam_error' && <ErrorView title="Camera access denied" onRetry={requestCamera} onExit={() => { trackEvent('cam_error_exited'); onExit() }} />}
+          {!isVoice && (status === 'waiting' || status === 'text_connecting') && (
             <MatchingView
               onExit={onExit}
               matchSeconds={matchSeconds}
@@ -1182,7 +1296,7 @@ export default function ChatRoom({
               chatMode={chatMode}
             />
           )}
-          {(status === 'text_chat' || status === 'connected') && (
+          {!isVoice && (status === 'text_chat' || status === 'connected') && (
             <ChatView
               isVideo={isVideo}
               iceState={iceState}
@@ -1204,7 +1318,7 @@ export default function ChatRoom({
               }}
             />
           )}
-          {status === 'partner_left' && (
+          {!isVoice && status === 'partner_left' && (
             <PartnerLeftView
               onNext={findNext}
               onExit={onExit}

@@ -25,6 +25,7 @@ import SendBirdButton from '../components/SendBirdButton'
 export default function Home({
   onStartText,
   onStartVideo,
+  onStartVoice,
 }) {
   const { timeEngine, atmosphere, isNight, isDark: ctxIsDark } = useAtmosphere()
   const hour = timeEngine?.hour ?? 12
@@ -83,9 +84,10 @@ export default function Home({
       setPendingAction(null)
     } else {
       if (pendingMode === 'text') onStartText?.()
+      else if (pendingMode === 'voice') onStartVoice?.()
       else onStartVideo?.()
     }
-  }, [pendingAction, pendingMode, onStartText, onStartVideo])
+  }, [pendingAction, pendingMode, onStartText, onStartVideo, onStartVoice])
 
   const schemaJson = {
     '@context': 'https://schema.org',
@@ -283,6 +285,7 @@ export default function Home({
             timeEngine={timeEngine}
             onStartText={onStartText}
             onStartVideo={onStartVideo}
+            onStartVoice={onStartVoice}
             isAgeVerified={isAgeVerified}
             onRequestAgeModal={handleRequestAgeModal}
           />

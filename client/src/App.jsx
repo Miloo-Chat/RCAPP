@@ -53,7 +53,7 @@ export function AppRoutes() {
   const [chatMode, setChatMode] = useState(() => {
     if (typeof window !== 'undefined') {
       const modeParam = new URLSearchParams(window.location.search).get('mode')
-      if (modeParam === 'text' || modeParam === 'video') return modeParam
+      if (modeParam === 'text' || modeParam === 'video' || modeParam === 'voice') return modeParam
     }
     return 'video'
   })
@@ -61,7 +61,7 @@ export function AppRoutes() {
 
   useEffect(() => {
     const modeParam = new URLSearchParams(location.search).get('mode')
-    if (modeParam === 'text' || modeParam === 'video') {
+    if (modeParam === 'text' || modeParam === 'video' || modeParam === 'voice') {
       setChatMode(modeParam)
     }
   }, [location.search])
@@ -105,6 +105,11 @@ export function AppRoutes() {
     goToChat({ mood: 'any', intent: 'random', safeMode: false, chatMode: 'video' })
   }
 
+  const startVoiceChat = () => {
+    trackEvent('click_voice_chat')
+    goToChat({ mood: 'any', intent: 'random', safeMode: false, chatMode: 'voice' })
+  }
+
   const goToChat = ({ mood, intent, safeMode: safe, chatMode: mode }) => {
     setSelectedMood(mood || 'any')
     setSelectedIntent(intent || 'random')
@@ -146,6 +151,7 @@ export function AppRoutes() {
             <Home
               onStartText={startTextChat}
               onStartVideo={startVideoChat}
+              onStartVoice={startVoiceChat}
               onTerms={() => navigate('/terms')}
               theme={theme}
               onToggleTheme={toggleTheme}

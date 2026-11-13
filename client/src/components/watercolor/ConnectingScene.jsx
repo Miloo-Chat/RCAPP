@@ -246,7 +246,7 @@ export default function ConnectingScene({
                 margin: 0,
               }}
             >
-              Matching you with a real stranger for {mode === 'video' ? 'video' : 'text'} chat.
+              Matching you with a real stranger for {mode === 'video' ? 'video' : mode === 'voice' ? 'voice' : 'text'} chat.
             </p>
           </>
         )}
@@ -321,7 +321,7 @@ export default function ConnectingScene({
                   transition: 'transform 0.15s ease, filter 0.15s ease',
                 }}
               >
-                Enter {mode === 'video' ? 'Video' : 'Text'} Chat →
+                Enter {mode === 'video' ? 'Video' : mode === 'voice' ? 'Voice' : 'Text'} Chat →
               </button>
 
               {/* Skip / Next stranger button */}
