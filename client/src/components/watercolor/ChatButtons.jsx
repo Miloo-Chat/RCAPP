@@ -507,6 +507,33 @@ export default function ChatButtons({
           }
         }
 
+        /* voice-fold-fix: keep all 3 buttons visible at first glance */
+        @media (min-width: 641px) and (max-width: 900px) {
+          .miloo-main-action-buttons { gap: 14px !important; }
+          .miloo-chat-btn {
+            min-width: 200px !important;
+            padding: 0 20px !important;
+            font-size: 20px !important;
+            gap: 10px !important;
+          }
+        }
+        @media (max-width: 640px) {
+          .miloo-main-action-buttons { gap: 12px !important; }
+          .miloo-chat-btn {
+            height: 56px !important;
+            font-size: 19px !important;
+          }
+          .btn-handwritten-caption { display: none !important; }
+        }
+        @media (max-width: 640px) and (max-height: 700px) {
+          .miloo-main-action-buttons { gap: 10px !important; }
+          .miloo-chat-btn { height: 52px !important; font-size: 18px !important; }
+        }
+        @media (min-width: 641px) and (max-height: 700px) {
+          .miloo-chat-btn { height: 62px !important; }
+          .btn-handwritten-caption { font-size: 16px !important; margin-top: 4px !important; }
+        }
+
         @media (prefers-reduced-motion: reduce) {
           .miloo-chat-btn, .btn-perched-bird {
             transition: none !important;
