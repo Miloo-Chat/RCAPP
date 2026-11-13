@@ -24,7 +24,7 @@ export default function HowItWorks({ theme, onToggleTheme }) {
       {
         '@type': 'HowToStep',
         name: 'Get matched through peer-to-peer WebRTC',
-        text: 'Our signaling server establishes a direct peer-to-peer encrypted connection with an available stranger.'
+        text: 'Our signaling server helps set up an encrypted peer-to-peer connection with an available stranger.'
       },
       {
         '@type': 'HowToStep',
@@ -100,15 +100,15 @@ export default function HowItWorks({ theme, onToggleTheme }) {
 
           <h2>2. Direct Peer-to-Peer WebRTC Streaming</h2>
           <p>
-            One of the biggest concerns users have with online video chat is whether their video feed is being intercepted or stored on remote servers. On Miloo, <strong>all video and audio streams travel directly between you and your chat partner via WebRTC (Web Real-Time Communication)</strong>.
+            One of the biggest concerns users have with online video chat is whether their video feed is being intercepted or stored on remote servers. On Miloo, <strong>video and audio streams normally travel directly between you and your chat partner via WebRTC (Web Real-Time Communication)</strong>. If a direct path is not possible, they pass through an encrypted relay that only forwards packets and cannot decode them.
           </p>
           <p>
             WebRTC uses industry-standard DTLS (Datagram Transport Layer Security) and SRTP (Secure Real-Time Transport Protocol) encryption. This ensures:
           </p>
           <ul>
             <li>Your camera and microphone streams are encrypted end-to-end between browsers.</li>
-            <li>Miloo’s central servers never receive, decode, inspect, or store your live video or voice.</li>
-            <li>Latency is kept minimal because packets travel directly across the nearest internet routing path between peers.</li>
+            <li>Miloo’s servers never decode, inspect, or store your live video or voice. If a relay is needed, it only forwards encrypted packets.</li>
+            <li>Latency is kept low because packets usually travel directly across the nearest internet routing path between peers.</li>
           </ul>
 
           <h2>3. Text Chat Mode</h2>
@@ -153,7 +153,7 @@ export default function HowItWorks({ theme, onToggleTheme }) {
               <strong>Zero Account Retention:</strong> No phone numbers, emails, passwords, or personal demographic tracking profiles are ever collected or retained. Once your session ends, the connection terminates with no permanent chat logs stored on our servers.
             </li>
             <li>
-              <strong>Direct WebRTC Media Pathways:</strong> Audio and video stream directly between browsers using encrypted DTLS/SRTP protocols. Media never routes through central recording or surveillance servers.
+              <strong>Direct WebRTC Media Pathways:</strong> Audio and video stream directly between browsers using encrypted DTLS/SRTP protocols. Media is never routed through recording or surveillance servers. If a direct path is not possible, an encrypted relay only forwards packets it cannot decrypt.
             </li>
             <li>
               <strong>Instant Abuse Enforcement:</strong> Every chat screen provides immediate one-tap reporting and blocking. Suspicious actors face immediate device fingerprint and IP suspensions to preserve community safety.

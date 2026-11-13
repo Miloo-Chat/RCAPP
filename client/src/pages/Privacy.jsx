@@ -96,7 +96,7 @@ export default function Privacy({ theme, onToggleTheme }) {
           </p>
           <ul>
             <li>Media packets (audio and video) travel directly between the two users’ web browsers using DTLS (Datagram Transport Layer Security) and SRTP (Secure Real-Time Transport Protocol) encryption.</li>
-            <li><strong>Miloo servers never receive, record, mirror, decode, or store your live audio or video streams.</strong></li>
+            <li><strong>Miloo servers never decode, record, mirror, or store your live audio or video streams.</strong></li>
             <li>In Voice Chat mode your browser asks for microphone access only. No camera is used.</li>
             <li>In the rare event that a direct peer-to-peer connection cannot be established due to symmetric NAT firewalls, an encrypted TURN relay transmits packets without decrypting or saving content.</li>
           </ul>
