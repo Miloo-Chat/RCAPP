@@ -415,7 +415,7 @@ export default function BlogIndex({ theme, onToggleTheme }) {
             Editorial Mission & Community Research
           </h2>
           <p style={{ color: 'var(--text-2)', lineHeight: 1.7, margin: '0 0 16px' }}>
-            The Miloo editorial desk publishes independent, practical resources focused on digital privacy, human connection, and harm reduction in unmoderated peer-to-peer web environments. As online communication evolves, maintaining personal autonomy requires both technical awareness and intuitive interpersonal boundaries.
+            The Miloo editorial desk publishes independent, practical resources focused on digital privacy, human connection, and harm reduction in live peer-to-peer web environments. As online communication evolves, maintaining personal autonomy requires both technical awareness and intuitive interpersonal boundaries.
           </p>
           <div
             style={{

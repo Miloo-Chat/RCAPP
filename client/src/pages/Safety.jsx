@@ -93,7 +93,7 @@ export default function Safety({ theme, onToggleTheme }) {
 
           <h2 id="reporting">4. Multi-Layered Moderation & Zero-Tolerance 18+ Enforcement</h2>
           <p>
-            Miloo is engineered exclusively for mature legal adults aged 18 and older. Minors are strictly prohibited from using the platform under any circumstances. Because stranger interactions are unscripted, users may encounter sensitive conversations or adult topics. We maintain zero tolerance for child sexual abuse material (CSAM), non-consensual sexually explicit content, harassment, stalking, hate speech, and scams. Any detected or reported violations result in immediate device fingerprint and IP bans.
+            Miloo is engineered exclusively for users aged 18 and older. Minors are strictly prohibited from using the platform under any circumstances. Because stranger interactions are unscripted, users may encounter sensitive or unexpected conversations. We maintain zero tolerance for child sexual abuse material (CSAM), non-consensual sexually explicit content, harassment, stalking, hate speech, and scams. Any detected or reported violations result in immediate device fingerprint and IP bans.
           </p>
           <p>
             To ensure comprehensive community protection across every connection:

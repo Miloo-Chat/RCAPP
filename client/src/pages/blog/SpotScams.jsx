@@ -90,7 +90,7 @@ export default function SpotScams({ theme, onToggleTheme }) {
 
       <h2 id="sextortion-schemes">4. What Is Sextortion and What Should You Do?</h2>
       <p>
-        Sextortion is one of the most damaging scams operating on adult video chat platforms. In this scheme, an operative—frequently operating a pre-recorded female webcam loop—begins undressing and encourages the victim to reciprocate.
+        Sextortion is one of the most damaging scams operating on random video chat platforms. In this scheme, an operative—frequently operating a pre-recorded female webcam loop—begins undressing and encourages the victim to reciprocate.
       </p>
       <p>
         The moment the target exposes themselves on camera, the scammer stops the video and shows a side-by-side screen recording capturing the victim’s face and nudity. They threaten to send the footage to the victim’s friends, family, and employers unless thousands of dollars are paid immediately via cryptocurrency or digital gift cards. For emergency response steps, consult our guide on <Link to="/blog/what-to-do-if-someone-harasses-you-online">what to do if someone harasses you online</Link>.
