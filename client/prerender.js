@@ -26,7 +26,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Who is allowed to use Miloo? What is your age requirement?',
-    a: 'Miloo is strictly and exclusively intended for adults aged 18 years and older. Individuals under the age of 18 (minors) are strictly prohibited from creating connections, viewing video streams, or sending text messages on our platform. Because stranger chats are unmoderated peer-to-peer interactions, we enforce this adult-only policy without exception across all regional rooms and modes.'
+    a: 'Miloo is strictly and exclusively intended for adults aged 18 years and older. Individuals under the age of 18 (minors) are strictly prohibited from creating connections, viewing video streams, or sending text messages on our platform. Because stranger chats are live peer-to-peer interactions, we enforce this adult-only policy without exception across all regional rooms and modes.'
   },
   {
     q: 'Why does Miloo strictly prohibit minors and enforce an 18+ age gate?',
