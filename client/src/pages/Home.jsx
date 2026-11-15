@@ -275,7 +275,7 @@ export default function Home({
                 transition: 'color 0.4s ease',
               }}
             >
-              No algorithm. No signup. Every chat is with a real person.
+              Free random video, text and voice chat. No algorithm, no signup. Every chat is with a real person.
             </p>
             <LiveCount color={subTextColor} />
           </div>

@@ -47,3 +47,5 @@ lighthouse-reports/
 .unlighthouse/
 .playwright-mcp/
 screenshots/
+lh-report.html
+lh.json
