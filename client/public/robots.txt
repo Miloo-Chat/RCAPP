@@ -1,11 +1,3 @@
 User-agent: *
 Allow: /
-Allow: /ads.txt
-
-# Disallow private real-time and admin routes
-Disallow: /chat
-Disallow: /call
-Disallow: /admin
-Disallow: /api/
-
 Sitemap: https://miloo.chat/sitemap.xml
