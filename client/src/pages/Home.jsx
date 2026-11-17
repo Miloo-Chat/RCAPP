@@ -167,6 +167,7 @@ export default function Home({
           {/* Top-Right: Pure minimal links only */}
           <nav
             aria-label="Main Navigation"
+            className="watercolor-top-nav"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -177,7 +178,7 @@ export default function Home({
           >
             <Link
               to="/how-it-works"
-              className="nav-ink-link"
+              className="nav-ink-link nav-extra"
               style={{
                 color: atmosphere.textColor,
                 textDecoration: 'none',
@@ -187,11 +188,11 @@ export default function Home({
               How it works
             </Link>
 
-            <span style={{ color: dividerColor }}>/</span>
+            <span className="nav-extra" style={{ color: dividerColor }}>/</span>
 
             <Link
               to="/safety"
-              className="nav-ink-link"
+              className="nav-ink-link nav-extra"
               style={{
                 color: atmosphere.textColor,
                 textDecoration: 'none',
@@ -201,11 +202,11 @@ export default function Home({
               Safety
             </Link>
 
-            <span style={{ color: dividerColor }}>/</span>
+            <span className="nav-extra" style={{ color: dividerColor }}>/</span>
 
             <Link
               to="/about"
-              className="nav-ink-link"
+              className="nav-ink-link nav-extra"
               style={{
                 color: atmosphere.textColor,
                 textDecoration: 'none',
@@ -215,7 +216,7 @@ export default function Home({
               About
             </Link>
 
-            <span style={{ color: dividerColor }}>/</span>
+            <span className="nav-extra" style={{ color: dividerColor }}>/</span>
 
             <SendBirdButton variant="small" />
           </nav>

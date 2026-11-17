@@ -21,6 +21,7 @@ import ConnectingScene from './ConnectingScene'
 import DevControls from './DevControls'
 import GoldenHours from '../GoldenHours'
 import TurnstileModal from '../TurnstileModal'
+import { ensureVerified, hasFreshVerification } from '../../utils/turnstileGate'
 import { playBirdChirp } from './soundEngine'
 
 export default function WatercolorScene({
@@ -116,36 +117,32 @@ export default function WatercolorScene({
   const [turnstileOpen, setTurnstileOpen] = useState(false)
   const [pendingMode, setPendingMode] = useState(null)
 
-  const isTurnstileVerified = useCallback(() => {
-    if (typeof window === 'undefined') return true
-    try {
-      const verified = sessionStorage.getItem('miloo_turnstile_verified') === 'true'
-      const token = sessionStorage.getItem('miloo_turnstile_token')
-      if (!(verified && !!token)) return false
-      const ts = Number(String(token).split(':')[0])
-      return !!ts && Date.now() - ts < 110 * 60 * 1000
-    } catch {
-      return false
-    }
+  // Silent verification: tapping a chat button starts the connecting animation IMMEDIATELY
+  // while the invisible Cloudflare check finishes in the background. The visible modal
+  // only appears if Cloudflare really needs the human, or the silent check failed.
+  const modalShownRef = useRef(false)
+
+  const showTurnstileFallback = useCallback((mode) => {
+    if (modalShownRef.current) return
+    modalShownRef.current = true
+    setConnectingMode(null)
+    setPendingMode(mode)
+    setTurnstileOpen(true)
   }, [])
 
   const startConnectFlow = useCallback((mode) => {
-    if (isTurnstileVerified()) {
-      setConnectingMode(mode)
-    } else {
-      setPendingMode(mode)
-      setTurnstileOpen(true)
+    modalShownRef.current = false
+    setConnectingMode(mode)
+    if (!hasFreshVerification()) {
+      ensureVerified(8000).then((ok) => {
+        if (!ok) showTurnstileFallback(mode)
+      })
     }
-  }, [isTurnstileVerified])
+  }, [showTurnstileFallback])
 
-  const handleTurnstileSuccess = useCallback((verificationToken) => {
+  const handleTurnstileSuccess = useCallback(() => {
+    modalShownRef.current = false
     setTurnstileOpen(false)
-    if (verificationToken) {
-      try {
-        sessionStorage.setItem('miloo_turnstile_token', verificationToken)
-        sessionStorage.setItem('miloo_turnstile_verified', 'true')
-      } catch (_) {}
-    }
     if (pendingMode) {
       setConnectingMode(pendingMode)
       setPendingMode(null)
@@ -177,12 +174,20 @@ export default function WatercolorScene({
     }
   }, [isAgeVerified, onRequestAgeModal, startConnectFlow])
 
-  const handleConfirmConnect = useCallback((mode) => {
+  const handleConfirmConnect = useCallback(async (mode) => {
+    // Make sure the background check is done before entering the chat room
+    if (!hasFreshVerification()) {
+      const ok = await ensureVerified(8000)
+      if (!ok) {
+        showTurnstileFallback(mode)
+        return
+      }
+    }
     setConnectingMode(null)
     if (mode === 'text') onStartText?.()
     else if (mode === 'voice') onStartVoice?.()
     else onStartVideo?.()
-  }, [onStartText, onStartVideo, onStartVoice])
+  }, [onStartText, onStartVideo, onStartVoice, showTurnstileFallback])
 
   // ── 9 Ink Birds Exactly Matching Reference Painting Arrangement ──
   // Sun is centered at cx = 720, cy = 225, r = 210 (sun spans x: 510 to 930)
