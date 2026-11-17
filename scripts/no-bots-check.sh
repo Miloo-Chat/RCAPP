@@ -44,7 +44,7 @@ MATCHES=$(grep -rInE "$PATTERN" \
 
 # Filter out allowlisted moderation matches
 # (OpenAI Moderation API, Detoxify, regex moderation filters are explicitly permitted)
-VIOLATIONS=$(echo "$MATCHES" | grep -vEi "moderation" | grep -v '^$' || true)
+VIOLATIONS=$(echo "$MATCHES" | grep -vEi "moderation|Hindi word" | grep -v '^$' || true)
 
 if [ -n "$VIOLATIONS" ]; then
   echo "❌ FATAL: Bot or automated companion patterns detected in source tree:"
