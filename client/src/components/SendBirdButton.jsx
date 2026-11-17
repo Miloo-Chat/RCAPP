@@ -38,12 +38,16 @@ export default function SendBirdButton({ style = {}, label = 'Send a bird', vari
   return (
     <button
       type="button"
+      className="send-bird-btn"
       onClick={handleShare}
       aria-label="Send a bird: share Miloo link with a friend"
       style={{
         display: 'inline-flex',
         alignItems: 'center',
         gap: '8px',
+        whiteSpace: 'nowrap',
+        flexShrink: 0,
+        lineHeight: 1.1,
         padding: variant === 'small' ? '6px 14px' : '10px 20px',
         borderRadius: 'var(--radius-pill)',
         background: isNight ? '#222A4A' : '#FFFFFF',

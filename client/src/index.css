@@ -1187,3 +1187,44 @@ body:has(.miloo-watercolor-page) .cookie-btn-secondary {
 
 
 
+
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE UI + PERFORMANCE FIXES
+   ═══════════════════════════════════════════════════════════ */
+
+/* iOS address-bar safe viewport height (falls back to 100vh above) */
+@supports (height: 100svh) {
+  .watercolor-hero-screen { min-height: 100svh !important; }
+}
+
+/* Nested scroll container on Home makes iOS repaint late while scrolling */
+.miloo-watercolor-page {
+  overflow: visible !important;
+  overflow-x: clip !important;
+}
+
+@media (max-width: 768px) {
+  /* ── Top bar: logo + Send a bird only; no wrapped / broken links ── */
+  .watercolor-top-bar { padding: 12px 16px !important; gap: 12px; }
+  .watercolor-top-nav { gap: 8px !important; flex-shrink: 0; }
+  .watercolor-top-nav .nav-extra { display: none !important; }
+  .watercolor-top-nav .nav-ink-link { white-space: nowrap; }
+  .send-bird-btn {
+    padding: 6px 12px !important;
+    font-size: 17px !important;
+    border-radius: 999px !important;
+    box-shadow: none !important;
+  }
+
+  /* Hero: let content define height so buttons are never cut off */
+  .watercolor-hero-screen { height: auto !important; }
+
+  /* ── Remove everything that forces full-screen repaints on phones ── */
+  .rough-paper-grain-overlay { opacity: 0.10 !important; }
+  .ambient-light { display: none !important; }
+  .watercolor-navbar,
+  .cookie-banner-container { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+  .ink-bird { filter: none !important; }
+  .wire-swaying { animation: none !important; }
+}

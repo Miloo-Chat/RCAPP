@@ -1,43 +1,40 @@
 // client/src/components/watercolor/GlobalPaperGrain.jsx
 //
-// Cold-press rough watercolor paper grain overlay.
-// Finer scale (baseFrequency ~1.1) and reduced grain intensity (~18-22% day, ~14% night).
-// Covers background and painting layers (zIndex: 6), below text, buttons, and navigation.
+// Cold-press watercolor paper grain overlay.
+// PERF: the old version ran two live feTurbulence + feDiffuseLighting filters over the
+// whole viewport with mix-blend-mode, which forced a full-screen repaint on every scroll
+// frame (this is what made content appear late / lag on phones).
+// Now the noise is rasterised ONCE as a small tiled image, so scrolling costs nothing.
 
 import { useAtmosphere } from '../../context/AtmosphereContext'
 import WatercolorFilters from './WatercolorFilters'
 
+const GRAIN_TILE =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='17' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.45 0 0 0 0 0.4 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")"
+
 export default function GlobalPaperGrain() {
-  const { atmosphere, isNight } = useAtmosphere()
+  const { isNight } = useAtmosphere()
 
   return (
     <>
-      {/* Universal Watercolor SVG Filters Definition */}
+      {/* Universal Watercolor SVG Filters Definition (sun, ink, halo) */}
       <WatercolorFilters />
 
-      {/* Rough Cold-Press Paper Grain Overlay: visible in EVERY theme */}
-      <svg
+      <div
         className="rough-paper-grain-overlay"
+        aria-hidden="true"
         style={{
           position: 'fixed',
           inset: 0,
-          width: '100vw',
-          height: '100vh',
           pointerEvents: 'none',
           zIndex: 6,
-          mixBlendMode: isNight ? 'screen' : 'multiply',
-          opacity: isNight ? 0.33 : 0.22,
+          backgroundImage: GRAIN_TILE,
+          backgroundSize: '220px 220px',
+          opacity: isNight ? 0.12 : 0.16,
+          // GPU layer, no repaint while scrolling
+          transform: 'translateZ(0)',
         }}
-        aria-hidden="true"
-      >
-        <rect
-          width="100%"
-          height="100%"
-          fill={isNight ? '#000000' : '#ffffff'}
-          filter={`url(#${isNight ? 'paper-grain-night-filter' : 'paper-grain-filter'})`}
-        />
-      </svg>
+      />
     </>
   )
 }
-
