@@ -232,7 +232,7 @@ const ROUTES_META = {
   },
   '/how-it-works': {
     title: 'How It Works — Miloo Anonymous Video & Text Chat',
-    description: 'Discover how Miloo works: anonymous WebRTC chat matching, camera permissions, instant skips, safety reports, and AI companions. No account or sign-up needed.',
+    description: 'Discover how Miloo works: anonymous WebRTC chat matching, camera permissions, instant skips, and safety reports. No account or sign-up needed.',
     canonical: 'https://miloo.chat/how-it-works',
     schema: makePageSchema('How It Works', 'https://miloo.chat/how-it-works')
   },
@@ -268,7 +268,7 @@ const ROUTES_META = {
   },
   '/terms': {
     title: 'Terms of Service — Miloo (18+ Adults Only)',
-    description: 'Miloo Terms of Service: Platform rules, strict 18+ eligibility requirement, acceptable use policies, AI companion disclosures, and user agreements.',
+    description: 'Miloo Terms of Service: Platform rules, strict 18+ eligibility requirement, acceptable use policies, and user agreements.',
     canonical: 'https://miloo.chat/terms',
     schema: makePageSchema('Terms of Service', 'https://miloo.chat/terms')
   },
