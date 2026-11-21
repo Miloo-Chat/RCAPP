@@ -225,8 +225,8 @@ const FAQ_SCHEMA = {
 
 const ROUTES_META = {
   '/': {
-    title: 'Miloo — Free Anonymous Random Video & Text Chat (18+)',
-    description: 'Meet random strangers instantly on Miloo. Free anonymous text, video and voice chat with no signup and no app. Strictly 18+.',
+    title: 'Miloo — Free Random Chat with Strangers, No Signup (18+)',
+    description: 'Chat with strangers online on Miloo. Free anonymous random chat by text, video or voice. No signup, no app. Strictly 18+.',
     canonical: 'https://miloo.chat/',
     schema: HOME_SCHEMA
   },
