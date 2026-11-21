@@ -311,6 +311,28 @@ export const TIME_KEYFRAMES = [
   },
 ]
 
+// Night holds until just before dawn. Without this, 00:00 -> 05:00 slowly fades
+// from navy to the cream dawn paper, and around 02:30 it is mid-grey with grey text.
+TIME_KEYFRAMES.splice(1, 0, { ...TIME_KEYFRAMES[0], hour: 4.7, name: 'Night' })
+
+/** WCAG contrast helpers (keeps text readable while the paper colour is mid-blend) */
+function relLum([r, g, b]) {
+  const f = (v) => {
+    const c = v / 255
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
+  }
+  return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b)
+}
+function contrastRatio(a, b) {
+  const la = relLum(a)
+  const lb = relLum(b)
+  return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05)
+}
+function readable(rgb, bg, light, dark, min = 4.5) {
+  if (contrastRatio(rgb, bg) >= min) return rgb
+  return contrastRatio(light, bg) >= contrastRatio(dark, bg) ? light : dark
+}
+
 /** Linear interpolation helper */
 function lerp(a, b, t) {
   return a + (b - a) * t
@@ -452,14 +474,14 @@ export function interpolateAtmosphere(hour) {
     Math.round(lerp(k1.textColor[1], k2.textColor[1], t)),
     Math.round(lerp(k1.textColor[2], k2.textColor[2], t)),
   ]
-  const textColor = rgbToHex(textColorRgb)
+  const textColor = rgbToHex(readable(textColorRgb, paperBgRgb, [243, 239, 230], [26, 26, 26]))
 
   const subtextColorRgb = [
     Math.round(lerp(k1.subtextColor[0], k2.subtextColor[0], t)),
     Math.round(lerp(k1.subtextColor[1], k2.subtextColor[1], t)),
     Math.round(lerp(k1.subtextColor[2], k2.subtextColor[2], t)),
   ]
-  const subtextColor = rgbToHex(subtextColorRgb)
+  const subtextColor = rgbToHex(readable(subtextColorRgb, paperBgRgb, [214, 222, 238], [60, 56, 52]))
 
   const sunOpacity = +(lerp(k1.sunOpacity, k2.sunOpacity, t).toFixed(3))
   const sunX = +(lerp(k1.sunX, k2.sunX, t).toFixed(2))
