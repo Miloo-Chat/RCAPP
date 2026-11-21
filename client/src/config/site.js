@@ -47,6 +47,9 @@ export const SHOW_SEO_POSTS =
   (typeof import.meta !== 'undefined' &&
     import.meta.env &&
     import.meta.env.VITE_SHOW_SEO_POSTS === 'true') ||
+  (typeof process !== 'undefined' &&
+    process.env &&
+    process.env.VITE_SHOW_SEO_POSTS === 'true') ||
   false
 
 // Feature flags for interactive UI components
