@@ -125,7 +125,7 @@ export default function About({ theme, onToggleTheme }) {
 
           <h2>6. How We Keep Miloo Free</h2>
           <p>
-            To keep Miloo fast, dependable, and free for visitors around the world, we display privacy-compliant advertisements on our public content pages through Google AdSense. We strictly forbid advertisements within private chat and video call screens to protect your conversational privacy and ensure an uninterrupted user experience.
+            Miloo is free to use and currently shows no advertisements. If we ever introduce advertising, it will only appear on public editorial pages, never inside chat or video screens, and we will update our Privacy Policy and Cookie Policy first.
           </p>
 
           {/* Section 7 with #team anchor */}

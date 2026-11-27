@@ -137,7 +137,7 @@ export default function HowItWorks({ theme, onToggleTheme }) {
           </p>
           <ul>
             <li><strong>Report User:</strong> If a stranger displays inappropriate behavior, nudity, harassment, or spam, click the "Report" button. You can choose from standard abuse categories, which alerts our moderation queue.</li>
-            <li><strong>Block User:</strong> Selecting "Block" immediately terminates the chat and stores the partner’s technical identifier in your local blocklist, preventing any re-matching with that user during your session.</li>
+            <li><strong>Block User:</strong> Selecting "Block" immediately ends the chat and asks our server not to match you with that person again (block lists live in server memory and reset when the service restarts).</li>
           </ul>
 
           <h2>6. Technical Requirements & Supported Browsers</h2>
@@ -156,7 +156,7 @@ export default function HowItWorks({ theme, onToggleTheme }) {
               <strong>Direct WebRTC Media Pathways:</strong> Audio and video stream directly between browsers using encrypted DTLS/SRTP protocols. Media is never routed through recording or surveillance servers. If a direct path is not possible, an encrypted relay only forwards packets it cannot decrypt.
             </li>
             <li>
-              <strong>Instant Abuse Enforcement:</strong> Every chat screen provides immediate one-tap reporting and blocking. Suspicious actors face immediate device fingerprint and IP suspensions to preserve community safety.
+              <strong>Instant Abuse Enforcement:</strong> Every chat screen provides immediate one-tap reporting and blocking. Repeat violations lead to escalating restrictions tied to a hashed IP and a browser client ID.
             </li>
           </ul>
         </article>

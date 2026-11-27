@@ -20,8 +20,8 @@ This procedure applies immediately whenever an incident report involves prohibit
   - Terminate the active Socket.IO connection immediately.
   - Ensure the matched peer connection is torn down.
 
-- [ ] **Step 2: Enforce Immediate Network & Hardware Quarantine**
-  - Place the user's SHA-256 IP hash and client device fingerprint token on the permanent blacklist.
+- [ ] **Step 2: Enforce Immediate Network & Browser-ID Quarantine**
+  - Place the user's SHA-256 IP hash and browser client ID (miloo_uid) on the permanent blacklist.
   - Trigger automatic Socket handshake rejection (`status: 'banned'`).
 
 - [ ] **Step 3: Quarantine Telemetry & Evidence**
@@ -70,7 +70,7 @@ When an adult user reports being blackmailed, extorted, or threatened with non-c
   - Provide the victim with their incident Reference ID for their own police report.
 
 - [ ] **Step 3: Network Sanctions**
-  - Apply permanent device token and IP hash ban to the extortionist.
+  - Apply permanent browser client ID and IP hash ban to the extortionist.
 
 ---
 

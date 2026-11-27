@@ -7,7 +7,7 @@ export default function ReportBlockAbuse({ theme, onToggleTheme }) {
     { id: 'instant-blocking', label: 'How Instant User Blocking Works' },
     { id: 'reporting-categories', label: 'Safety Categories: What to Report' },
     { id: 'moderation-process', label: 'Behind the Scenes: How Moderation Works' },
-    { id: 'escalating-penalties', label: 'Penalties & Hardware Level Bans' },
+    { id: 'escalating-penalties', label: 'Escalating Penalties' },
   ]
 
   const relatedArticles = [
@@ -58,7 +58,7 @@ export default function ReportBlockAbuse({ theme, onToggleTheme }) {
         Because Miloo operates without persistent profiles, user accounts, or message databases to preserve absolute privacy, real-time reporting is our most vital community defense.
       </p>
       <p>
-        When you submit a report, you do more than detach yourself from an unpleasant interaction—you instantly flag the violator’s device signature in our system. Aggregated reports trigger automated circuit breakers, isolating offenders before they can harm others.
+        When you submit a report, you do more than detach yourself from an unpleasant interaction—you send a record of the problem to our moderation queue. A human moderator reviews it, and if the report is confirmed the person can be restricted from connecting again.
       </p>
 
       <h2 id="instant-blocking">2. How Instant User Blocking Works</h2>
@@ -67,7 +67,7 @@ export default function ReportBlockAbuse({ theme, onToggleTheme }) {
       </p>
       <ol>
         <li><strong>Connection Severance:</strong> The active WebRTC peer connection is immediately torn down on your browser, instantly detaching audio, video, and text data streams.</li>
-        <li><strong>Session Blacklist:</strong> The offending user’s ephemeral session ID and client signature are placed into your local browser blacklist. Miloo’s matchmaking engine will never pair you with that identifier again during your active browser session.</li>
+        <li><strong>No Re-matching:</strong> Your browser asks our server not to match you with that person’s browser again. Block lists are kept in server memory, so they reset when our service restarts, and they depend on each browser’s random client ID. Treat Block as a strong convenience, and use Report for anything serious.</li>
       </ol>
       <p>
         Blocking is completely invisible to the other party; to them, it simply appears as if a partner pressed Skip. Check our <Link to="/faq">FAQ</Link> for common questions on blocking and skipping.
@@ -88,25 +88,25 @@ export default function ReportBlockAbuse({ theme, onToggleTheme }) {
 
       <h2 id="moderation-process">4. Behind the Scenes: How Moderation Works</h2>
       <p>
-        When you file a report, our backend creates an encrypted moderation ticket containing:
+        When you file a report, our backend creates a moderation ticket containing:
       </p>
       <ul>
-        <li>The reported party’s hashed network signature (SHA-256 hashed IP and device token).</li>
+        <li>The reported person’s connection identifier, hashed IP (truncated SHA-256) and random browser client ID.</li>
         <li>Your selected violation category and any optional context you provided.</li>
-        <li>Precise timestamps and connection telemetry.</li>
+        <li>A timestamp and, if you were chatting by text, up to the last 20 messages of that conversation. Reports are deleted after 30 days.</li>
       </ul>
       <p>
-        Our automated systems cross-reference these tickets against concurrent violation reports. High-severity signals (such as multiple nudity or harassment reports in a brief window) trigger automated account bans immediately. Complex cases are reviewed by our safety desk on our internal moderation dashboard. Read our <Link to="/transparency">Transparency Center</Link> to learn more about our data retention and moderation audits.
+        Reports are reviewed by a human moderator in our internal moderation dashboard. Separately, text messages are screened automatically before delivery, and repeated violations there lead to an automatic restriction. Read our <Link to="/transparency">Transparency Center</Link> to learn more about our data retention and moderation audits.
       </p>
 
-      <h2 id="escalating-penalties">5. Penalties & Hardware Level Bans</h2>
+      <h2 id="escalating-penalties">5. Escalating Penalties</h2>
       <p>
-        Miloo employs a multi-tiered penalty schedule designed to deter repeat offenses:
+        Miloo uses an escalating penalty schedule designed to deter repeat offenses. Restrictions are tied to a hashed IP and a random browser client ID, not to your identity:
       </p>
       <ul>
-        <li><strong>First Strike (Warning / 10-Minute Suspension):</strong> Offending client is warned or placed into a mandatory 10-minute cooling-off suspension.</li>
-        <li><strong>Second Strike (24-Hour Ban):</strong> A 24-hour block is applied across both network IP hash and browser fingerprint tokens.</li>
-        <li><strong>Repeated or Severe Violations (7-Day to Permanent Ban):</strong> Severe violations result in indefinite blacklisting from the Miloo matchmaking network. Handshake attempts are rejected at the edge socket level.</li>
+        <li><strong>First Strike (10-Minute Suspension):</strong> The offending client is placed into a 10-minute cooling-off suspension.</li>
+        <li><strong>Second Strike (24-Hour Ban):</strong> A 24-hour restriction is applied to both the hashed IP and the browser client ID.</li>
+        <li><strong>Repeated or Severe Violations (7-Day to Permanent Ban):</strong> Third offences lead to a 7-day ban, and further offences to a permanent ban. Banned clients are rejected when they try to connect. Strike history is kept for up to 30 days after a ban ends. Shared networks can occasionally cause mistakes, so you can appeal from our Contact page.</li>
       </ul>
       <p>
         By utilizing these tools responsibly, you actively protect the spontaneity, dignity, and warmth of our shared conversational space.

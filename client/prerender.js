@@ -18,7 +18,7 @@ const RISKY_ROUTES = [
 const FAQ_ITEMS = [
   {
     q: 'Is Miloo completely free to use?',
-    a: 'Yes, Miloo is 100% free to use for all adult visitors. We do not have paid subscriptions, VIP tiers, paywalls, coin systems, or hidden fees. Both video chat and text chat features are completely accessible without submitting a credit card, payment details, or in-app purchases. Our operational hosting costs are supported transparently by privacy-friendly Google AdSense advertisements displayed strictly on public editorial pages.'
+    a: 'Yes, Miloo is 100% free to use for all adult visitors. We do not have paid subscriptions, VIP tiers, paywalls, coin systems, or hidden fees. Both video chat and text chat features are completely accessible without submitting a credit card, payment details, or in-app purchases. Miloo currently shows no advertisements. If that ever changes, we will update our Privacy Policy and Cookie Policy before any ads appear.'
   },
   {
     q: 'Do I need to create an account, register, or download an app?',
@@ -30,11 +30,11 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Why does Miloo strictly prohibit minors and enforce an 18+ age gate?',
-    a: 'Protecting minors from spontaneous adult content, online scams, cyberbullying, and potential child exploitation is our highest ethical responsibility. In compliance with the Children’s Online Privacy Protection Act (COPPA), the UK Online Safety Act, and international child protection directives, Miloo enforces a mandatory age verification gate prior to room entry and immediately terminates sessions if underage access is suspected or reported.'
+    a: 'Protecting minors from spontaneous adult content, online scams, cyberbullying, and potential child exploitation is our highest ethical responsibility. Consistent with the aims of child-protection laws such as COPPA and the UK Online Safety Act, Miloo requires every visitor to confirm they are 18 or older before entering a room, and ends sessions and restricts access if underage use is reported. This confirmation is a self-declaration: Miloo does not verify identity documents or age.'
   },
   {
     q: 'Does Miloo record, intercept, or store my video and audio calls?',
-    a: 'No. Miloo never records, monitors, intercepts, or stores your live video or audio conversations. All media streams travel directly between you and your matched partner using peer-to-peer WebRTC connections protected by industry-standard DTLS (Datagram Transport Layer Security) and SRTP (Secure Real-time Transport Protocol) encryption. Our central signaling servers merely broker the initial connection handshake and never touch your decrypted video or microphone data.'
+    a: 'No. Miloo never records or stores your live video or audio conversations, and our servers do not intercept them. In video chat, your own browser may analyse incoming video frames locally to blur explicit imagery (see our Transparency page); audio is not analysed. All media streams travel directly between you and your matched partner using peer-to-peer WebRTC connections protected by industry-standard DTLS (Datagram Transport Layer Security) and SRTP (Secure Real-time Transport Protocol) encryption. Our central signaling servers merely broker the initial connection handshake and never touch your decrypted video or microphone data.'
   },
   {
     q: 'Can another user record my video feed or take screenshots?',
@@ -46,7 +46,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'How does the "Block User" feature work?',
-    a: 'When you click "Block User" during or immediately following a conversation, Miloo severs the connection and places that user’s ephemeral session ID into your local browser blacklist. Our matchmaking engine cross-references this blacklist to ensure you are never paired with that individual again during your active browser session, giving you absolute control over your conversational environment.'
+    a: 'When you click "Block User" during or immediately following a conversation, Miloo ends the conversation and asks our server not to match your browser with that person again. Block lists are kept in server memory and are cleared when our service restarts, and they depend on each browser’s random client ID, so they are a strong convenience rather than an absolute guarantee. You can always Report abusive behaviour as well.'
   },
   {
     q: 'What should I do if a stranger violates the rules or makes me uncomfortable?',
@@ -54,11 +54,11 @@ const FAQ_ITEMS = [
   },
   {
     q: 'How do reports work, and what happens after I submit a safety report?',
-    a: 'When you submit a report, our backend logs the timestamp, the reported party’s encrypted identifier, and your selected reason code. Our moderation team reviews these reports against automated abuse heuristics. Confirmed violators face immediate session termination, client-side cookie invalidation, browser fingerprint suspensions, and permanent network-level IP bans.'
+    a: 'When you submit a report, our backend logs the timestamp, the reported party’s connection identifier, hashed IP and browser client ID, and your selected reason code. Our moderation team reviews reports. Confirmed violators have their session ended and can be restricted by hashed IP and browser client ID, temporarily or permanently depending on severity.'
   },
   {
     q: 'How are bans and suspensions enforced on Miloo?',
-    a: 'Miloo uses a multi-layered moderation architecture to enforce bans effectively. We identify offending clients through a combination of SHA-256 hashed IP addresses, persistent client ID cookies (miloo_uid), and device hardware fingerprints. When a user is suspended or banned, our Socket.IO server automatically rejects connection handshakes and prevents the client from entering the matchmaking queue.'
+    a: 'Miloo uses a multi-layered moderation architecture to enforce bans effectively. We identify offending clients through a combination of SHA-256 hashed IP addresses and a persistent random client ID (miloo_uid) stored in your browser. We do not use device fingerprinting. When a user is suspended or banned, our Socket.IO server automatically rejects connection handshakes and prevents the client from entering the matchmaking queue.'
   },
   {
     q: 'Can I appeal an accidental suspension or ban?',
@@ -86,7 +86,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Does Miloo use cookies or track my browsing activities?',
-    a: 'Miloo respects user privacy and does not track your online browsing across external websites. We use necessary first-party cookies and local storage tokens solely to maintain your functional UI preferences (such as dark mode selection and age confirmation status). On public content pages, we utilize Google AdSense to serve privacy-compliant advertisements that keep the site free for everyone.'
+    a: 'Miloo respects user privacy and does not track your online browsing across external websites. We use necessary first-party cookies and local storage tokens solely to maintain your functional UI preferences (such as dark mode selection and age confirmation status). Miloo currently shows no advertisements and loads no advertising cookies.'
   },
   {
     q: 'How does Miloo handle user data deletion and GDPR/CCPA privacy rights?',
@@ -256,13 +256,13 @@ const ROUTES_META = {
   },
   '/contact': {
     title: 'Contact & Support Desk — Miloo',
-    description: 'Get in touch with the Miloo team for technical support, safety reports, business inquiries, and DMCA notices. We respond within 24-48 hours.',
+    description: 'Get in touch with the Miloo team for technical support, safety reports, business inquiries, and DMCA notices. We reply within a few business days.',
     canonical: 'https://miloo.chat/contact',
     schema: makePageSchema('Contact', 'https://miloo.chat/contact')
   },
   '/privacy': {
     title: 'Privacy Policy — Miloo Anonymous Chat',
-    description: 'Miloo Privacy Policy: Learn how we protect privacy, manage ephemeral WebRTC streams, disclose Google AdSense and cookies, and respect user privacy rights.',
+    description: 'Miloo Privacy Policy: Learn how we protect privacy, manage ephemeral WebRTC streams, explain cookies and local storage, and respect user privacy rights.',
     canonical: 'https://miloo.chat/privacy',
     schema: makePageSchema('Privacy Policy', 'https://miloo.chat/privacy')
   },

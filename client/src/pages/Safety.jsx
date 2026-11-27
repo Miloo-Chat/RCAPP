@@ -93,7 +93,7 @@ export default function Safety({ theme, onToggleTheme }) {
 
           <h2 id="reporting">4. Multi-Layered Moderation & Zero-Tolerance 18+ Enforcement</h2>
           <p>
-            Miloo is engineered exclusively for users aged 18 and older. Minors are strictly prohibited from using the platform under any circumstances. Because stranger interactions are unscripted, users may encounter sensitive or unexpected conversations. We maintain zero tolerance for child sexual abuse material (CSAM), non-consensual sexually explicit content, harassment, stalking, hate speech, and scams. Any detected or reported violations result in immediate device fingerprint and IP bans.
+            Miloo is engineered exclusively for users aged 18 and older. Minors are strictly prohibited from using the platform under any circumstances. Because stranger interactions are unscripted, users may encounter sensitive or unexpected conversations. We maintain zero tolerance for child sexual abuse material (CSAM), non-consensual sexually explicit content, harassment, stalking, hate speech, and scams. Detected or reported violations can result in temporary or permanent restrictions tied to a hashed IP and a browser client ID.
           </p>
           <p>
             To ensure comprehensive community protection across every connection:
@@ -103,10 +103,10 @@ export default function Safety({ theme, onToggleTheme }) {
               <strong>Mandatory Pre-Flight Age Confirmation:</strong> Every visitor must actively affirm that they are 18 or older before any video, voice or text session can be initiated.
             </li>
             <li>
-              <strong>Instant User Blacklisting:</strong> Using the "Block" control severs the peer connection and blacklists that partner's session ID, guaranteeing you will not be matched with them again.
+              <strong>Instant User Blacklisting:</strong> Using the "Block" control ends the chat and asks our server not to match you with that person again. Block lists reset when our service restarts.
             </li>
             <li>
-              <strong>Granular Abuse Categorization:</strong> Reports submit diagnostic technical context directly to our review team to identify recurring bad actors and enforce hardware-level bans.
+              <strong>Granular Abuse Categorization:</strong> Reports submit diagnostic technical context directly to our review team to identify recurring bad actors and enforce restrictions.
             </li>
           </ul>
 
@@ -116,7 +116,7 @@ export default function Safety({ theme, onToggleTheme }) {
           </p>
           <ul>
             <li><strong>Instant Skip:</strong> You never owe a stranger your time or attention. If a conversation feels awkward, pushy, or uncomfortable, press <strong>Skip</strong> (or the ESC key) immediately to move to a new match.</li>
-            <li><strong>Block User:</strong> If a user is hostile or creepy, tap <strong>Block</strong>. This severs the connection and blacklists their session ID so you are never matched with them again.</li>
+            <li><strong>Block User:</strong> If a user is hostile or creepy, tap <strong>Block</strong>. This ends the chat and asks our server not to match you with them again (block lists reset when our service restarts).</li>
             <li><strong>Report User:</strong> Use the Report button to flag violations. Categories include Harassment, Nudity / Explicit Behavior, Spam, Threats, and Scams. Reports are routed to our administrative moderation review queue.</li>
             <li><strong>Voice chat:</strong> Voice calls have the same Skip, Block and Report controls. Audio is not monitored automatically, so if someone is abusive, skip or block right away. As with video, the other person’s device may see basic network information such as your IP address.</li>
           </ul>

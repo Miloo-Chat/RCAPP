@@ -516,13 +516,13 @@ export default function Home({
             </p>
             <ul style={{ paddingLeft: '20px', fontSize: '15px', lineHeight: 1.7, color: bodyTextColor, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <li>
-                <strong>Strictly 18+ Adults Only:</strong> Minors are strictly prohibited from entering rooms. We enforce a mandatory age verification gate before allowing room entry.
+                <strong>Strictly 18+ Adults Only:</strong> Minors are strictly prohibited from entering rooms. Every visitor must confirm they are 18 or older before entering a room. This is a self-declaration, not identity verification, so we also rely on reports and enforcement.
               </li>
               <li>
-                <strong>Instant Report & Block Controls:</strong> Every conversation includes prominent one-click report and block tools. Blocking instantly severs the connection and blacklists the individual from your session.
+                <strong>Instant Report & Block Controls:</strong> Every conversation includes prominent one-click report and block tools. Blocking ends the chat and asks our server not to match you with that person again.
               </li>
               <li>
-                <strong>Proactive Multi-Layered Moderation:</strong> Our automated heuristics monitor report frequency and abusive patterns, enforcing temporary suspensions, device fingerprint restrictions, and permanent IP bans against bad actors.
+                <strong>Proactive Multi-Layered Moderation:</strong> Text messages are screened automatically, reports are reviewed by a human moderator, and repeat violations lead to escalating temporary or permanent restrictions tied to a hashed IP and a browser client ID.
               </li>
             </ul>
           </div>

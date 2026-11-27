@@ -394,14 +394,20 @@ function getOrCreateClientId() {
   }
 }
 
-function getFingerprint() {
-  try {
-    return (
-      localStorage.getItem('miloo_fp') || 'fp_' + Math.random().toString(36).slice(2, 10)
-    )
-  } catch {
-    return 'fp_anon'
+// The NSFW model is loaded once and reused (it was previously re-loaded on every sampled frame).
+let nsfwModelPromise = null
+function getNsfwModel() {
+  if (!nsfwModelPromise) {
+    nsfwModelPromise = (async () => {
+      await import('@tensorflow/tfjs')
+      const nsfwjs = await import('nsfwjs')
+      return nsfwjs.load('/nsfwjs/model.json', { size: 224 })
+    })().catch((err) => {
+      nsfwModelPromise = null
+      throw err
+    })
   }
+  return nsfwModelPromise
 }
 
 const EASE = 'cubic-bezier(0.2, 0.8, 0.2, 1)'
@@ -741,7 +747,7 @@ export default function ChatRoom({
     const clientId = getOrCreateClientId()
     const sock = socketIO(SERVER, {
       transports: ['websocket', 'polling'],
-      auth: { clientId, fingerprint: getFingerprint() },
+      auth: { clientId },
       query: { clientId },
     })
     socketRef.current = sock
@@ -1017,6 +1023,8 @@ export default function ChatRoom({
       } catch {
         // ignore
       }
+      // Ask the server to stop matching this browser with that partner again.
+      try { socketRef.current?.emit('block_partner') } catch { /* no-op */ }
     }
     findNext()
   }, [findNext])
@@ -2608,10 +2616,8 @@ function VideoStage({ iceState, localStream, remoteStream, onFindNext, onNSFWTri
       const video = remoteRef.current
       if (video.videoWidth > 0 && video.videoHeight > 0 && !video.paused) {
         try {
-          await import('@tensorflow/tfjs')
-          const nsfwjs = await import('nsfwjs')
-          // Load self-hosted model from /nsfwjs/model.json with 224x224 input size
-          const model = await nsfwjs.load('/nsfwjs/model.json', { size: 224 })
+          // Self-hosted model from /nsfwjs/model.json (224x224 input), loaded once
+          const model = await getNsfwModel()
           if (cancelled) return
 
           const canvas = document.createElement('canvas')

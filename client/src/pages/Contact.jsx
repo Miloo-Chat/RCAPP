@@ -32,6 +32,11 @@ export default function Contact({ theme, onToggleTheme }) {
       return
     }
 
+    // There is no server-side mail service behind this form: build a mailto: message instead,
+    // so the visitor sends it from their own email app. Never claim it was already delivered.
+    const subject = `[${formData.subject || 'General Inquiry'}] Miloo contact`
+    const body = `${formData.message}\n\n— ${formData.name || 'Anonymous'} (${formData.email})`
+    window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
     setSubmitted(true)
   }
 
@@ -39,7 +44,7 @@ export default function Contact({ theme, onToggleTheme }) {
     <div className="page page-enter" style={{ background: 'var(--bg-0)' }}>
       <SEOHead
         title="Contact & Support Desk — Miloo"
-        description="Get in touch with the Miloo team for technical support, safety reports, business inquiries, and DMCA notices. We respond within 24-48 hours."
+        description="Get in touch with the Miloo team for technical support, safety reports, business inquiries, and DMCA notices. We reply within a few business days."
         canonicalUrl="https://miloo.chat/contact"
       />
 
@@ -127,7 +132,7 @@ export default function Contact({ theme, onToggleTheme }) {
               Expected Response Time
             </h3>
             <p style={{ margin: 0, fontSize: '14px', lineHeight: 1.6, color: 'var(--text-2)' }}>
-              Our team operates seven days a week. We review urgent safety reports within 12 hours and respond to general inquiries and ban appeals within 24 to 48 business hours.
+              Miloo is run by a small team. We aim to review urgent safety reports as quickly as we can and to reply to general inquiries and ban appeals within a few business days.
             </p>
           </div>
 
@@ -172,7 +177,7 @@ export default function Contact({ theme, onToggleTheme }) {
                 </li>
               </ul>
               <p style={{ margin: 0, fontSize: '13px', lineHeight: 1.6, color: 'var(--text-3)' }}>
-                Note: In accordance with international law, confirmed instances of child exploitation or terrorism are reported immediately to the National Center for Missing & Exploited Children (NCMEC) and relevant law enforcement.
+                Note: Where the law requires it, or where we judge it necessary, confirmed instances of child exploitation or terrorism may be reported to the National Center for Missing & Exploited Children (NCMEC) and relevant law enforcement.
               </p>
             </div>
 
@@ -181,7 +186,7 @@ export default function Contact({ theme, onToggleTheme }) {
                 What to Include in a Ban or Suspension Appeal
               </h3>
               <p style={{ margin: '0 0 12px', fontSize: '14px', lineHeight: 1.65, color: 'var(--text-2)' }}>
-                Miloo utilizes automated device fingerprinting and IP hash identification to enforce suspensions for safety violations. If you believe your access was restricted in error (such as sharing a public university Wi-Fi or dynamic carrier IP), you may appeal:
+                Miloo uses a hashed IP identifier and a random browser client ID to enforce suspensions for safety violations. If you believe your access was restricted in error (such as sharing a public university Wi-Fi or dynamic carrier IP), you may appeal:
               </p>
               <ul style={{ margin: '0 0 12px', paddingLeft: 20, fontSize: '14px', lineHeight: 1.65, color: 'var(--text-2)' }}>
                 <li>
@@ -247,10 +252,10 @@ export default function Contact({ theme, onToggleTheme }) {
                 >
                   <span style={{ fontSize: '36px' }}>✓</span>
                   <h3 style={{ margin: 0, color: 'var(--text-1)', fontSize: '20px' }}>
-                    Message Dispatched Successfully!
+                    Your email is ready to send
                   </h3>
                   <p style={{ margin: 0, fontSize: '14px', lineHeight: 1.6, color: 'var(--text-2)' }}>
-                    Thank you for reaching out to the Miloo team. We have received your inquiry and our support desk will respond directly to <strong>{formData.email}</strong> within 24 to 48 hours.
+                    Your email app should have opened with your message ready. <strong>Nothing has been sent until you press Send there.</strong> If nothing opened, write to <a href={`mailto:${SUPPORT_EMAIL}`} style={{ color: 'var(--accent)' }}>{SUPPORT_EMAIL}</a> directly and we will reply to <strong>{formData.email}</strong>.
                   </p>
                   <div style={{ marginTop: 8 }}>
                     <button

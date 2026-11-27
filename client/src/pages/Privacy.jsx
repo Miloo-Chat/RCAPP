@@ -53,7 +53,7 @@ export default function Privacy({ theme, onToggleTheme }) {
               margin: 0,
             }}
           >
-            Last Updated: November 4, 2026 · Effective Immediately
+            Last Updated: November 27, 2026 · Effective Immediately
           </p>
         </header>
 
@@ -80,7 +80,10 @@ export default function Privacy({ theme, onToggleTheme }) {
           </p>
           <ul>
             <li>
-              <strong>IP Address (Hashed for Ban Enforcement):</strong> When your device connects to our signaling server, your IP address is processed server-side. For the purpose of enforcing suspensions and bans, your IP is immediately hashed using SHA-256 — the raw IP address is never stored in any database or log. The hashed value is retained only for the duration of an active ban (10 minutes, 24 hours, 7 days, or permanent), and is used solely to prevent re-entry after a moderation action.
+              <strong>IP Address (Hashed for Ban Enforcement):</strong> When your device connects to our signaling server, your IP address is processed server-side. For the purpose of enforcing suspensions and bans, your IP is hashed (truncated SHA-256) and the raw IP address is not written to our database or logs. If you submit a report, the reported person’s hashed IP and browser client ID are stored with that report for up to 30 days. A hashed IP is still pseudonymous personal data, not anonymous data. A ban record (hashed value) lasts for the ban itself (10 minutes, 24 hours, 7 days, or permanent) and is then kept for up to 30 days so that repeat violations can be penalised more strongly, after which it is deleted. Your IP address is also seen transiently by our hosting, relay and bot-check providers (see sections 4 and 7) and may be held in short-lived server memory for rate limiting.
+            </li>
+            <li>
+              <strong>Browser Client ID (miloo_uid):</strong> When you use chat, a random identifier is generated and stored in your browser (local storage and/or a first-party cookie). It contains no personal data and is used only to enforce bans and Block lists. It is not used for advertising or analytics, and you can delete it by clearing site data (which may also clear a ban that was tied only to this ID).
             </li>
             <li>
               <strong>Device & Browser Metadata:</strong> Information such as browser user-agent, operating system, and viewport dimensions are evaluated client-side to ensure responsive layouts and WebRTC browser compatibility.
@@ -110,7 +113,7 @@ export default function Privacy({ theme, onToggleTheme }) {
               <strong>Essential Storage:</strong> We store your UI theme preference (dark/light), cookie consent choices, and ephemeral session age confirmation. These are strictly functional and do not track you across the web.
             </li>
             <li>
-              <strong>Analytics (Google Analytics 4 & Consent Mode v2):</strong> When consented to via our cookie banner, we use Google Analytics 4 (GA4) with Google Consent Mode v2 to collect aggregate, anonymous statistics regarding public editorial visits. Consent signals default to <code>denied</code> on page load. GA4 scripts and cookies (<code>_ga</code> and <code>_ga_&lt;container-id&gt;</code>, each with an exact retention period of <strong>2 years</strong>) are loaded <em>only</em> on public informational pages after explicit opt-in and are <strong>strictly excluded</strong> from <code>/chat</code>, <code>/call</code>, <code>/admin</code>, the age gate, and <code>/transparency</code>. Only 6 non-identifying events are permitted: <code>page_view</code>, <code>click_text_chat</code>, <code>click_video_chat</code>, <code>click_voice_chat</code>, <code>age_gate_result</code>, and <code>share_click</code>. No user IDs, IPs, or chat message content are ever stored or transmitted.
+              <strong>Analytics (Google Analytics 4 & Consent Mode v2):</strong> When consented to via our cookie banner, we use Google Analytics 4 (GA4) with Google Consent Mode v2 to collect aggregate, anonymous statistics regarding public editorial visits. Consent signals default to <code>denied</code> on page load. GA4 scripts and cookies (<code>_ga</code> and <code>_ga_&lt;container-id&gt;</code>, each with an exact retention period of <strong>2 years</strong>) are loaded <em>only</em> on public informational pages after explicit opt-in and are <strong>strictly excluded</strong> from <code>/chat</code>, <code>/call</code>, <code>/admin</code>, the age gate, and <code>/transparency</code>. Only a short, fixed list of non-identifying interaction events is permitted (page views, clicks on the chat-mode buttons, the age-gate result, share clicks, and aggregate chat-flow events such as chat requested, matched, ended or report clicked). No user IDs, IPs, or chat message content are ever stored or transmitted.
             </li>
             <li>
               <strong>Server-Side Anonymous Counters:</strong> Our backend server tracks aggregate funnel counters (sessions requested per day/mode, % matched within 15/30/60s, median wait, 60s timeouts, chat length buckets, session ended_by reasons, and peak concurrent users). These counters are strictly anonymous with zero IPs, user identifiers, or message text.
@@ -122,7 +125,7 @@ export default function Privacy({ theme, onToggleTheme }) {
 
           <h2>6. Advertising (Currently Not Active)</h2>
           <p>
-            Miloo does not currently run third-party advertisements or ad tracking cookies (<code>ADS_ENABLED=false</code>). If ad networks are integrated in the future on public informational pages:
+            Miloo does not currently show advertisements and does not load advertising scripts or advertising cookies. If we introduce advertising in the future on public editorial pages only, we will first update this policy and, where required (EEA, UK, Switzerland), add a Google-certified consent management platform. In that case:
           </p>
           <ul>
             <li>Third-party ad vendors (such as Google AdSense) may use cookies to serve ads based on visits to this and other websites.</li>
@@ -132,7 +135,7 @@ export default function Privacy({ theme, onToggleTheme }) {
 
           <h2>7. Bot Prevention & Cloudflare Turnstile</h2>
           <p>
-            Before entering the matchmaking queue, users complete a privacy-preserving Cloudflare Turnstile check to prevent automated spam bots. Turnstile analyzes browser technical telemetry non-intrusively to verify human presence without using invasive tracking cookies or CAPTCHA puzzles. Verification tokens are checked server-side and immediately discarded.
+            Before entering the matchmaking queue, users complete a privacy-preserving Cloudflare Turnstile check to prevent automated spam bots. Turnstile analyzes browser technical telemetry non-intrusively to verify human presence without using invasive tracking cookies or CAPTCHA puzzles. Verification tokens are checked server-side. To perform the check, Cloudflare receives your IP address and browser signals, and our server forwards your IP address to Cloudflare’s verification service.
           </p>
 
           <h2>8. Text Chat Moderation</h2>
@@ -164,7 +167,7 @@ export default function Privacy({ theme, onToggleTheme }) {
 
           <h2>11. Children’s Privacy: Strict 18+ Prohibition</h2>
           <p>
-            Miloo is strictly for adults aged 18 and older. We do not knowingly collect, solicit, or process personal data from anyone under the age of 18. If we discover or are notified that a minor has accessed the chat platform, we take immediate action to terminate the session, blacklist the associated device identifiers, and purge any related records in compliance with COPPA and international child safety laws.
+            Miloo is strictly for adults aged 18 and older. We do not knowingly collect, solicit, or process personal data from anyone under the age of 18. If we discover or are notified that a minor has accessed the chat platform, we end the session, restrict the associated hashed IP and browser client ID, and delete related records as soon as practicable, consistent with the aims of COPPA and international child-safety laws.
           </p>
 
           <h2>12. Security Measures & Contact Us</h2>

@@ -14,7 +14,7 @@ export default function OnlineHarassment({ theme, onToggleTheme }) {
     {
       url: '/blog/how-to-report-and-block-abusive-users',
       title: 'How to Report and Block Abusive Users on Miloo',
-      blurb: 'Detailed walkthrough of reporting categories, blocklists, and hardware bans.',
+      blurb: 'Detailed walkthrough of reporting categories, blocking, and escalating restrictions.',
       readTime: '6 min read',
     },
     {

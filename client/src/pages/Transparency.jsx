@@ -112,7 +112,7 @@ export default function Transparency({ theme, onToggleTheme }) {
             Miloo enforces a zero-tolerance policy against the following behaviors:
           </p>
           <ol>
-            <li><strong>Child Sexual Abuse Material (CSAM):</strong> Any depiction, solicitation, or discussion involving minors is immediately blocked, reported to NCMEC (National Center for Missing & Exploited Children) and law enforcement, and results in a permanent network-wide ban.</li>
+            <li><strong>Child Sexual Abuse Material (CSAM):</strong> Any depiction, solicitation, or discussion involving minors results in a permanent ban and may be reported to NCMEC (National Center for Missing & Exploited Children) and law enforcement as the law requires.</li>
             <li><strong>Non-Consensual Nudity & Sexual Acts:</strong> Genital exposure, masturbation, or sexually explicit behavior without mutual adult consent.</li>
             <li><strong>Harassment & Hate Speech:</strong> Targeted racial, religious, sexual orientation, or gender-based slurs, threats of violence, and cyberbullying. Read our guide on <Link to="/blog/what-to-do-if-someone-harasses-you-online">what to do if someone harasses you online</Link>.</li>
             <li><strong>Scams & Financial Fraud:</strong> Phishing URLs, fake investment schemes, extortion, and impersonation bots. Learn more in our guide on <Link to="/blog/how-to-spot-scams-on-chat-sites">spotting chat scams</Link>.</li>
@@ -170,7 +170,7 @@ export default function Transparency({ theme, onToggleTheme }) {
                 <td style={{ padding: '10px 12px' }}>Statistical aggregates only; zero IPs, zero user IDs, zero chat content</td>
               </tr>
               <tr style={{ borderBottom: '1px solid var(--border-1)' }}>
-                <td style={{ padding: '10px 12px' }}>Hashed IP & Device Tokens</td>
+                <td style={{ padding: '10px 12px' }}>Hashed IP & Browser Client ID</td>
                 <td style={{ padding: '10px 12px' }}>Miloo internal storage (PostgreSQL / JSON)</td>
                 <td style={{ padding: '10px 12px' }}>Enforcing temporary suspensions and permanent bans</td>
                 <td style={{ padding: '10px 12px' }}>Duration of ban (10 min, 24 h, 7 days, or permanent)</td>
@@ -198,7 +198,7 @@ export default function Transparency({ theme, onToggleTheme }) {
             <li><strong>First Strike:</strong> Real-time message block and warning modal.</li>
             <li><strong>Second Strike:</strong> 10-minute temporary suspension.</li>
             <li><strong>Third Strike:</strong> 24-hour network ban.</li>
-            <li><strong>Severe or Repeated Abuse:</strong> 7-day to permanent blacklist across both IP hash and device tokens.</li>
+            <li><strong>Severe or Repeated Abuse:</strong> 7-day to permanent restriction across both the hashed IP and the browser client ID.</li>
           </ul>
 
           <h2>6. How to Appeal a Suspension or Ban</h2>
@@ -211,7 +211,7 @@ export default function Transparency({ theme, onToggleTheme }) {
           <ol>
             <li>Email our appeals desk at <a href="mailto:support@miloo.chat" style={{ color: 'var(--accent)' }}>support@miloo.chat</a> with the subject line <code>Ban Appeal</code>.</li>
             <li>Include your approximate timestamp, connection mode (Text or Video), and general ISP/region.</li>
-            <li>Our human moderation staff reviews appeals within 24 to 48 hours and will clear mistakenly flagged identifiers.</li>
+            <li>Appeals are reviewed by a human moderator, normally within a few business days, and mistakenly flagged identifiers are cleared.</li>
           </ol>
           <p>
             For further legal and privacy policies, review our <Link to="/privacy">Privacy Policy</Link> and <Link to="/terms">Terms of Service</Link>.

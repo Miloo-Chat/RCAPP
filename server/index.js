@@ -343,7 +343,9 @@ function removeFromWaitingQueue(socketId) {
 }
 
 function findMatch(socketId, mediaMode) {
-  const candidates = waitingQueue.filter(u => u.id !== socketId && u.mediaMode === mediaMode);
+  const candidates = waitingQueue.filter(
+    u => u.id !== socketId && u.mediaMode === mediaMode && !isBlockedPair(socketId, u.id)
+  );
   if (candidates.length === 0) return null;
   return candidates[0];
 }
@@ -367,6 +369,42 @@ function getSocketIdentifiers(socket) {
     clientId,
     socketId: socket.id,
   };
+}
+
+// Hash helper (truncated SHA-256) so raw IPs are never stored with reports or bans.
+function hashIp(ip) {
+  return ip ? crypto.createHash('sha256').update(String(ip)).digest('hex').slice(0, 16) : '';
+}
+
+// Live socket.id -> persistent identifiers (clientId, ipHash). Memory only, removed on disconnect.
+// Needed because a socket.id changes on every reconnect, so bans must target these identifiers.
+const socketIdentity = new Map();
+
+// Server-side block lists: blocker clientId -> Set of blocked clientIds.
+// In memory only (cleared on restart); capped to avoid unbounded growth.
+const MAX_BLOCK_LIST_OWNERS = 10000;
+const MAX_BLOCKS_PER_OWNER = 200;
+const blockLists = new Map();
+
+function addBlock(ownerClientId, blockedClientId) {
+  if (!ownerClientId || !blockedClientId || ownerClientId === blockedClientId) return;
+  let set = blockLists.get(ownerClientId);
+  if (!set) {
+    if (blockLists.size >= MAX_BLOCK_LIST_OWNERS) {
+      blockLists.delete(blockLists.keys().next().value);
+    }
+    set = new Set();
+    blockLists.set(ownerClientId, set);
+  }
+  if (set.size >= MAX_BLOCKS_PER_OWNER) set.delete(set.values().next().value);
+  set.add(blockedClientId);
+}
+
+function isBlockedPair(socketIdA, socketIdB) {
+  const a = socketIdentity.get(socketIdA)?.clientId;
+  const b = socketIdentity.get(socketIdB)?.clientId;
+  if (!a || !b) return false;
+  return !!(blockLists.get(a)?.has(b) || blockLists.get(b)?.has(a));
 }
 
 async function isClientBanned(ids) {
@@ -509,7 +547,10 @@ app.post('/api/reports', reportLimiter, async (req, res) => {
     const normalizedReason = validReasons.includes(reason.toLowerCase()) ? reason.toLowerCase() : 'other';
 
     const report = await storage.addReport({
-      reporterId: reporterId || req.ip || 'anonymous',
+      reporterId: reporterId || hashIp(req.ip) || 'anonymous',
+      // Resolved server-side from the live socket so a ban survives reconnects (socket.id does not).
+      reportedClientId: socketIdentity.get(String(reportedUser))?.clientId || '',
+      reportedIpHash: socketIdentity.get(String(reportedUser))?.ipHash || '',
       reportedUser: String(reportedUser).slice(0, 100),
       reason: normalizedReason,
       context: String(context || '').slice(0, 500),
@@ -562,8 +603,13 @@ app.post('/api/admin/reports/:id/action', requireAdminAuth, async (req, res) => 
       return res.status(404).json({ error: 'Report not found.' });
     }
 
+    // Persistent identifiers captured at report time (plus the live socket id for immediate disconnect).
+    const targetIds = [report.reportedClientId, report.reportedIpHash, report.reportedUser].filter(Boolean);
+
     if (action === 'ban' || action === 'suspend') {
-      await storage.setUserStatus(report.reportedUser, action === 'ban' ? 'banned' : 'suspended', notes || '');
+      for (const targetId of targetIds) {
+        await storage.setUserStatus(targetId, action === 'ban' ? 'banned' : 'suspended', notes || '');
+      }
 
       const targetSocket = io.sockets.sockets.get(report.reportedUser);
       if (targetSocket) {
@@ -571,7 +617,9 @@ app.post('/api/admin/reports/:id/action', requireAdminAuth, async (req, res) => 
         targetSocket.disconnect(true);
       }
     } else if (action === 'dismiss') {
-      await storage.setUserStatus(report.reportedUser, 'active', notes || '');
+      for (const targetId of targetIds) {
+        await storage.setUserStatus(targetId, 'active', notes || '');
+      }
     }
 
     report.status = action === 'dismiss' ? 'dismissed' : action === 'ban' ? 'banned' : action === 'suspend' ? 'suspended' : 'warned';
@@ -640,8 +688,19 @@ io.on('connection', async (socket) => {
     return;
   }
 
+  socketIdentity.set(socket.id, { clientId: ids.clientId || '', ipHash: ids.ipHash || '' });
+
   let lastFindMatchTime = 0;
   const messageTimestamps = [];
+
+  // Server-side block: stop this browser (clientId) from being matched again with the current partner.
+  socket.on('block_partner', () => {
+    const partnerId = activePairs.get(socket.id);
+    if (!partnerId) return;
+    const mine = socketIdentity.get(socket.id)?.clientId;
+    const theirs = socketIdentity.get(partnerId)?.clientId;
+    addBlock(mine, theirs);
+  });
 
   socket.on('find_match', async (data) => {
     // 1. Turnstile Verification Enforcement (Fail Closed)
@@ -824,6 +883,7 @@ io.on('connection', async (socket) => {
   });
 
   socket.on('disconnect', () => {
+    socketIdentity.delete(socket.id);
     clearWaitTimeout(socket.id);
     removeFromWaitingQueue(socket.id);
 
@@ -849,4 +909,4 @@ server.listen(PORT, () => {
   console.log(`Miloo Server running with safety & moderation on port ${PORT}`);
 });
 
-module.exports = { app, server, io, waitingQueue, activePairs, waitTimeoutTimers, clearWaitTimeout, removeFromWaitingQueue, findMatch };
+module.exports = { app, server, io, socketIdentity, blockLists, addBlock, isBlockedPair, waitingQueue, activePairs, waitTimeoutTimers, clearWaitTimeout, removeFromWaitingQueue, findMatch };

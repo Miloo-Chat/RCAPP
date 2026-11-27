@@ -65,7 +65,7 @@ export default function CookiePolicy({ theme, onToggleTheme }) {
               margin: 0,
             }}
           >
-            Last Updated: November 1, 2026 · Effective Immediately
+            Last Updated: November 27, 2026 · Effective Immediately
           </p>
         </header>
 
@@ -98,6 +98,9 @@ export default function CookiePolicy({ theme, onToggleTheme }) {
               <strong><code>miloo_cookie_consent</code> (localStorage):</strong> Records your privacy choices regarding cookies and analytics.
             </li>
             <li>
+              <strong><code>miloo_uid</code> (localStorage and/or first-party cookie):</strong> A random browser identifier used only to enforce bans and Block lists in chat. It holds no personal data and is never used for advertising or analytics.
+            </li>
+            <li>
               <strong><code>miloo_preloaded</code> (sessionStorage):</strong> Prevents redundant playback of the watercolor painting preloader when navigating during a single browsing session.
             </li>
             <li>
@@ -124,7 +127,7 @@ export default function CookiePolicy({ theme, onToggleTheme }) {
               </ul>
             </li>
             <li>
-              <strong>Permitted Event Whitelist:</strong> Only six non-identifying interaction events are tracked: <code>page_view</code>, <code>click_text_chat</code>, <code>click_video_chat</code>, <code>click_voice_chat</code>, <code>age_gate_result</code>, and <code>share_click</code>. No message text, prompts, usernames, or IPs are collected.
+              <strong>Permitted Event Whitelist:</strong> Only a short, fixed list of non-identifying interaction events is tracked (page views, clicks on the chat-mode buttons, the age-gate result, share clicks, and aggregate chat-flow events such as chat requested, matched, ended or report clicked). No message text, prompts, usernames, or IPs are collected.
             </li>
           </ul>
 
@@ -140,21 +143,10 @@ export default function CookiePolicy({ theme, onToggleTheme }) {
             <li><strong>Strict Invariant:</strong> Server-side metrics maintain zero message content, zero IP addresses, and zero persistent user identifiers.</li>
           </ul>
 
-          <h3>D. Third-Party Advertising Cookies (Google AdSense & CMP)</h3>
+          <h3>D. Advertising</h3>
           <p>
-            To keep Miloo 100% free without charging subscriptions or selling private data, we display digital advertisements served by Google AdSense solely on our public informational and editorial pages (such as our Blog, About, and Safety pages).
+            Miloo does not currently display advertisements and does not load advertising scripts or advertising cookies. If we introduce advertising in the future, it will appear only on public editorial pages, never inside chat rooms, matchmaking screens or camera views. Before that happens we will update this policy and, where required (EEA, UK, Switzerland), add a Google-certified consent management platform so that you can choose before any advertising cookie is set.
           </p>
-          <ul>
-            <li>
-              <strong>Google DoubleClick Cookie:</strong> Google uses cookies to serve ads based on prior visits to our site or other websites across the web.
-            </li>
-            <li>
-              <strong>No Ads Inside Chat:</strong> Advertisements and third-party advertising tracking scripts are <em>never</em> rendered inside private text or video chat rooms, matchmaking loaders, or camera views.
-            </li>
-            <li>
-              <strong>Google-Certified CMP (Consent Management Platform):</strong> In compliance with the European Economic Area (EEA), UK GDPR, and IAB Europe Transparency and Consent Framework (TCF v2.2), visitors from applicable jurisdictions are presented with a Google-certified CMP to make granular consent choices prior to any non-essential advertising cookies being set.
-            </li>
-          </ul>
 
           <h2>3. Managing and Disabling Cookies</h2>
           <p>
@@ -165,7 +157,7 @@ export default function CookiePolicy({ theme, onToggleTheme }) {
               <strong>On-Site Cookie Settings:</strong> You can review or adjust your consent choices at any time by clicking the <button type="button" onClick={handleOpenCookieSettings} style={{ background: 'none', border: 'none', padding: 0, color: 'var(--accent)', textDecoration: 'underline', cursor: 'pointer', font: 'inherit' }}>Cookie Settings</button> link located in our footer.
             </li>
             <li>
-              <strong>Google Personalized Ads Opt-Out:</strong> You can opt out of personalized advertising by visiting Google's official Ads Settings portal at <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>https://adssettings.google.com</a>.
+              <strong>Google Personalized Ads Opt-Out:</strong> Should advertising ever be introduced, you will be able to opt out of personalized advertising by visiting Google's official Ads Settings portal at <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>https://adssettings.google.com</a>.
             </li>
             <li>
               <strong>Industry-Wide Opt-Out Tools:</strong> You can opt out of third-party interest-based advertising through the Digital Advertising Alliance at <a href="https://optout.aboutads.info" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>optout.aboutads.info</a> or Your Online Choices (EU) at <a href="https://www.youronlinechoices.eu" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>youronlinechoices.eu</a>.
@@ -177,7 +169,7 @@ export default function CookiePolicy({ theme, onToggleTheme }) {
 
           <h2>4. Updates to This Cookie Policy</h2>
           <p>
-            We may update this Cookie Policy periodically to reflect technological changes, regulatory requirements, or updates to our advertising partnerships. When changes are published, the "Last Updated" date at the top of this page will be revised.
+            We may update this Cookie Policy periodically to reflect technological changes, regulatory requirements, or changes to the services we use. When changes are published, the "Last Updated" date at the top of this page will be revised.
           </p>
 
           <h2>5. Contact Us</h2>

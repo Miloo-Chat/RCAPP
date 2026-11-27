@@ -179,6 +179,8 @@ async function getReports(options = {}) {
         reason: row.reason,
         context: row.context,
         sessionId: row.session_id,
+        reportedClientId: row.reported_client_id || '',
+        reportedIpHash: row.reported_ip_hash || '',
         recentMessages: row.recent_messages || [],
         timestamp: Number(row.timestamp),
         status: row.status,
@@ -210,6 +212,8 @@ async function addReport(reportData) {
     reason: String(reportData.reason || 'other').toLowerCase(),
     context: String(reportData.context || '').slice(0, 500),
     sessionId: String(reportData.sessionId || '').slice(0, 100),
+    reportedClientId: String(reportData.reportedClientId || '').slice(0, 100),
+    reportedIpHash: String(reportData.reportedIpHash || '').slice(0, 64),
     recentMessages: Array.isArray(reportData.recentMessages) ? reportData.recentMessages.slice(-20) : [],
     timestamp: reportData.timestamp || Date.now(),
     status: 'pending',
@@ -221,9 +225,9 @@ async function addReport(reportData) {
     try {
       await initPostgresTables();
       await pgPool.query(
-        `INSERT INTO reports (id, reporter_id, reported_user, reason, context, session_id, recent_messages, timestamp, status)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-        [report.id, report.reporterId, report.reportedUser, report.reason, report.context, report.sessionId, JSON.stringify(report.recentMessages), report.timestamp, report.status]
+        `INSERT INTO reports (id, reporter_id, reported_user, reason, context, session_id, recent_messages, timestamp, status, reported_client_id, reported_ip_hash)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+        [report.id, report.reporterId, report.reportedUser, report.reason, report.context, report.sessionId, JSON.stringify(report.recentMessages), report.timestamp, report.status, report.reportedClientId, report.reportedIpHash]
       );
       return report;
     } catch (err) {
@@ -270,8 +274,17 @@ async function setUserStatus(identifier, status, notes = '', options = {}) {
 
   if (status === 'banned' || status === 'suspended') {
     // Determine strike count from previous records or option override
-    const previous = localBans.get(cleanId);
-    strikeCount = typeof options.strikeCount === 'number' ? options.strikeCount : ((previous?.strikeCount || 0) + 1);
+    let previousStrikes = localBans.get(cleanId)?.strikeCount || 0;
+    if (pgPool && !previousStrikes) {
+      try {
+        await initPostgresTables();
+        const prev = await pgPool.query('SELECT strike_count FROM user_bans WHERE identifier = $1 LIMIT 1', [cleanId]);
+        previousStrikes = prev.rows[0]?.strike_count ? Number(prev.rows[0].strike_count) : 0;
+      } catch (err) {
+        console.error('[Storage.setUserStatus] Could not read previous strikes:', err.message);
+      }
+    }
+    strikeCount = typeof options.strikeCount === 'number' ? options.strikeCount : (previousStrikes + 1);
     
     if (options.permanent || strikeCount >= 4) {
       expiresAt = null;
@@ -344,8 +357,8 @@ async function isBanned(identifier) {
         const s = row.status;
         const exp = row.expires_at ? Number(row.expires_at) : null;
         if (exp && now > exp) {
-          // Expired temporary ban
-          await pgPool.query('DELETE FROM user_bans WHERE identifier = $1', [cleanId]);
+          // Expired temporary ban: not active any more, but the row is kept (strike memory)
+          // until purgeExpiredBans() removes it after the 30-day grace window.
           return false;
         }
         return s === 'banned' || s === 'suspended';
@@ -362,11 +375,7 @@ async function isBanned(identifier) {
 
   // Check if temporary ban has expired
   if (record.expiresAt && now > record.expiresAt) {
-    console.log(`[Storage] Temporary ban expired for ${cleanId}. Auto-clearing.`);
-    localBans.delete(cleanId);
-    const serialized = [];
-    localBans.forEach((val, key) => serialized.push({ identifier: key, ...val }));
-    saveLocalJson(BANS_FILE, serialized);
+    // Expired: inactive, but kept as strike memory until purgeExpiredBans() (30-day grace).
     return false;
   }
 
@@ -475,15 +484,20 @@ async function purgeOldReports(maxAgeMs = 30 * 24 * 60 * 60 * 1000, referenceTim
  * @param {number} [referenceTime=Date.now()] Reference timestamp
  * @returns {Promise<{ deletedCount: number }>}
  */
-async function purgeExpiredBans(referenceTime = Date.now()) {
+// Expired bans are kept for a 30-day "strike memory" window so repeat offences actually escalate
+// (10 min -> 24 h -> 7 days -> permanent). isBanned() already ignores expired rows.
+const STRIKE_MEMORY_MS = 30 * 24 * 60 * 60 * 1000;
+
+async function purgeExpiredBans(referenceTime = Date.now(), graceMs = STRIKE_MEMORY_MS) {
   let deletedCount = 0;
+  const cutoff = referenceTime - graceMs;
 
   if (pgPool) {
     try {
       await initPostgresTables();
       const res = await pgPool.query(
         'DELETE FROM user_bans WHERE expires_at IS NOT NULL AND expires_at < $1',
-        [referenceTime]
+        [cutoff]
       );
       deletedCount = res.rowCount || 0;
       console.log(`[Storage.purgeExpiredBans] Purged ${deletedCount} expired bans as of ${new Date(referenceTime).toISOString()}`);
@@ -496,7 +510,7 @@ async function purgeExpiredBans(referenceTime = Date.now()) {
   // Local fallback
   const keysToDelete = [];
   localBans.forEach((val, key) => {
-    if (val.expiresAt && val.expiresAt < referenceTime) {
+    if (val.expiresAt && val.expiresAt < cutoff) {
       keysToDelete.push(key);
     }
   });

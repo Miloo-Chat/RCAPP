@@ -193,7 +193,7 @@ export default function Footer() {
                 margin: 0,
               }}
             >
-              Advertisements appear solely on informational pages via Google AdSense. Ads and trackers are never loaded inside active video or text chat rooms.
+              Miloo currently shows no advertisements. Analytics, where enabled, load only after consent and never inside chat rooms.
             </p>
 
             {/* Subtle Chirp Audio Mute Toggle */}

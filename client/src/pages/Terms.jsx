@@ -89,7 +89,7 @@ export default function Terms({ theme, onToggleTheme }) {
             You agree to use Miloo in a lawful, civil, and responsible manner. You agree that you will NOT:
           </p>
           <ul>
-            <li><strong>Transmit or display child exploitation material:</strong> Any depiction or solicitation involving minors will result in immediate permanent bans and instant reporting to the National Center for Missing & Exploited Children (NCMEC) and law enforcement agencies.</li>
+            <li><strong>Transmit or display child exploitation material:</strong> Any depiction or solicitation involving minors will result in permanent bans and may be reported to the National Center for Missing & Exploited Children (NCMEC) and law enforcement agencies as the law requires.</li>
             <li><strong>Display nudity or sexual acts:</strong> Nudity, lewd gestures, sexual solicitation, non-consensual sexual exhibitionism, or webcam exposure are strictly prohibited.</li>
             <li><strong>Harass, intimidate, or threaten others:</strong> Hate speech, slurs, stalking, blackmail, death threats, or encouraging self-harm will not be tolerated.</li>
             <li><strong>Commit fraud or financial scams:</strong> You may not solicit money, cryptocurrency, gift cards, or impersonate other persons or organizations.</li>
@@ -99,7 +99,7 @@ export default function Terms({ theme, onToggleTheme }) {
 
           <h2>4. Reporting & Enforcement Mechanisms</h2>
           <p>
-            Miloo provides built-in <strong>Report User</strong> and <strong>Block User</strong> controls. If a user is reported or identified engaging in abusive or prohibited conduct, Miloo reserves the right to terminate active sessions, block IP addresses, and restrict device fingerprints without prior notice or liability.
+            Miloo provides built-in <strong>Report User</strong> and <strong>Block User</strong> controls. If a user is reported or identified engaging in abusive or prohibited conduct, Miloo reserves the right to terminate active sessions, block IP addresses, and restrict browser identifiers without prior notice or liability.
           </p>
 
           <h2>5. Third-Party Advertisements</h2>
