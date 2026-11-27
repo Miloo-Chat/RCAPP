@@ -162,7 +162,15 @@ export default function ArticleLayout({
               </a>
             </span>
             <span aria-hidden="true">·</span>
-            <span>Last updated: November 3, 2026</span>
+            <span>
+              Last updated:{' '}
+              {new Date(withTz(dateModified)).toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+                timeZone: 'Asia/Kolkata',
+              })}
+            </span>
             <span aria-hidden="true">·</span>
             <span>{readTime}</span>
           </div>

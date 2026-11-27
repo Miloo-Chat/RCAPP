@@ -26,7 +26,7 @@ const ALL_ARTICLES = [
     title: 'Staying Safe on Public Wi-Fi While Video Chatting',
     desc: 'How to protect your privacy and your connection when you use video chat on cafe, campus or airport wi-fi, including VPN, browser and surroundings tips.',
     date: 'Nov 7, 2026',
-    readTime: '5 min read',
+    readTime: '3 min read',
     category: 'Privacy',
   },
   {
@@ -34,7 +34,7 @@ const ALL_ARTICLES = [
     title: 'Video Call Etiquette and Body Language Basics',
     desc: 'Simple, friendly habits for video conversations with new people: framing, lighting, eye contact, listening and how to leave a call politely.',
     date: 'Nov 7, 2026',
-    readTime: '5 min read',
+    readTime: '3 min read',
     category: 'Conversations',
   },
   {
@@ -42,7 +42,7 @@ const ALL_ARTICLES = [
     title: 'Why Anonymity Matters: Privacy, Accountability and Trust Online',
     desc: 'A balanced look at the value of anonymity on the internet, the problems it can cause, and how platforms try to keep anonymous spaces safe.',
     date: 'Nov 7, 2026',
-    readTime: '6 min read',
+    readTime: '3 min read',
     category: 'Privacy',
   },
   {
@@ -50,7 +50,7 @@ const ALL_ARTICLES = [
     title: 'Practicing a New Language With Strangers Online',
     desc: 'How to use spontaneous conversations to practice speaking a new language: preparation, simple goals, handling mistakes and staying safe.',
     date: 'Nov 7, 2026',
-    readTime: '5 min read',
+    readTime: '3 min read',
     category: 'Conversations',
   },
   {
